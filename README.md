@@ -1,4 +1,4 @@
-WORKSHOP_TITLE
+From R User to R programmer
 ================
 
 ### posit::conf 2023
