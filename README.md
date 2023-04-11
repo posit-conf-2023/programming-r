@@ -3,7 +3,7 @@ From R User to R programmer
 
 ### posit::conf 2023
 
-by INSTRUCTOR_NAME
+by Emma Rand and Ian Lyttle
 
 -----
 
@@ -21,7 +21,7 @@ here.
 
 -----
 
-:spiral_calendar: September 17 and 18, 2023  
+:spiral_calendar: September 18, 2023  
 :alarm_clock:     09:00 - 17:00  
 :hotel:           ROOM TBD  
 :writing_hand:    [pos.it/conf](http://pos.it/conf)
@@ -30,11 +30,16 @@ here.
 
 ## Overview
 
-ADD ABSTRACT
+This is a one-day, hands-on workshop for those who have embraced the tidyverse and want to improve their R programming skills and, especially, reduce the amount of duplication in their code. The two main ways to reduce duplication are creating functions and using iteration. We will use a tidyverse approach to cover function design and iteration with {purrr}.
+
+-   Master the art of writing functions that do one thing well, adhere to existing conventions and can be fluently combined together to solve more complex problems.
+-   Learn how to perform the same action on many objects using code which is succinct and easy to read.
+
 
 **This workshop is for you if you...*
 
-ADD THREE POINTS
+-   have experience equivalent to an introductory data science course using tidyverse
+-   feel comfortable with the Whole game chapter of R for Data Science
 
 ## Prework
 
@@ -71,8 +76,13 @@ RSTUDIO.CLOUD ACCOUNT, ETC.
 
 ## Instructor
 
-ADD INSTRUCTOR BIO
+**Emma Rand**  
+*Senior Lecturer, University of York*  
+Emma Rand is a Senior Lecturer in the Department of Biology at the University of York where she specializes in teaching data science and reproducibility, particularly to those who do not see themselves as programmers. She leads a UKRI funded project called Cloud-SPAN which trains researchers in cloud-based high performance computing for ’omics. She is a Software Sustainability Institute Fellow, a Teaching team lead for R Forwards and delivers data science training for the Royal Society of Biology and the Biochemical Society.
 
+**Ian Lyttle**  
+*Data Scientist, Schneider Electric*  
+Ian Lyttle is a Data Scientist at Schneider Electric. His technical interests include visualization, interactivity, and functional programming. He is a community contributor to tidyverse and r-lib, and maintains CRAN packages including vegawidget and boxr. He has delivered tutorials on a variety of R topics at UseR!, Uncoast Unconf, and the Iowa State University Graphics Group.
 -----
 
 ![](https://i.creativecommons.org/l/by/4.0/88x31.png) This work is
