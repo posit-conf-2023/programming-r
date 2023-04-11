@@ -83,6 +83,7 @@ Emma Rand is a Senior Lecturer in the Department of Biology at the University of
 **Ian Lyttle**  
 *Data Scientist, Schneider Electric*  
 Ian Lyttle is a Data Scientist at Schneider Electric. His technical interests include visualization, interactivity, and functional programming. He is a community contributor to tidyverse and r-lib, and maintains CRAN packages including vegawidget and boxr. He has delivered tutorials on a variety of R topics at UseR!, Uncoast Unconf, and the Iowa State University Graphics Group.
+
 -----
 
 ![](https://i.creativecommons.org/l/by/4.0/88x31.png) This work is
