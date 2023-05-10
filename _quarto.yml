@@ -11,7 +11,22 @@ website:
         text: Prerequisites
       - href: schedule.qmd
         text: Schedule
-
+      - text: Materials
+        menu:
+        - text: ---
+        - text: Functions
+        - text: ---
+        - text: "👋 & something 1"
+          href: 01-functions-01.qmd
+        - text: "something 2"
+          href: 01-functions-01.qmd
+        - text: ---
+        - text: Iteration
+        - text: ---
+        - text: "something 3"
+          href: 01-functions-01.qmd
+        - text: "something 4"
+          href: 01-functions-01.qmd
 format:
   html:
     theme: cosmo
