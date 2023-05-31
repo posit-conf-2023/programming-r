@@ -1,0 +1,10 @@
+id,       Blue,Green,Purple,Yellow
+"001",Strongly disagree,Disagree,Neither agree nor disagree,Agree
+"002",Strongly agree,Neither agree nor disagree,Agree,Disagree
+"003",Agree,Neither agree nor disagree,Agree,Neither agree nor disagree
+"004",Agree,Strongly agree,Disagree,Neither agree nor disagree
+"005",Strongly agree,Strongly agree,Agree,Agree
+"006",Disagree,Agree,Neither agree nor disagree,Strongly agree
+"007",Agree,Strongly agree,Neither agree nor disagree,Agree
+"008",Neither agree nor disagree,Neither agree nor disagree,Neither agree nor disagree,Neither agree nor disagree
+"009",Strongly agree,Strongly agree,Disagree,Agree
