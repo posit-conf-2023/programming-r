@@ -9,12 +9,12 @@ TODO: room
 
 ------------------------------------------------------------------------
 
-| Time          | Activity                                                  |
+| Time          | Activity                                                                                                         |
 |:----------------------------------|:------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.qmd) Introduction, vector and dataframe functions, indirection and tidy evaluation |
-| 10:30 - 11:00 | *Coffee break*                                            |
-| 11:00 - 12:30 | [Functions 2](02-functions-02.qmd) Plot functions, style and side effects |
-| 12:30 - 13:30 | *Lunch break*                                             |
-| 13:30 - 15:00 | [Iteration 1](03-iteration-01.qmd) Introduction and modifying multiple columns |
-| 15:00 - 15:30 | *Coffee break*                                            |
-| 15:30 - 17:00 | [Iteration 1](04-iteration-02.qmd) Reading and writing multiple files|
+| 10:30 - 11:00 | *Coffee break*                                                                                                   |
+| 11:00 - 12:30 | [Functions 2](02-functions-02.qmd) Plot functions, style and side effects                                        |
+| 12:30 - 13:30 | *Lunch break*                                                                                                    |
+| 13:30 - 15:00 | [Iteration 1](03-iteration-01.qmd) Introduction and modifying multiple columns                                   |
+| 15:00 - 15:30 | *Coffee break*                                                                                                   |
+| 15:30 - 17:00 | [Iteration 1](04-iteration-02.qmd) Reading and writing multiple files                                            |
