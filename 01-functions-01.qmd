@@ -35,7 +35,6 @@ This is a two-day, hands-on workshop for those who have embraced the tidyverse a
 Emma Rand 🐦[\@er13_r](https://twitter.com/er13_r)
 
 TA
-
 :::
 
 ::: {.column width="50%"}
@@ -56,10 +55,9 @@ Standing on the shoulders of [R for Data Science (2e)](https://r4ds.hadley.nz/)
 -   Username: `conf22`
 -   Password: `together!`
 
-
 ## Introductions
 
-To each other! 
+To each other!
 
 ## Code of Conduct TOFIX
 
@@ -73,7 +71,7 @@ Reporting:
 
 -   🗣️ any posit::conf staff member, xxx is our contact
 -   📧 `cc@cccccc.com`
--   ☎️ + 
+-   ☎️ +
 
 ## Housekeeping TOFIX
 
@@ -81,7 +79,7 @@ Reporting:
     -   Username: `conf22`
     -   Password: `together!`
 -   Gender neutral bathrooms xxxxxxxxx.
--   The meditation room is xxxxx. Open 8am - 5pm, Monday - Thursday. 
+-   The meditation room is xxxxx. Open 8am - 5pm, Monday - Thursday.
 -   The lactation room is located at xxxxx. Open 8am - 5pm, Monday - Thursday.
 -   Participants who do not wish to be photographed have red lanyards, please note lanyard colors before taking a photo and respect their choices.
 
@@ -102,11 +100,9 @@ Reporting:
 You need a laptop with the following installed:
 
 -   R version \>= 4.2 and RStudio \>= 2023.03
--   The following packages: 
-
+-   The following packages:
 
 🎬 Detailed instructions for installing these are covered in [Prerequisites](pre-reqs.qmd)
-
 
 ## Schedule
 
@@ -120,15 +116,14 @@ You need a laptop with the following installed:
 | 12:30 - 13:30 | *Lunch break*                                                                                                    |
 | 13:30 - 15:00 | [Iteration 1](03-iteration-01.qmd) Introduction and modifying multiple columns                                   |
 | 15:00 - 15:30 | *Coffee break*                                                                                                   |
-| 15:30 - 17:00 | [Iteration 1](04-iteration-02.qmd) Reading and writing multiple files 
-
+| 15:30 - 17:00 | [Iteration 1](04-iteration-02.qmd) Reading and writing multiple files                                            |
 
 ## How we will work
 
--   stickies 
+-   stickies
 
     -   🟪 I'm all good, I'm done
-   
+
     -   🟧 I could do with some help
 
 -   Discord
@@ -136,7 +131,6 @@ You need a laptop with the following installed:
 -   no stupid questions
 
 -   🎬 Action! (today)
-
 
 ## Learning Objectives
 
@@ -147,20 +141,25 @@ At the end of this section you will be able to:
 -   x
 -   x
 -   x
-
 :::
 
 # Set up
 
-Set up: `create_project()`, `use_r()`
-new file for each function? or all functions in one file??
-?and tests?
+```{r}
+#| eval: false
 
+create_project("workshop-functions")
+```
+
+Create a `data` folder.
+
+Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses 1.csv) 
+
+`use_r()` new file for each function? or all functions in one file?? ?and tests?
 
 data used?
 
-
-# Why write functions? 
+# Why write functions?
 
 ## Rationale
 
@@ -169,9 +168,15 @@ data used?
 
 ## Example
 
+We have the mass of ten individuals from four species
+```{r}
+
+```
+
+
 applying same transformation to several variables by c&p
 
-##
+## 
 
 key point, you may think you have to write complex functions - you don't, start with the simple things.
 
@@ -179,12 +184,7 @@ key point, you may think you have to write complex functions - you don't, start 
 
 ## Types of function
 
-We will cover two types of function
-1.   vector functions: one of more vectors as input, one vector as output
-     i.   output same length as input. "mutate" functions will work well in `mutate()` and `filter()`. this section will allow us to get the principles of writing functions
-     ii. summary functions: input is vector, output is a single value
-2.   data frame functions: df as input and df as output
-
+We will cover two types of function 1. vector functions: one of more vectors as input, one vector as output i. output same length as input. "mutate" functions will work well in `mutate()` and `filter()`. this section will allow us to get the principles of writing functions ii. summary functions: input is vector, output is a single value 2. data frame functions: df as input and df as output
 
 # Vector functions
 
@@ -192,8 +192,6 @@ We will cover two types of function
 
 -   output same length as input "mutate" functions will work well in `mutate()`
 -   summary functions: input is vector, output is a single value
-
-
 
 ## Example
 
@@ -209,33 +207,31 @@ to make into a functions you need
 
 ## General
 
-```r
+``` r
 name <- function(arguments) {
   body
 }
 ```
 
+## 
 
-##
-
-```r
+``` r
 name <- function(arguments) {
   body
 }
 ```
 
-##
+## 
 
-```r
+``` r
 myname <- function(x) {
   body using x
 }
 ```
 
-##
+## 
 
-possible example: function that turns a likert char vector into a factor with levels in the right order.
-rewrite this without across
+possible example: function that turns a likert char vector into a factor with levels in the right order. rewrite this without across
 
 ## 
 
@@ -247,7 +243,7 @@ glimpse(coloursurvey)
 
 ```
 
-##
+## 
 
 without a function
 
@@ -264,7 +260,8 @@ coloursurvey <- coloursurvey %>%
   mutate(across(Blue:Yellow, ~ factor(.x, , levels = my_levels)))
 ```
 
-##
+## 
+
 with a function
 
 ```{r}
@@ -280,9 +277,9 @@ likert_factor <- function(v){
 
 ```
 
-##
-with a function
-adv: clarity due to name
+## 
+
+with a function adv: clarity due to name
 
 ```{r}
 coloursurvey <- coloursurvey %>% 
@@ -293,20 +290,17 @@ coloursurvey <- coloursurvey %>%
 
 Maybe ask ChatGTP to write documentation?
 
-
 ## Test
 
 interactive
- 
- 
+
 ## Unit tests ??
 
 with testthat? only simple examples. chatGTP/github copilot (not free)
 
 ## Summary functions
 
-these take a vector and produce a single value
-could be an existing function where you need to set a lot of defaults
+these take a vector and produce a single value could be an existing function where you need to set a lot of defaults
 
 ```{r}
 # magnitude of a vector
@@ -319,27 +313,21 @@ magnitude(c(6,8))
 
 ```
 
-Short cuts: 
+Short cuts:
 
 -   put cursor on a function call and press F2 to find its definition
 -   Ctrl+. opens section/file search - Need to demo this one.
-
-
 
 # Dataframe functions
 
 ## Dataframe functions
 
-Vector functions: useful when code is repeated within a dplyr verb function
-Data frame function: useful when the verbs are repeated
-dataframe functions take a df as the first argument, some additional arguments and return a dataframe or vector
+Vector functions: useful when code is repeated within a dplyr verb function Data frame function: useful when the verbs are repeated dataframe functions take a df as the first argument, some additional arguments and return a dataframe or vector
 
 we need to understand Indirection and tidy evaluation
-
 
 ## Indirection and tidy evaluation
 
 ## Data masking
-
 
 ## Tidy selection
