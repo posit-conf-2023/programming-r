@@ -148,16 +148,20 @@ At the end of this section you will be able to:
 ```{r}
 #| eval: false
 
-create_project("workshop-functions")
+usethis::create_project("workshop-functions")
 ```
 
 Create a `data` folder.
 
-Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses 1.csv) 
+Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses%201.csv)
+
+Load packages
+
+```{r}
+library(tidyverse)
+```
 
 `use_r()` new file for each function? or all functions in one file?? ?and tests?
-
-data used?
 
 # Why write functions?
 
@@ -168,15 +172,52 @@ data used?
 
 ## Example
 
-We have the mass of ten individuals from four species
+We have the mass of ten individuals from four species of rodent
+
 ```{r}
+rodents <- read_csv("data/rodents-mass.csv")
+rodents
+```
+Rodents are very different sizes making them difficult to plot on the same graph.
+
+## Example
+
+```{r}
+#| echo: false
+rodents |> pivot_longer(cols = everything(),
+                        names_to = "species",
+                        values_to = "mass") |> 
+  ggplot(aes(x = species, y = mass)) +
+  geom_boxplot() +
+  theme_classic()
 
 ```
 
+We can't see any variation in the shrews.
 
-applying same transformation to several variables by c&p
+## Example
 
-## 
+A common solution is to apply a $z$ score transformation to each species which normalises the score to have a mean of 0 and a standard deviation of 1
+
+$z = \frac{x - \bar{x}}{s.d}$
+
+
+
+## Example
+
+We can apply the same transformation to each variable:
+```{r}
+rodents <- rodents |> 
+  mutate(shrew = (shrew - mean(shrew, na.rm = TRUE))/sd(shrew, na.rm = TRUE),
+         mouse = (mouse - mean(mouse, na.rm = TRUE))/sd(mouse, na.rm = TRUE),
+         rat = (rat - mean(rat, na.rm = TRUE))/sd(rat, na.rm = TRUE),
+         guineapig = (guineapig - mean(guineapig, na.rm = TRUE))/sd(guineapig, na.rm = TRUE))
+```
+
+Copying and pasting a longish piece of code
+
+1. Error prone
+2. Difficult to follow: more code than needed, difficult to determine what the transformation is
 
 key point, you may think you have to write complex functions - you don't, start with the simple things.
 
