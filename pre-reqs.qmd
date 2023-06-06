@@ -8,23 +8,17 @@ execute:
 bibliography: references.bib
 ---
 
-TO DO: Update for 2023
-
 You will need
 
--   [R and RStudio](#install-r-and-rstudio)
-<!-- -   [R package development toolchain](#install-r-package-development-toolchain): Rtools(windows) or XCode (mac) or r-base-dev -->
--   To [install the **`devtools`** and **`tidyverse`** packages](#packages)
-<!-- -   [Git] -->
-<!-- -   [GitHub account] -->
-<!-- -   [GitHub to be linked to RStudio](#check-link-between-rstudio-and-github) -->
+-   [R and RStudio](#install-r-and-rstudio) <!-- -   [R package development toolchain](#install-r-package-development-toolchain): Rtools(windows) or XCode (mac) or r-base-dev -->
+-   To [install the **`devtools`** and **`tidyverse`** packages](#packages) <!-- -   [Git] --> <!-- -   [GitHub account] --> <!-- -   [GitHub to be linked to RStudio](#check-link-between-rstudio-and-github) -->
 
 ## Install R and RStudio {#install-r-and-rstudio}
 
 You will need:
 
--   R version \>= 4.1
--   RStudio \>= 2022.02.1
+-   R version \>= 4.3
+-   RStudio \>= 2023.03.1
 
 ### Installing R
 
@@ -69,18 +63,20 @@ Download the relevant installer for your OS listed under "Installers for Support
 <!-- Install XCode. Either: -->
 
 <!-- 1.  Download and install XCode from the Mac AppStore: <http://itunes.apple.com/us/app/xcode/id497799835?mt=12> -->
+
 <!-- 2.  Within XCode go to Preferences : Downloads and install the Command Line Tools -->
 
 <!-- Or for a smaller download size: -->
 
 <!-- 1.  Register as an Apple Developer (free) here: <https://developer.apple.com/programs/register/> -->
+
 <!-- 2.  Download the Command Line Tools for XCode appropriate for the version of OS X you are running from here: <https://developer.apple.com/downloads/> -->
 
 <!-- #### For Linux -->
 
 <!-- If you installed `r-base-dev`, when installing R, you should have all you need to build packages from source. Otherwise return to the instructions for installing R for your distribution and follow the instructions there to install the additional tools. -->
 
-## Install the **`devtools`** and **`tidyvers`** packages {#packages}
+## Install the **`devtools`** and **`tidyverse`** packages {#packages}
 
 The aim of **`devtools`** [@devtools] is to make package development easier by providing R functions that simplify and expedite common tasks. The [R Packages](https://r-pkgs.org/) [@wickham2020a] book and the Building Tidy Tools workshop are based on a **`devtools`** workflow.
 
@@ -89,7 +85,6 @@ Install **`devtools`**:
 ```{r}
 install.packages("devtools")
 ```
-
 
 Install **`tidyverse`**:
 
