@@ -1,6 +1,6 @@
-# From R User to R programmer
+# From R User to R Programmer
 
-### posit::conf 2023
+**posit::conf 2023**
 
 by Emma Rand and Ian Lyttle
 
@@ -18,10 +18,15 @@ This is a one-day, hands-on workshop for those who have embraced the tidyverse a
 -   Master the art of writing functions that do one thing well, adhere to existing conventions and can be fluently combined together to solve more complex problems.
 -   Learn how to perform the same action on many objects using code which is succinct and easy to read.
 
-\*\*This workshop is for you if you...\*\*
+### This workshop is for you if you...
 
 -   have experience equivalent to an introductory data science course using tidyverse
 -   feel comfortable with the [Whole game](https://r4ds.hadley.nz/whole-game.html) chapter of [R for Data Science (2nd Edition)](https://r4ds.hadley.nz/) by by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+
+### Please note
+
+These materials are under active development, which will likely continue through August 2023. 
+Given this context: if you have a concern, please [file an issue](https://github.com/posit-conf-2023/programming-r/issues).
 
 ## Prework
 
@@ -41,7 +46,7 @@ TODO: Add link to pre reqs page on site - once deployed.
 | 15:00 - 15:30 | *Coffee break* |
 | 15:30 - 17:00 | Iteration 2    |
 
-## Instructor
+## Instructors
 
 **Emma Rand**\
 *Senior Lecturer, University of York*\
