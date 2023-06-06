@@ -32,6 +32,6 @@ jobs:
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-        # TODO: change to "publish" once project is mae public
+        # TODO: change to "publish" once project is made public
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
