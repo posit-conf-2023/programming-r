@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "From R user to R programmer"
+  title: "From R User to R Programmer"
   navbar:
     left:
       - href: index.qmd
@@ -19,14 +19,14 @@ website:
         - text: "👋 & something 1"
           href: 01-functions-01.qmd
         - text: "something 2"
-          href: 01-functions-01.qmd
+          href: 02-functions-02.qmd
         - text: ---
         - text: Iteration
         - text: ---
         - text: "something 3"
-          href: 01-functions-01.qmd
+          href: 03-iteration-01.qmd
         - text: "something 4"
-          href: 01-functions-01.qmd
+          href: 04-iteration-02.qmd
 format:
   html:
     theme: cosmo

@@ -17,4 +17,4 @@ TODO: room
 | 12:30 - 13:30 | *Lunch break*                                                                                                    |
 | 13:30 - 15:00 | [Iteration 1](03-iteration-01.qmd) Introduction and modifying multiple columns                                   |
 | 15:00 - 15:30 | *Coffee break*                                                                                                   |
-| 15:30 - 17:00 | [Iteration 1](04-iteration-02.qmd) Reading and writing multiple files                                            |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.qmd) Reading and writing multiple files                                            |
