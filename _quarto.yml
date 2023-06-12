@@ -1,6 +1,12 @@
 project:
   type: website
 
+execute:
+  echo: true
+  warning: false
+
+
+
 website:
   title: "From R User to R Programmer"
   navbar:
@@ -32,6 +38,8 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
-
+comments:
+  hypothesis: true
+  
 editor: visual
 

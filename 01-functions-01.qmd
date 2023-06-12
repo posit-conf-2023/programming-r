@@ -9,6 +9,7 @@ format:
     chalkboard: true
     code-link: true
     code-line-numbers: false
+bibliography: references.bib
 ---
 
 # 👋 Welcome
@@ -46,7 +47,7 @@ TA
 
  
 
-Standing on the shoulders of [R for Data Science (2e)](https://r4ds.hadley.nz/)
+Standing on the shoulders of [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023, [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham
 
 \
 
@@ -102,7 +103,7 @@ You need a laptop with the following installed:
 -   R version \>= 4.2 and RStudio \>= 2023.03
 -   The following packages:
 
-🎬 Detailed instructions for installing these are covered in [Prerequisites](pre-reqs.qmd)
+🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.qmd)
 
 ## Schedule
 
@@ -168,7 +169,7 @@ library(tidyverse)
 ## Rationale
 
 -   impact from code: reach and clarity
--   efficiency: update code in one place, decrease error rate, improve ability to resuse
+-   efficiency: update code in one place, decrease error rate, improve ability to reuse
 
 ## Example
 
@@ -178,15 +179,19 @@ We have the mass of ten individuals from four species of rodent
 rodents <- read_csv("data/rodents-mass.csv")
 rodents
 ```
+
 Rodents are very different sizes making them difficult to plot on the same graph.
 
 ## Example
 
 ```{r}
 #| echo: false
-rodents |> pivot_longer(cols = everything(),
-                        names_to = "species",
-                        values_to = "mass") |> 
+rodents |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "species",
+    values_to = "mass"
+  ) |>
   ggplot(aes(x = species, y = mass)) +
   geom_boxplot() +
   theme_classic()
@@ -201,52 +206,67 @@ A common solution is to apply a $z$ score transformation to each species which n
 
 $z = \frac{x - \bar{x}}{s.d}$
 
-
-
 ## Example
 
 We can apply the same transformation to each variable:
+
 ```{r}
-rodents <- rodents |> 
-  mutate(shrew = (shrew - mean(shrew, na.rm = TRUE))/sd(shrew, na.rm = TRUE),
-         mouse = (mouse - mean(mouse, na.rm = TRUE))/sd(mouse, na.rm = TRUE),
-         rat = (rat - mean(rat, na.rm = TRUE))/sd(rat, na.rm = TRUE),
-         guineapig = (guineapig - mean(guineapig, na.rm = TRUE))/sd(guineapig, na.rm = TRUE))
+rodents <- rodents |>
+  mutate(
+    shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
+    mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
+    rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
+    guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+  )
 ```
 
-Copying and pasting a longish piece of code
+## Coping and pasting
 
-1. Error prone
-2. Difficult to follow: more code than needed, difficult to determine what the transformation is
+1.  Error prone
+2.  Difficult to follow: more code than needed, difficult to determine what the transformation is
 
-key point, you may think you have to write complex functions - you don't, start with the simple things.
+key point: you may think you have to write complex functions - you don't, start with the simple things.
 
 # Types of function
 
 ## Types of function
 
-We will cover two types of function 1. vector functions: one of more vectors as input, one vector as output i. output same length as input. "mutate" functions will work well in `mutate()` and `filter()`. this section will allow us to get the principles of writing functions ii. summary functions: input is vector, output is a single value 2. data frame functions: df as input and df as output
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+    i.  output same length as input. "mutate" functions will work well in `mutate()` and `filter()`. Principles of writing functions
+
+    ii. summary functions: input is vector, output is a single value
+
+2.  data frame functions: df as input and df as output
 
 # Vector functions
 
 ## Output same length as input
 
--   output same length as input "mutate" functions will work well in `mutate()`
--   summary functions: input is vector, output is a single value
+-   output same length as input
+-   work well in `mutate()`
+-   appropriate for the example
 
-## Example
+## General
 
-continued
-
-## Example
-
-to make into a functions you need
+To turn your code into a function you need:
 
 -   a name
 -   the arguments - which represent the bits that vary
 -   the codebody for the function
 
-## General
+## Function name
+
+Use a verb - The tidyverse style guide @wickham but good advice regardless
+
+Difficulty in naming? Should this be two or three functions?
+
+--
+
+What should we call the function we write to do a $z$ score transformation?
+
 
 ``` r
 name <- function(arguments) {
@@ -254,7 +274,16 @@ name <- function(arguments) {
 }
 ```
 
-## 
+## Arguments
+
+-  the input vector
+
+-  the 
+
+
+Naming conventions
+
+-   x for the vector input
 
 ``` r
 name <- function(arguments) {
@@ -262,69 +291,27 @@ name <- function(arguments) {
 }
 ```
 
-## 
-
-``` r
-myname <- function(x) {
-  body using x
-}
-```
-
-## 
-
-possible example: function that turns a likert char vector into a factor with levels in the right order. rewrite this without across
-
-## 
-
-show data
+## Example
 
 ```{r}
-coloursurvey <- read_csv("data/colour-responses 1.csv") 
-glimpse(coloursurvey)
-
+rodents <- rodents |>
+  mutate(
+    shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
+    mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
+    rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
+    guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+  )
 ```
 
-## 
-
-without a function
+## Example
 
 ```{r}
-my_levels <- c("Strongly disagree",
-               "Disagree",
-               "Neither agree nor disagree",
-               "Agree",
-               "Strongly agree")
-```
-
-```{r}
-coloursurvey <- coloursurvey %>% 
-  mutate(across(Blue:Yellow, ~ factor(.x, , levels = my_levels)))
-```
-
-## 
-
-with a function
-
-```{r}
-
-likert_factor <- function(v){
-  my_levels <- c("Strongly disagree",
-               "Disagree",
-               "Neither agree nor disagree",
-               "Agree",
-               "Strongly agree")
-  v = factor(v, levels = my_levels)
-}
-
-```
-
-## 
-
-with a function adv: clarity due to name
-
-```{r}
-coloursurvey <- coloursurvey %>% 
-  mutate(across(Blue:Yellow, ~ likert_factor(.x)))
+rodents <- rodents |> 
+  mutate(shrew     = (shrew     - mean(shrew,     na.rm = TRUE)) / sd(shrew,     na.rm = TRUE),
+         mouse     = (mouse     - mean(mouse,     na.rm = TRUE)) / sd(mouse,     na.rm = TRUE),
+         rat       = (rat       - mean(rat,       na.rm = TRUE)) / sd(rat,       na.rm = TRUE),
+         guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+  )
 ```
 
 ## Document
