@@ -28,11 +28,12 @@ jobs:
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         
-      - name: Publish to GitHub Pages
+      - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
-        uses: quarto-dev/quarto-actions/publish@v2
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          render: false
-          target: gh-pages
+          clean: true
+          branch: gh-pages
+          folder: _site
         
         
