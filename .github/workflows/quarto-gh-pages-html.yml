@@ -8,10 +8,10 @@ on:
   # to be able to trigger a manual build
   workflow_dispatch:
 
-name: Render and deploy Quarto site
+name: Build and deploy Quarto site
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,13 +27,16 @@ jobs:
 
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
-        
-      - name: Deploy to GitHub pages 🚀
-        if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          clean: true
-          branch: gh-pages
-          folder: _site
-        
+          # hard-coding `_site` feels a little gross, but it works
+          path: _site
+
+  
+  # deploy:
+  #   needs: build
+  #   if: github.event_name != 'pull_request'
+  #   runs-on: ubuntu-latest    
         
