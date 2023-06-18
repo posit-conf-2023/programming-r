@@ -28,12 +28,11 @@ jobs:
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         
-      ### TODO: activate this once site is public
-      # - name: Publish to GitHub Pages 
-      #   if: github.event_name != 'pull_request'
-      #   uses: quarto-dev/quarto-actions/publish@v2
-      #   with:
-      #     render: false
-      #     target: gh-pages  
+      - name: Publish to GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          render: false
+          target: gh-pages
         
         
