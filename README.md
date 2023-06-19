@@ -30,7 +30,13 @@ Given this context: if you have a concern, please [file an issue](https://github
 
 ## Prework
 
-TODO: Add link to pre reqs page on site - once deployed.
+In short:
+
+- Current versions of R & RStudio
+- `library("devtools")`
+- `library("tidyverse")`
+
+More details on our [pre-requisites page](https://posit-conf-2023.github.io/programming-r/pre-reqs.html).
 
 ## Schedule
 
