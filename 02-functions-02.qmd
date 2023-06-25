@@ -1,4 +1,4 @@
 ---
-title: "02-functions-02"
+title: "Functions: Part 2"
 format: revealjs
 ---
