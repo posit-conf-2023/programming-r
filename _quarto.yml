@@ -22,7 +22,7 @@ website:
         - text: ---
         - text: Functions
         - text: ---
-        - text: "👋 & something 1"
+        - text: "👋 & Functions part 1"
           href: 01-functions-01.qmd
         - text: "something 2"
           href: 02-functions-02.qmd
