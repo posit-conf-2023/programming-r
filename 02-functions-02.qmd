@@ -2,3 +2,350 @@
 title: "Functions: Part 2"
 format: revealjs
 ---
+
+# Plot functions
+
+
+## Motivation 
+
+```{r}
+library("tidyverse")
+```
+
+Sometimes, you want to generalize a certain type of plot - let's say a histogram:
+
+```r
+diamonds |> 
+  ggplot(aes(x = carat)) +
+  geom_histogram(binwidth = 0.1)
+
+diamonds |> 
+  ggplot(aes(x = carat)) +
+  geom_histogram(binwidth = 0.05)
+```
+
+"I want choose only the data, variable, and bin-width"
+
+## Function
+
+`aes()` is a data-masking function; you can embrace 🤗
+
+```{r}
+histogram <- function(df, var, binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth)
+}
+
+diamonds |> histogram(carat, 0.1) 
+```
+
+## Your turn
+
+Write out the `histogram()` function yourself:
+
+```r
+histogram <- function(df, var, binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth)
+}
+```
+
+- Try with other `df` and `var`, e.g. `starwars`, `mtcars`.
+
+- Using *this* function *as is*, how can you:
+
+  - add `theme_minimal()`?
+
+  - fill the bars with `"red"`?
+
+## Your turn (solution)
+
+Adding a theme: `histogram()` returns a `ggplot` object, so you can add a theme in the "usual" way:
+
+```{r}
+starwars |> histogram(height) + theme_minimal()
+```
+
+## Your turn (solution)
+
+Changing fill color: *as is*, there is no easy way to specify `"red"`
+
+However, you can build an escape hatch: `...`:
+
+  - called "dot-dot-dot" or "dots"
+
+```r
+histogram <- function(df, var, binwidth = NULL, ...) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...)
+}
+```
+
+Passes unspecified arguments from your function to another.
+
+[Advanced R](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot) and the [Tidyverse Design Guide](https://design.tidyverse.org/dots-position.html) have more details.
+
+## Your turn (continued)
+
+Incorporate dot-dot-dot into `histogram()`:
+
+```r
+histogram <- function(df, var, binwidth ...) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...)
+}
+```
+
+Try, e.g.:
+
+```r
+starwars |> histogram(height, binwidth = 5, fill = "steelblue")
+```
+
+## Tradeoffs
+
+You write a function to make some things easier.
+
+The cost is that some things become more difficult.
+
+This is unavoidable, the best you can do is be deliberate about what you make easier and more difficult.
+
+## Labelling 
+
+Let's say we want to build a string, using variable-names and values.
+  
+`rlang::englue()` was built for this purpose:
+
+  - embrace 🤗 variable-names: `{{}}`
+  - glue values: `{}`
+
+```{r}
+temp <- function(varname, value) {
+  rlang::englue("You chose varname: {{ varname }} and value: {value}")
+}
+
+temp(val, 0.4)
+```
+
+## Your turn
+
+Adapt the `histogram()` function to include a title that specifies:
+
+  - which `var` is binned
+  - the `binwidth`
+
+```r
+histogram <- function(df, var, binwidth, ...) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...) + 
+    labs(
+      title = rlang::englue("")
+    )
+}
+```
+
+(note, now you *have* to specify `binwidth`)
+
+## Your turn (solution)
+
+```{r}
+histogram <- function(df, var, binwidth, ...) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...) + 
+    labs(title = rlang::englue("Histogram of {{ var }}, with binwidth {binwidth}"))
+}
+
+starwars |> histogram(height, 5)
+```
+
+## Mixing in other tidyverse functions
+
+Your function can also include pre-processing of data.
+
+```{r}
+sorted_bars <- function(df, var) {
+  df |> 
+    mutate({{ var }} := {{ var }} |> fct_infreq() |> fct_rev()) |>
+    ggplot(aes(y = {{ var }})) +
+    geom_bar()
+}
+
+diamonds |> sorted_bars(clarity)
+```
+
+## Mixing in other tidyverse functions
+
+Your function can also include pre-processing of data.
+
+```r
+sorted_bars <- function(df, var) {
+  df |> 
+    mutate({{ var }} := {{ var }} |> fct_infreq() |> fct_rev()) |>
+    ggplot(aes(y = {{ var }})) +
+    geom_bar()
+}
+```
+
+- If using `{{ }}` to specify a new column, use `:=`, not `=`.
+
+- `fct_infreq()` reorders by decreasing frequency-of-observation
+
+- `fct_rev()` reverses order, as y-axis starts at bottom 
+
+
+## Design and style
+
+Use descriptive name, usually starts with a verb, unless it returns a well-known noun.
+
+`mutate()` - verb, describes what it does
+
+`median()` - noun, describes what it returns
+
+## Order of arguments
+
+- **data**: data frame (where applicable)
+
+- **descriptors**: arguments without default values
+
+- **dots**: can be passed on functions that your function calls
+
+- **details**: arguments with default values
+
+Tidyverse Design Guide:
+
+ - [Data, descriptors, details](https://design.tidyverse.org/args-data-details.html)
+
+ - [Position of dots](https://design.tidyverse.org/dots-position.html)
+
+## Order of arguments
+
+Let's change the signature of our function:
+
+```{r}
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...) 
+}
+```
+
+- **data**: `df`
+
+- **descriptors**: `var`
+
+- **dots**: `...`
+
+- **details**: `binwidth`
+
+## Order of arguments
+
+```{r}
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...) 
+}
+```
+
+Why *details* after *dots*?
+
+- user must name *detail* arguments, in this case `binwidth`.
+
+- makes code easier to read when *detail* arguments used.
+
+- more reasoning given in the [Tidyverse design guide](https://design.tidyverse.org/dots-position.html).
+
+
+## Namespacing functions
+
+Are we using `filter()` from `{dplyr}` or `{stats}`?
+
+Three ways to sort this out:
+
+  - `library("conflicted")`, suitable for R scripts
+  
+  - `package::function()`, used in package functions
+
+  - `#' @importFrom`, also used (sparingly) in packages
+
+## 📦 conflicted
+
+```r
+library("conflicted")
+
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...) 
+}
+```
+
+`{conflicted}` lets you know when you use a function that exists in more than one loaded package.
+
+To avoid, declare a preference: 
+
+```r
+# put in a conspicuous place, near the top of your script
+conflicts_prefer(
+  dplyr::filter(),
+  dplyr::lag(),
+)
+```
+
+## `package::function`
+
+This is 
+
+```r
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |> 
+    ggplot2::ggplot(ggplot2::aes(x = {{ var }})) + 
+    ggplot2::geom_histogram(binwidth = binwidth, ...) 
+}
+```
+
+## `#' importFrom`
+
+When you have a *lot* of calls to a given external function
+
+Put this in `{packagename}-package.R`:
+
+```r
+#' @importFrom ggplot2 ggplot aes geom_histogram
+NULL
+```
+
+Or from the R command prompt:
+
+```r
+usethis::use_import_from("ggplot2", c("ggplot", "aes", "geom_histogram"))
+```
+
+<hr>
+
+```r
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |> 
+    ggplot(aes(x = {{ var }})) + 
+    geom_histogram(binwidth = binwidth, ...) 
+}
+```
+
+
+## Refs
+
+https://style.tidyverse.org/functions.html
+
+## Side effects
+
+Leave no footprints.
+
+Need to get good self-contained examples.
+
+## Extra, write documentation then code.
