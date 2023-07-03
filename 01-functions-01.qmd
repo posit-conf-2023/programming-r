@@ -267,7 +267,6 @@ Difficulty in naming? Should this be two or three functions?
 
 What should we call the function we write to do a $z$ score transformation?
 
-
 ``` r
 name <- function(arguments) {
   body
@@ -276,10 +275,9 @@ name <- function(arguments) {
 
 ## Arguments
 
--  the input vector
+-   the input vector
 
--  the 
-
+-   the
 
 Naming conventions
 
