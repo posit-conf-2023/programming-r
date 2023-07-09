@@ -286,9 +286,9 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
-`{conflicted}` lets you know when you use a function that exists in more than one loaded package.
+`{conflicted}` lets you know when you use a function that exists two-or-more packages that you've loaded.
 
-To avoid, declare a preference: 
+To avoid conflicts, declare a preference: 
 
 ```r
 # put in a conspicuous place, near the top of your script
@@ -298,9 +298,9 @@ conflicts_prefer(
 )
 ```
 
-## `package::function`
+## `package::function()`
 
-This is 
+This is the usual way when writing a function for a package:
 
 ```r
 histogram <- function(df, var, ..., binwidth = NULL) {
@@ -310,7 +310,12 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
-## `#' importFrom`
+- makes it very clear where you are getting the function from
+- can be verbose, especially if calling an external function often
+
+There is a balance to be struck.
+
+## `#' @importFrom`
 
 When you have a *lot* of calls to a given external function
 
@@ -321,13 +326,13 @@ Put this in `{packagename}-package.R`:
 NULL
 ```
 
-Or from the R command prompt:
+Alternatively, from the R command prompt:
 
 ```r
 usethis::use_import_from("ggplot2", c("ggplot", "aes", "geom_histogram"))
 ```
 
-<hr>
+## `#' @importFrom`
 
 ```r
 histogram <- function(df, var, ..., binwidth = NULL) {
@@ -337,15 +342,73 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
+Makes your code less verbose, but also less transparent
 
-## Refs
+**To mitigate**: 
 
-https://style.tidyverse.org/functions.html
+- put all your `@importFrom` in one conspicuous file: `{packagename}-package.R`
+- use judiciously
+
+## Style references
+
+[R for Data Science](https://r4ds.hadley.nz/functions.html#style)
+
+[Tidyverse Style Guide](https://style.tidyverse.org/functions.html)
+
+[Tidyverse Design Guide](https://design.tidyverse.org/dots-position.html)
+
+Also, look at tidyverse code at GitHub (my favorite is [{usethis}](https://github.com/r-lib/usethis/))
 
 ## Side effects
 
-Leave no footprints.
+There are two kinds of functions:
 
-Need to get good self-contained examples.
+### Pure function
+
+Returns a value that depends only on its inputs, e.g. `sum()`
+
+### Uses side effects
+
+Depends on something other than inputs, e.g. `read.csv()`
+
+Or, makes a change in the environment, e.g. `print()`
+
+## Pure function
+
+```r
+add <- function(x, y) {
+  x + y
+}
+```
+
+The return value depends *only* on the inputs.
+
+Easier to test.
+
+## Uses side effects
+
+Side-effects can slow down your function:
+
+ - it can be costly to read/write to disk, print to the screen.
+ 
+Depending on side effects can introduce uncertainty:
+
+ - are you *certain* of what `file.csv` contains?
+
+Side effects aren't necessarily bad, but you need to take them into account.
+
+## Your turn
+
+Discuss with your neighbor, are these function-calls are pure or not:
+
+```r
+x <- prod(1, 2, 3)
+
+x <- print("Hello")
+
+x <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+
+x <- sort(c("apple", "Banana"))
+```
 
 ## Extra, write documentation then code.
