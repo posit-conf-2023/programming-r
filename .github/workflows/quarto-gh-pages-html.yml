@@ -48,8 +48,10 @@ jobs:
           # hard-coding `_site` feels a little gross, but it works
           path: _site
           
-      - name: Report locale
-        run: Sys.getlocale("LC_COLLATE")
+      - name: Report and test locale
+        run: |
+          Sys.getlocale("LC_COLLATE")
+          sort(c("apple", "Banana"))
         shell: Rscript {0}
       
   deploy:
