@@ -3,10 +3,7 @@ title: "Functions: Part 2"
 format: revealjs
 ---
 
-# Plot functions
-
-
-## Motivation 
+## Plot functions: Motivation 
 
 ```{r}
 library("tidyverse")
@@ -395,11 +392,13 @@ Depending on side effects can introduce uncertainty:
 
  - are you *certain* of what `file.csv` contains?
 
-Side effects aren't necessarily bad, but you need to take them into account.
+Side effects aren't necessarily bad, but you need to take them into account:
+
+  - need to take care when testing.
 
 ## Your turn
 
-Discuss with your neighbor, are these function-calls are pure or not:
+Discuss with your neighbor, are these function-calls are pure, or do they use side effects?
 
 ```r
 x <- prod(1, 2, 3)
@@ -408,7 +407,110 @@ x <- print("Hello")
 
 x <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 
-x <- sort(c("apple", "Banana"))
+x <- sort(c("apple", "Banana", "candle"))
 ```
 
-## Extra, write documentation then code.
+## Manage side effects using 📦 withr
+
+Side effects can include:
+
+ - modifying environment: `Sys.setenv()`
+ - modifying options: `options()`
+ - setting random seed: `set.seed()`
+ - setting working directory: `setwd()`
+ - creating and wrting to a temporary file
+ 
+{withr} makes it a lot easier to "leave no footprints".
+
+## Modifying locale
+
+`sort()` uses locale (environment) for string-sorting rules 
+
+```{r}
+#| collapse: true
+Sys.getlocale("LC_COLLATE")
+
+sort(c("apple", "Banana", "candle"))
+```
+
+To temporarily set locale:
+
+```{r}
+#| collapse: true
+withr::with_locale(
+  new = list(LC_COLLATE = "C"),
+  sort(c("apple", "Banana", "candle"))
+)
+
+Sys.getlocale("LC_COLLATE")
+```
+
+## Setting only within curly-brackets
+
+```{r}
+#| collapse: true
+c_sort <- function(...) {
+  # set only within enclosing curly-brackets {}
+  withr::local_locale(list(LC_COLLATE = "C"))
+  
+  sort(...)
+}
+
+c_sort(c("apple", "Banana", "candle"))
+
+Sys.getlocale("LC_COLLATE")
+```
+
+*Within curly brackets* applies to functions.
+
+It also applies to {testthat} blocks.
+
+## Your turn
+
+```{r}
+library("testthat")
+
+test_that("mtcars has expected columns", {
+  expect_type(mtcars$cy, "double")
+})
+```
+
+This passes, but R is doing partial matching on the `$`.
+
+Modify the `test_that()` block to warn on partial matching.
+
+You can get the current setting using:
+
+```{r}
+getOption("warnPartialMatchDollar")
+```
+
+Hint: use `withr::local_option()`.
+
+## Your turn (solution)
+
+```{r}
+test_that("mtcars has expected columns", {
+  
+  withr::local_options(list(warnPartialMatchDollar = TRUE))
+  
+  expect_type(mtcars$cy, "double")
+})
+```
+And yet...
+
+```{r}
+getOption("warnPartialMatchDollar")
+```
+
+## Summary
+
+You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and include {dplyr} preprocessing
+
+<hr>
+
+Using "standard" style and design makes things easier for you, your users, and *future you*.
+
+<hr>
+
+Be mindful of side effects, use {withr} to manage global state. 
