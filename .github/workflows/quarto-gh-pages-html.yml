@@ -51,10 +51,10 @@ jobs:
       - name: Report and test locale
         run: |
           Sys.getlocale("LC_COLLATE")
-          sort(c("apple", "Banana"))
+          sort(c("apple", "Banana", "candle"))
           withr::with_locale(
             new = c(LC_COLLATE = "C"),
-            sort(c("apple", "Banana"))
+            sort(c("apple", "Banana", "candle"))
           )
         shell: Rscript {0}
       
