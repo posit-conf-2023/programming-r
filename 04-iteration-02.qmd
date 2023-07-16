@@ -19,6 +19,8 @@ There are three fundamental operations in functional programming:
 `list_bind()` can be built using `purrr::reduce()`
 
 ```{r}
+library("tidyverse")
+
 dpurrr_filter <- function(df, predicate) {
   df |>
     as.list() |>
