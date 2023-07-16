@@ -32,19 +32,13 @@ dpurrr_filter <- function(df, predicate) {
 ```
 
 ```{r}
-temp <- dpurrr_filter(mtcars, \(x) x$gear == 3)
-```
-
-```{r}
-dpurrr_rbind <- function(list) {
-  purrr::reduce(list, rbind)
-}
+dpurrr_filter(mtcars, \(x) x$gear == 3)
 ```
 
 ```{r}
 mtcars |> 
   group_nest(gear) |>
   purrr::pluck("data") |>
-  dpurrr_rbind()
+  purrr::reduce(rbind)
 ```
 
