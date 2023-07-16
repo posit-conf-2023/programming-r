@@ -445,6 +445,15 @@ withr::with_locale(
 Sys.getlocale("LC_COLLATE")
 ```
 
+## Locale aside
+
+Can be useful to consult `devtools::session_info()`: 
+
+```{r}
+# using `info = "platform"` to fit output on screen
+devtools::session_info(info = "platform")
+```
+
 ## Setting only within curly-brackets
 
 ```{r}
