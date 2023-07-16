@@ -1,4 +1,48 @@
 ---
-title: "04-iteration-02"
+title: "Iteration: Part 2"
 format: revealjs
 ---
+
+## Reading multiple files
+
+
+## Saving multiple outputs
+
+## Extras
+
+There are three fundamental operations in functional programming:
+
+ - `map()`: use a list and a function to make a new list, element by element
+ - `filter()`: use a list and a predicate function to make a new list, subset of old list
+ - `reduce()`: use a list, reducing function, and initial value to make a new "thing"
+
+`list_bind()` can be built using `purrr::reduce()`
+
+```{r}
+dpurrr_filter <- function(df, predicate) {
+  df |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
+    purrr::keep(predicate) |>
+    purrr::list_transpose() |>
+    as.data.frame() 
+}
+```
+
+```{r}
+temp <- dpurrr_filter(mtcars, \(x) x$gear == 3)
+```
+
+```{r}
+dpurrr_rbind <- function(list) {
+  purrr::reduce(list, rbind)
+}
+```
+
+```{r}
+mtcars |> 
+  group_nest(gear) |>
+  purrr::pluck("data") |>
+  dpurrr_rbind()
+```
+
