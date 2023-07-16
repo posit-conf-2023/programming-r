@@ -12,11 +12,11 @@ format: revealjs
 
 There are three fundamental operations in functional programming:
 
- - `map()`: use a list and a function to make a new list, element by element
- - `filter()`: use a list and a predicate function to make a new list, subset of old list
- - `reduce()`: use a list, reducing function, and initial value to make a new "thing"
+Starting with a list:
 
-`list_bind()` can be built using `purrr::reduce()`
+ - `map()`: supply mapping-function to make a new list, element by element
+ - `filter()`: supply predicate-function to make a new list, subset of old list
+ - `reduce()`: supply reducing-function (and optional initial-value) to make a new "thing"
 
 ```{r}
 library("tidyverse")
