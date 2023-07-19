@@ -204,7 +204,7 @@ We can't see any variation in the shrews.
 
 A common solution is to apply a $z$ score transformation to each species which normalises the score to have a mean of 0 and a standard deviation of 1
 
-$z = \frac{x - \bar{x}}{s.d}$
+$$z = \frac{x - \bar{x}}{s.d.}$$
 
 ## Example
 
@@ -291,7 +291,7 @@ name <- function(x) {
 
 ## Example
 
-$z = \frac{x - \bar{x}}{s.d}$
+$$z = \frac{x - \bar{x}}{s.d.}$$
 
 ``` r
 rodents <- rodents |>
@@ -363,7 +363,6 @@ Much shorter, much more clear.
 
 Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end[^1]
 
-[^1]: **the** modified z-score is calculated differently $0.6745(x - \tilde{x})/MAD$ where $MAD$ is the median absolute deviation
 
 ![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim - (1 - middle)/2"}
 
@@ -385,6 +384,7 @@ to_z(rodents$shrew, middle = 0.2)
 But what if we forget?
 
 ```{r}
+#| error: true
 to_z(rodents$shrew)
 ```
 
@@ -399,51 +399,68 @@ to_z <- function(x, middle = 1) {
 }
 ```
 
-
 ```{r}
 to_z(rodents$shrew)
 ```
-
 
 ## Your turn
 
 🎬 Write a function to perform the
 
-## Document
 
-Maybe ask ChatGTP to write documentation?
 
-## Test
 
-interactive
-
-## Unit tests ??
-
-with testthat? only simple examples. chatGTP/github copilot (not free)
 
 ## Summary functions
 
-these take a vector and produce a single value could be an existing function where you need to set a lot of defaults
+-   input is vector
+-   output is a single value
+-   could be used in `summarise()`
+
+## Example
+
+Write a function to compute the standard error of a sample.
+
+$$s.e. = \frac{s.d.}{\sqrt{n}}$$
+## Example
 
 ```{r}
-# magnitude of a vector
-
-magnitude <- function(v){
-  sum(v^2) |> sqrt()
+sd_error <- function(x){
+  sd(x) / sqrt(length(x))
 }
-
-magnitude(c(6,8))
 
 ```
 
-Short cuts:
 
--   put cursor on a function call and press F2 to find its definition
--   Ctrl+. opens section/file search - Need to demo this one.
+##
+```{r}
+sd_error(rodents$shrew)
+```
+
+
+```{r}
+rodents |> 
+  summarise(se = sd_error(shrew))
+```
+
 
 ## Your turn
 
-🎬 Write a function to compute the variance
+🎬 Write a function to compute the sums of squares (sum of the squared deviations from the mean)
+
+$$SS(x) = \sum{(x - \bar{x})^2}$$
+## $SS(x)$
+
+```{r}
+sum_sq <- function(x){
+ sum((x - mean(x))^2)
+}
+```
+
+```{r}
+sum_sq(rodents$shrew)
+```
+
 
 # Dataframe functions
 
@@ -458,3 +475,15 @@ we need to understand Indirection and tidy evaluation
 ## Data masking
 
 ## Tidy selection
+
+## Extras
+
+-   Short cuts:
+    -   put cursor on a function call and press F2 to find its definition
+    -   Ctrl+. opens section/file search
+
+-   Document: Roxygen? ChatGTP?
+
+-   Tests interactive? Unit tests with ChatGTP? 
+
+## Summary
