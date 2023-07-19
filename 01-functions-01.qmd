@@ -35,13 +35,13 @@ This is a two-day, hands-on workshop for those who have embraced the tidyverse a
 ::: {.column width="50%"}
 Emma Rand 🐦[\@er13_r](https://twitter.com/er13_r)
 
-TA
+Stephanie Hazlitt
 :::
 
 ::: {.column width="50%"}
 Ian Lyttle 🐦[\@ijlyttle](https://twitter.com/ijlyttle)
 
-TA
+Mouna Belaid
 :::
 :::
 
@@ -117,7 +117,7 @@ You need a laptop with the following installed:
 | 12:30 - 13:30 | *Lunch break*                                                                                                    |
 | 13:30 - 15:00 | [Iteration 1](03-iteration-01.qmd) Introduction and modifying multiple columns                                   |
 | 15:00 - 15:30 | *Coffee break*                                                                                                   |
-| 15:30 - 17:00 | [Iteration 1](04-iteration-02.qmd) Reading and writing multiple files                                            |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.qmd) Reading and writing multiple files                                            |
 
 ## How we will work
 
@@ -154,7 +154,7 @@ usethis::create_project("workshop-functions")
 
 Create a `data` folder.
 
-Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses%201.csv)
+Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses.csv)
 
 Load packages
 
@@ -213,10 +213,10 @@ We can apply the same transformation to each variable:
 ```{r}
 rodents <- rodents |>
   mutate(
-    shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
-    mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
-    rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
-    guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+    new_shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
+    new_mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
+    new_rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
+    new_guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
   )
 ```
 
@@ -255,7 +255,13 @@ To turn your code into a function you need:
 
 -   a name
 -   the arguments - which represent the bits that vary
--   the codebody for the function
+-   the code body for the function
+
+``` r
+name <- function(arguments) {
+  code body
+}
+```
 
 ## Function name
 
@@ -263,56 +269,145 @@ Use a verb - The tidyverse style guide @wickham but good advice regardless
 
 Difficulty in naming? Should this be two or three functions?
 
---
+. . .
 
 What should we call the function we write to do a $z$ score transformation?
 
-
-``` r
-name <- function(arguments) {
-  body
-}
-```
-
 ## Arguments
 
--  the input vector
+-   the input vector
 
--  the 
-
+-   additional arguments
 
 Naming conventions
 
 -   x for the vector input
 
 ``` r
-name <- function(arguments) {
-  body
+name <- function(x) {
+  body does things with x
 }
 ```
 
 ## Example
 
-```{r}
+$z = \frac{x - \bar{x}}{s.d}$
+
+``` r
 rodents <- rodents |>
   mutate(
-    shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
-    mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
-    rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
-    guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+    new_shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
+    new_mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
+    new_rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
+    new_guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
   )
 ```
 
 ## Example
 
+Identify the arguments: the things that vary across calls
+
+``` r
+ 
+(shrew     - mean(shrew,     na.rm = TRUE)) / sd(shrew,     na.rm = TRUE)
+(mouse     - mean(mouse,     na.rm = TRUE)) / sd(mouse,     na.rm = TRUE)
+(rat       - mean(rat,       na.rm = TRUE)) / sd(rat,       na.rm = TRUE)
+(guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+```
+
+. . .
+
+``` r
+ 
+(🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
+(🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
+(🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
+(🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
+```
+
+🟧 is x
+
+## Example
+
+Put into the template
+
 ```{r}
-rodents <- rodents |> 
-  mutate(shrew     = (shrew     - mean(shrew,     na.rm = TRUE)) / sd(shrew,     na.rm = TRUE),
-         mouse     = (mouse     - mean(mouse,     na.rm = TRUE)) / sd(mouse,     na.rm = TRUE),
-         rat       = (rat       - mean(rat,       na.rm = TRUE)) / sd(rat,       na.rm = TRUE),
-         guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+to_z <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+```
+
+## Apply
+
+Rewrite the call to`mutate()` as:
+
+```{r}
+rodents <- rodents |>
+  mutate(
+    new_shrew = to_z(shrew),
+    new_mouse = to_z(mouse),
+    new_rat = to_z(rat),
+    new_guineapig = to_z(guineapig)
   )
 ```
+
+. . .
+
+Much shorter, much more clear.
+
+## A modified *z* score
+
+`mean()` has a `trim` argument: `mean(x, trim = 0, na.rm = FALSE, ...)`
+
+*the fraction (0 to 0.5) of observations to be trimmed from each end of x before the mean is computed.*
+
+Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end[^1]
+
+[^1]: **the** modified z-score is calculated differently $0.6745(x - \tilde{x})/MAD$ where $MAD$ is the median absolute deviation
+
+![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim - (1 - middle)/2"}
+
+## Add an argument
+
+```{r}
+to_z <- function(x, middle) {
+  trim = (1 - middle)/2
+  (x - mean(x, na.rm = TRUE, trim = trim)) / sd(x, na.rm = TRUE)
+}
+```
+
+Try it out
+
+```{r}
+to_z(rodents$shrew, middle = 0.2)
+```
+
+But what if we forget?
+
+```{r}
+to_z(rodents$shrew)
+```
+
+## Give a default
+
+Give defaults whenever possible:
+
+```{r}
+to_z <- function(x, middle = 1) {
+  trim = (1 - middle)/2
+  (x - mean(x, na.rm = TRUE, trim = trim)) / sd(x, na.rm = TRUE)
+}
+```
+
+
+```{r}
+to_z(rodents$shrew)
+```
+
+
+## Your turn
+
+🎬 Write a function to perform the
 
 ## Document
 
@@ -345,6 +440,10 @@ Short cuts:
 
 -   put cursor on a function call and press F2 to find its definition
 -   Ctrl+. opens section/file search - Need to demo this one.
+
+## Your turn
+
+🎬 Write a function to compute the variance
 
 # Dataframe functions
 
