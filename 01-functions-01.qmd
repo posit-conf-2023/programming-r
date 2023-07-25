@@ -361,8 +361,7 @@ Much shorter, much more clear.
 
 *the fraction (0 to 0.5) of observations to be trimmed from each end of x before the mean is computed.*
 
-Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end[^1]
-
+Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end\[\^1\]
 
 ![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim - (1 - middle)/2"}
 
@@ -399,6 +398,9 @@ to_z <- function(x, middle = 1) {
 }
 ```
 
+Try it out
+
+
 ```{r}
 to_z(rodents$shrew)
 ```
@@ -406,10 +408,6 @@ to_z(rodents$shrew)
 ## Your turn
 
 🎬 Write a function to perform the
-
-
-
-
 
 ## Summary functions
 
@@ -421,7 +419,8 @@ to_z(rodents$shrew)
 
 Write a function to compute the standard error of a sample.
 
-$$s.e. = \frac{s.d.}{\sqrt{n}}$$
+$$s.e. = \frac{s.d.}{\sqrt{n}}$$ 
+
 ## Example
 
 ```{r}
@@ -431,24 +430,24 @@ sd_error <- function(x){
 
 ```
 
+## 
 
-##
 ```{r}
 sd_error(rodents$shrew)
 ```
-
 
 ```{r}
 rodents |> 
   summarise(se = sd_error(shrew))
 ```
 
-
 ## Your turn
 
 🎬 Write a function to compute the sums of squares (sum of the squared deviations from the mean)
 
-$$SS(x) = \sum{(x - \bar{x})^2}$$
+$$SS(x) = \sum{(x - \bar{x})^2}$$ 
+
+
 ## $SS(x)$
 
 ```{r}
@@ -461,29 +460,141 @@ sum_sq <- function(x){
 sum_sq(rodents$shrew)
 ```
 
-
 # Dataframe functions
 
 ## Dataframe functions
 
-Vector functions: useful when code is repeated within a dplyr verb function Data frame function: useful when the verbs are repeated dataframe functions take a df as the first argument, some additional arguments and return a dataframe or vector
+Dataframe as input and Dataframe as output
 
-we need to understand Indirection and tidy evaluation
+. . .
 
-## Indirection and tidy evaluation
+We might summarise one of our columns like this:
 
-## Data masking
+```{r}
+rodents |> 
+  summarise(mean = mean(shrew),
+            n = length(shrew),
+            sd = sd(shrew),
+            se = sd_error(shrew))
+```
 
-## Tidy selection
+Output is a dataframe
+
+## 
+
+and want to summarise several in the same way
+
+```{r}
+rodents |> 
+  summarise(mean = mean(mouse),
+            n = length(mouse),
+            sd = sd(mouse),
+            se = sd_error(mouse))
+```
+
+Good candidate for a function to avoid repetitive code: `my_summary()`
+
+## Define `my_summary()` function
+
+```{r}
+my_summary <- function(df, column){
+  df |> 
+  summarise(mean = mean(column),
+            n = length(column),
+            sd = sd(column),
+            se = sd_error(column))
+}
+```
+
+## Use function
+
+```{r}
+#| error: true
+my_summary(rodents, shrew)
+```
+
+😕
+
+## Tidy evaluation
+
+`tidyverse` functions like `dplyr::summarise()` use tidy evaluation so you can refer to the names of variables inside dataframes. For example, you can use:
+
+``` r
+rodents |> summarise(mean = mean(mouse))
+summarise(rodents, mean = mean(mouse))
+```
+
+rather than
+
+``` r
+summarise(rodents, mean = mean(rodents$mouse))
+```
+This is known as data-masking: the dataframe environment masks the user environment by giving priority to the dataframe.
+
+## 
+
+Because of data-masking, `summarise()` in `my_summary()` is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable `column` for the name of column you want to give it.
+
+
+[Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
+
+## Tidy evaluation
+
+-   easy to code interactively
+-   harder to write functions
+
+TODO: decide whether to go in to data masking and tidy selection more
+
+## Fix `my_summary()` function
+
+The solution is to use embracing: {{ var }}
+
+```{r}
+my_summary <- function(df, column){
+  df |> 
+  summarise(mean = mean({{ column }}),
+            n = length({{ column }}),
+            sd = sd({{ column }}),
+            se = sd_error({{ column }}),
+            .groups = "drop")
+}
+```
+
+. . .
+
+-   look inside `column` variable
+-   style with spaces
+-    `.groups = "drop"` to avoid message and leave the data in an ungrouped state
+
+## Use function
+
+```{r}
+my_summary(rodents, shrew)
+```
+
+🎉
+
+## When to embrace?
+
+When tidy evaluation is used
+
+
+
+## Your turn
+
+🎬 Write a function to 
+
+
 
 ## Extras
 
 -   Short cuts:
+
     -   put cursor on a function call and press F2 to find its definition
     -   Ctrl+. opens section/file search
 
 -   Document: Roxygen? ChatGTP?
 
--   Tests interactive? Unit tests with ChatGTP? 
+-   Tests interactive? Unit tests with ChatGTP?
 
 ## Summary
