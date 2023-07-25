@@ -398,6 +398,9 @@ to_z <- function(x, middle = 1) {
 }
 ```
 
+Try it out
+
+
 ```{r}
 to_z(rodents$shrew)
 ```
@@ -416,7 +419,9 @@ to_z(rodents$shrew)
 
 Write a function to compute the standard error of a sample.
 
-$$s.e. = \frac{s.d.}{\sqrt{n}}$$ \## Example
+$$s.e. = \frac{s.d.}{\sqrt{n}}$$ 
+
+## Example
 
 ```{r}
 sd_error <- function(x){
@@ -440,7 +445,10 @@ rodents |>
 
 🎬 Write a function to compute the sums of squares (sum of the squared deviations from the mean)
 
-$$SS(x) = \sum{(x - \bar{x})^2}$$ \## $SS(x)$
+$$SS(x) = \sum{(x - \bar{x})^2}$$ 
+
+
+## $SS(x)$
 
 ```{r}
 sum_sq <- function(x){
@@ -469,11 +477,12 @@ rodents |>
             sd = sd(shrew),
             se = sd_error(shrew))
 ```
+
 Output is a dataframe
 
 ## 
 
-Or
+and want to summarise several in the same way
 
 ```{r}
 rodents |> 
@@ -483,8 +492,7 @@ rodents |>
             se = sd_error(mouse))
 ```
 
-
-Good candidate for a function: `my_summary()`
+Good candidate for a function to avoid repetitive code: `my_summary()`
 
 ## Define `my_summary()` function
 
@@ -509,18 +517,33 @@ my_summary(rodents, shrew)
 
 ## Tidy evaluation
 
-`tidyverse` functions like `dplyr::summarise()` use tidy evaluation so you can refer to the names of variables inside dataframes. You can use:
+`tidyverse` functions like `dplyr::summarise()` use tidy evaluation so you can refer to the names of variables inside dataframes. For example, you can use:
 
-```r
+``` r
 rodents |> summarise(mean = mean(mouse))
 summarise(rodents, mean = mean(mouse))
 ```
+
 rather than
 
-```r
+``` r
 summarise(rodents, mean = mean(rodents$mouse))
 ```
-In `my_summary()`, summarise() is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable column for the name of column you want to give it.
+This is known as data-masking: the dataframe environment masks the user environment by giving priority to the dataframe.
+
+## 
+
+Because of data-masking, `summarise()` in `my_summary()` is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable `column` for the name of column you want to give it.
+
+
+[Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
+
+## Tidy evaluation
+
+-   easy to code interactively
+-   harder to write functions
+
+TODO: decide whether to go in to data masking and tidy selection more
 
 ## Fix `my_summary()` function
 
@@ -532,36 +555,36 @@ my_summary <- function(df, column){
   summarise(mean = mean({{ column }}),
             n = length({{ column }}),
             sd = sd({{ column }}),
-            se = sd_error({{ column }}))
+            se = sd_error({{ column }}),
+            .groups = "drop")
 }
 ```
 
+. . .
 
-. . . 
-
--   look inside column
+-   look inside `column` variable
 -   style with spaces
-
+-    `.groups = "drop"` to avoid message and leave the data in an ungrouped state
 
 ## Use function
 
 ```{r}
-#| error: true
 my_summary(rodents, shrew)
 ```
+
 🎉
 
 ## When to embrace?
 
-When tidy evaluation is used:
+When tidy evaluation is used
 
--   Data-masking
 
--   Tidy-selection
 
-## Data-masking
+## Your turn
 
-## Tidy-selection
+🎬 Write a function to 
+
+
 
 ## Extras
 
