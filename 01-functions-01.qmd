@@ -152,14 +152,11 @@ At the end of this section you will be able to:
 usethis::create_project("workshop-functions")
 ```
 
-Create a `data` folder.
-
-Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses.csv)
-
 Load packages
 
 ```{r}
 library(tidyverse)
+library(palmerpenguins)
 ```
 
 `use_r()` new file for each function? or all functions in one file?? ?and tests?
