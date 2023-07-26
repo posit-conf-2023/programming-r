@@ -107,17 +107,15 @@ You need a laptop with the following installed:
 
 ## Schedule
 
-------------------------------------------------------------------------
-
-| Time          | Activity                                                                                                         |
+| Time          | Activity                                                                                                          |
 |:----------------------------------|:------------------------------------|
-| 09:00 - 10:30 | [Functions 1](01-functions-01.qmd) Introduction, vector and dataframe functions, indirection and tidy evaluation |
-| 10:30 - 11:00 | *Coffee break*                                                                                                   |
-| 11:00 - 12:30 | [Functions 2](02-functions-02.qmd) Plot functions, style and side effects                                        |
-| 12:30 - 13:30 | *Lunch break*                                                                                                    |
-| 13:30 - 15:00 | [Iteration 1](03-iteration-01.qmd) Introduction and modifying multiple columns                                   |
-| 15:00 - 15:30 | *Coffee break*                                                                                                   |
-| 15:30 - 17:00 | [Iteration 2](04-iteration-02.qmd) Reading and writing multiple files                                            |
+| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, indirection and tidy evaluation |
+| 10:30 - 11:00 | *Coffee break*                                                                                                    |
+| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                                        |
+| 12:30 - 13:30 | *Lunch break*                                                                                                     |
+| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns       |
+| 15:00 - 15:30 | *Coffee break*                                                                                                    |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                |
 
 ## How we will work
 
@@ -146,23 +144,31 @@ At the end of this section you will be able to:
 
 # Set up
 
+## Project and Packages
+
+🎬 Create a Project:
+
 ```{r}
 #| eval: false
 
 usethis::create_project("workshop-functions")
 ```
 
-Create a `data` folder.
-
-Save [rodents-mass.csv](data/rodents-mass.csv) and [colour-responses 1.csv](data/colour-responses.csv)
-
-Load packages
+🎬 Load packages:
 
 ```{r}
 library(tidyverse)
+library(palmerpenguins)
 ```
 
-`use_r()` new file for each function? or all functions in one file?? ?and tests?
+## Data
+
+🎬 Load `penguins` data set
+
+```{r}
+data(penguins)
+glimpse(penguins)
+```
 
 # Why write functions?
 
@@ -173,36 +179,26 @@ library(tidyverse)
 
 ## Example
 
-We have the mass of ten individuals from four species of rodent
-
-```{r}
-rodents <- read_csv("data/rodents-mass.csv")
-rodents
-```
-
-Rodents are very different sizes making them difficult to plot on the same graph.
-
-## Example
+We have several measurements `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm` and `body_mass_g`
 
 ```{r}
 #| echo: false
-rodents |>
-  pivot_longer(
-    cols = everything(),
-    names_to = "species",
-    values_to = "mass"
-  ) |>
-  ggplot(aes(x = species, y = mass)) +
-  geom_boxplot() +
-  theme_classic()
-
+#| layout-ncol: 2
+penguins |> ggplot(aes(x = bill_length_mm)) +
+  geom_histogram(bins = 20) 
+penguins |> ggplot(aes(x = bill_depth_mm)) +
+  geom_histogram(bins = 20) 
+penguins |> ggplot(aes(x = flipper_length_mm)) +
+  geom_histogram(bins = 20) 
+penguins |> ggplot(aes(x = body_mass_g)) +
+  geom_histogram(bins = 20) 
 ```
 
-We can't see any variation in the shrews.
+These are on very different scales
 
 ## Example
 
-A common solution is to apply a $z$ score transformation to each species which normalises the score to have a mean of 0 and a standard deviation of 1
+A common solution is to apply a $z$ score transformation to each variable which normalises the values to have a mean of 0 and a standard deviation of 1
 
 $$z = \frac{x - \bar{x}}{s.d.}$$
 
@@ -211,14 +207,16 @@ $$z = \frac{x - \bar{x}}{s.d.}$$
 We can apply the same transformation to each variable:
 
 ```{r}
-rodents <- rodents |>
+penguins <- penguins |>
   mutate(
-    new_shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
-    new_mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
-    new_rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
-    new_guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+    z_bill_length_mm = (bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE),
+    z_bill_depth_mm = (bill_depth_mm - mean(bill_depth_mm, na.rm = TRUE)) / sd(bill_depth_mm, na.rm = TRUE),
+    z_flipper_length_mm = (flipper_length_mm - mean(flipper_length_mm, na.rm = TRUE)) / sd(flipper_length_mm, na.rm = TRUE),
+    z_body_mass_g = (body_mass_g - mean(body_mass_g, na.rm = TRUE)) / sd(body_mass_g, na.rm = TRUE)
   )
 ```
+
+How to shorten and make more clear: `(bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE)`
 
 ## Coping and pasting
 
@@ -294,12 +292,12 @@ name <- function(x) {
 $$z = \frac{x - \bar{x}}{s.d.}$$
 
 ``` r
-rodents <- rodents |>
+penguins <- penguins |>
   mutate(
-    new_shrew = (shrew - mean(shrew, na.rm = TRUE)) / sd(shrew, na.rm = TRUE),
-    new_mouse = (mouse - mean(mouse, na.rm = TRUE)) / sd(mouse, na.rm = TRUE),
-    new_rat = (rat - mean(rat, na.rm = TRUE)) / sd(rat, na.rm = TRUE),
-    new_guineapig = (guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+    z_bill_length_mm = (bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE),
+    z_bill_depth_mm = (bill_depth_mm - mean(bill_depth_mm, na.rm = TRUE)) / sd(bill_depth_mm, na.rm = TRUE),
+    z_flipper_length_mm = (flipper_length_mm - mean(flipper_length_mm, na.rm = TRUE)) / sd(flipper_length_mm, na.rm = TRUE),
+    z_body_mass_g = (body_mass_g - mean(body_mass_g, na.rm = TRUE)) / sd(body_mass_g, na.rm = TRUE)
   )
 ```
 
@@ -309,10 +307,10 @@ Identify the arguments: the things that vary across calls
 
 ``` r
  
-(shrew     - mean(shrew,     na.rm = TRUE)) / sd(shrew,     na.rm = TRUE)
-(mouse     - mean(mouse,     na.rm = TRUE)) / sd(mouse,     na.rm = TRUE)
-(rat       - mean(rat,       na.rm = TRUE)) / sd(rat,       na.rm = TRUE)
-(guineapig - mean(guineapig, na.rm = TRUE)) / sd(guineapig, na.rm = TRUE)
+(bill_length_mm    - mean(bill_length_mm,    na.rm = TRUE)) / sd(bill_length_mm,    na.rm = TRUE)
+(bill_depth_mm     - mean(bill_depth_mm,     na.rm = TRUE)) / sd(bill_depth_mm,     na.rm = TRUE)
+(flipper_length_mm - mean(flipper_length_mm, na.rm = TRUE)) / sd(flipper_length_mm, na.rm = TRUE)
+(body_mass_g       - mean(body_mass_g,       na.rm = TRUE)) / sd(body_mass_g,       na.rm = TRUE)
 ```
 
 . . .
@@ -342,12 +340,12 @@ to_z <- function(x) {
 Rewrite the call to`mutate()` as:
 
 ```{r}
-rodents <- rodents |>
+penguins <- penguins |>
   mutate(
-    new_shrew = to_z(shrew),
-    new_mouse = to_z(mouse),
-    new_rat = to_z(rat),
-    new_guineapig = to_z(guineapig)
+    z_bill_length_mm = to_z(bill_length_mm),
+    z_bill_depth_mm = to_z(bill_depth_mm),
+    z_flipper_length_mm = to_z(flipper_length_mm),
+    z_body_mass_g = to_z(body_mass_g)
   )
 ```
 
@@ -355,7 +353,7 @@ rodents <- rodents |>
 
 Much shorter, much more clear.
 
-## A modified *z* score
+## A modification
 
 `mean()` has a `trim` argument: `mean(x, trim = 0, na.rm = FALSE, ...)`
 
@@ -363,7 +361,7 @@ Much shorter, much more clear.
 
 Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end\[\^1\]
 
-![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim - (1 - middle)/2"}
+![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstflipper_length_mming that trim - (1 - middle)/2"}
 
 ## Add an argument
 
@@ -377,14 +375,14 @@ to_z <- function(x, middle) {
 Try it out
 
 ```{r}
-to_z(rodents$shrew, middle = 0.2)
+to_z(penguins$bill_length_mm, middle = 0.2)
 ```
 
 But what if we forget?
 
 ```{r}
 #| error: true
-to_z(rodents$shrew)
+to_z(penguins$bill_length_mm)
 ```
 
 ## Give a default
@@ -400,14 +398,24 @@ to_z <- function(x, middle = 1) {
 
 Try it out
 
-
 ```{r}
-to_z(rodents$shrew)
+to_z(penguins$bill_length_mm)
 ```
 
 ## Your turn
 
-🎬 Write a function to perform the
+🎬 Write that performs the Box-Cox power transformation using the value of (non-zero) lambda ($\lambda$) supplied.
+
+$$bc = \frac{x^{\lambda} - 1}{\lambda}$$
+
+
+## A solution
+
+```{r}
+
+```
+
+
 
 ## Summary functions
 
@@ -419,45 +427,50 @@ to_z(rodents$shrew)
 
 Write a function to compute the standard error of a sample.
 
-$$s.e. = \frac{s.d.}{\sqrt{n}}$$ 
+$$s.e. = \frac{s.d.}{\sqrt{n}}$$
 
 ## Example
 
 ```{r}
 sd_error <- function(x){
-  sd(x) / sqrt(length(x))
+  sd(x, na.rm = TRUE) / sqrt(sum(!is.na(x)))
 }
 
 ```
 
+Note: `sum(TRUE)` = 1 and `sum(FALSE)` = 0 `sum(!is.na(x))` is a bit sorter than `length(x[!is.na(x)])`
+
 ## 
 
 ```{r}
-sd_error(rodents$shrew)
+sd_error(penguins$bill_length_mm)
 ```
 
 ```{r}
-rodents |> 
-  summarise(se = sd_error(shrew))
+penguins |> 
+  summarise(se = sd_error(bill_length_mm))
 ```
 
 ## Your turn
 
 🎬 Write a function to compute the sums of squares (sum of the squared deviations from the mean)
 
-$$SS(x) = \sum{(x - \bar{x})^2}$$ 
+$$SS(x) = \sum{(x - \bar{x})^2}$$
 
+or
+
+$$SS(x) = s^2 * (n-1)$$
 
 ## $SS(x)$
 
 ```{r}
 sum_sq <- function(x){
- sum((x - mean(x))^2)
+ sum((x[!is.na(x)] - mean(x[!is.na(x)]))^2)
 }
 ```
 
 ```{r}
-sum_sq(rodents$shrew)
+sum_sq(penguins$bill_length_mm)
 ```
 
 # Dataframe functions
@@ -471,11 +484,11 @@ Dataframe as input and Dataframe as output
 We might summarise one of our columns like this:
 
 ```{r}
-rodents |> 
-  summarise(mean = mean(shrew),
-            n = length(shrew),
-            sd = sd(shrew),
-            se = sd_error(shrew))
+penguins |> 
+  summarise(mean = mean(bill_length_mm),
+            n = length(bill_length_mm),
+            sd = sd(bill_length_mm),
+            se = sd_error(bill_length_mm))
 ```
 
 Output is a dataframe
@@ -485,11 +498,11 @@ Output is a dataframe
 and want to summarise several in the same way
 
 ```{r}
-rodents |> 
-  summarise(mean = mean(mouse),
-            n = length(mouse),
-            sd = sd(mouse),
-            se = sd_error(mouse))
+penguins |> 
+  summarise(mean = mean(bill_depth_mm),
+            n = length(bill_depth_mm),
+            sd = sd(bill_depth_mm),
+            se = sd_error(bill_depth_mm))
 ```
 
 Good candidate for a function to avoid repetitive code: `my_summary()`
@@ -510,7 +523,7 @@ my_summary <- function(df, column){
 
 ```{r}
 #| error: true
-my_summary(rodents, shrew)
+my_summary(penguins, bill_length_mm)
 ```
 
 😕
@@ -520,21 +533,21 @@ my_summary(rodents, shrew)
 `tidyverse` functions like `dplyr::summarise()` use tidy evaluation so you can refer to the names of variables inside dataframes. For example, you can use:
 
 ``` r
-rodents |> summarise(mean = mean(mouse))
-summarise(rodents, mean = mean(mouse))
+penguins |> summarise(mean = mean(bill_depth_mm))
+summarise(penguins, mean = mean(bill_depth_mm))
 ```
 
 rather than
 
 ``` r
-summarise(rodents, mean = mean(rodents$mouse))
+summarise(penguins, mean = mean(penguins$bill_depth_mm))
 ```
+
 This is known as data-masking: the dataframe environment masks the user environment by giving priority to the dataframe.
 
 ## 
 
 Because of data-masking, `summarise()` in `my_summary()` is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable `column` for the name of column you want to give it.
-
 
 [Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
 
@@ -564,12 +577,12 @@ my_summary <- function(df, column){
 
 -   look inside `column` variable
 -   style with spaces
--    `.groups = "drop"` to avoid message and leave the data in an ungrouped state
+-   `.groups = "drop"` to avoid message and leave the data in an ungrouped state
 
 ## Use function
 
 ```{r}
-my_summary(rodents, shrew)
+my_summary(penguins, bill_length_mm)
 ```
 
 🎉
@@ -578,13 +591,9 @@ my_summary(rodents, shrew)
 
 When tidy evaluation is used
 
-
-
 ## Your turn
 
-🎬 Write a function to 
-
-
+🎬 Write a function to
 
 ## Extras
 
