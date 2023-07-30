@@ -10,13 +10,25 @@ format: revealjs
 
 ## Extras
 
-There are three fundamental operations in functional programming:
+Three fundamental operations in functional programming
 
-Starting with a list:
+Given an array and a function:
 
- - `map()`: supply mapping-function to make a new list, element by element
- - `filter()`: supply predicate-function to make a new list, subset of old list
- - `reduce()`: supply reducing-function (and optional initial-value) to make a new "thing"
+ - `map()`:  make a new list, operating on each element
+ - `filter()`: make a new list, subset of old list
+ - `reduce()`: make a new "thing"
+
+## dplyr using purrr?
+ 
+We can use these three operations to "implement", using purrr:
+
+ - `dplyr::mutate()`
+ - `dplyr::filter()`
+ - `dplyr::summarise()`
+
+I claim it's possible, I don't claim it's a good idea.
+
+## `dpurrr_filter()`
 
 ```{r}
 library("tidyverse")
@@ -31,14 +43,91 @@ dpurrr_filter <- function(df, predicate) {
 }
 ```
 
+<hr>
+
 ```{r}
-dpurrr_filter(mtcars, \(x) x$gear == 3)
+dpurrr_filter(mtcars, \(x) x$gear == 3) |> head()
 ```
+
+## `dpurrr_mutate()`
+
+```{r}
+dpurrr_mutate <- function(df, mapper) {
+  df |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
+    purrr::map(\(x) c(x, mapper(x))) |>
+    purrr::list_transpose() |>
+    as.data.frame() 
+}
+```
+
+<hr>
 
 ```{r}
 mtcars |> 
-  group_nest(gear) |>
-  purrr::pluck("data") |>
-  purrr::reduce(rbind)
+  dpurrr_mutate(\(x) list(wt_kg = x$wt * 1000 / 2.2)) |> 
+  head()
 ```
 
+## `dpurrr_summarise()`
+
+```{r}
+dpurrr_summarise <- function(df, reducer, .init) {
+  df |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
+    purrr::reduce(reducer, .init = .init) |>
+    as.data.frame()
+}
+```
+
+<hr>
+
+```{r}
+mtcars |> 
+  dpurrr_summarise(
+    \(acc, val) list(
+      wt_min = min(acc$wt_min, val$wt), 
+      wt_max = max(acc$wt_max, val$wt)
+    ),
+    .init = list(wt_min = Inf, wt_max = -Inf)
+  )
+```
+
+## With grouping
+
+First, a little prep work:
+
+```{r}
+ireduce <- function(x, reducer, .init) {
+  purrr::reduce2(x, names(x), reducer, .init = .init)
+}
+
+summarizer <- function(df) {
+  df |> 
+    dpurrr_summarise(
+      \(acc, val) list(
+        wt_min = min(acc$wt_min, val$wt), 
+        wt_max = max(acc$wt_max, val$wt)
+      ),
+      .init = list(wt_min = Inf, wt_max = -Inf)
+    )  
+}
+```
+
+## Et voilà
+
+```{r}
+mtcars |> 
+  split(mtcars$gear) |>
+  purrr::map(summarizer) |> 
+  ireduce( 
+    \(acc, x, y) rbind(acc, c(list(gear = y), x)),
+    .init = data.frame()
+  ) 
+```
+
+I think we can agree this presents no danger to dplyr.
+
+In JavaScript, data frames are often arrays of objects (lists). 
