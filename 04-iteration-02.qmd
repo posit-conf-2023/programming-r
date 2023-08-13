@@ -130,4 +130,4 @@ mtcars |>
 
 I think we can agree this presents no danger to dplyr.
 
-In JavaScript, data frames are often arrays of objects (lists). 
+In JavaScript, data frames are often arrays of objects (lists), so you'll see formulations like this (e.g. **tidyjs**).
