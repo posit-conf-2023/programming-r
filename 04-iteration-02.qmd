@@ -132,25 +132,44 @@ Use this function in your script.
 
 ## If we have time
 
-`list_rbind()` uses three different functional-programming techniques:
+Implement `list_rbind()` using functional-programming techniques:
 
 - *filters* out `NULL` values, `purrr::keep()`
 - *maps* name of element to data-column, `purrr::imap()`
 - *reduces* list to single data-frame, `purrr::reduce()`
 
 ```r
-keep(\(x) !is.null(x)) |>
-imap(\(d, name) mutate(d, year = name)) |>
-reduce(rbind)
+list_rbind2 <- function(df, names_to) {
+  df |>
+    purrr::keep(\(x) !is.null(x)) |>
+    purrr::imap(\(d, name) dplyr::mutate(d, "{names_to}" := name)) |>
+    purrr::reduce(rbind)
+}
 ```
 
 ## Saving multiple outputs
+
+**Goal**: write out a csv file for each value of `clarity` within ggplot2's `diamonds` dataset.
+
+<hr>
+
+When we read "for each", we might think of using `map()`: 
+
+  - Writing out a file is a *side effect*.
+
+  - We aren't interested in the return value.
+
+{purrr} has a function for that: `walk()` (and friends).
+
+## Our turn
+
+## Writing multiple plots
 
 ## Extras
 
 Three fundamental operations in functional programming
 
-Given an array and a function:
+Given a list and a function:
 
  - `map()`:  make a new list, operating on each element
  - `filter()`: make a new list, subset of old list
