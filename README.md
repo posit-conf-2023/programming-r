@@ -35,6 +35,9 @@ In short:
 - Current versions of R & RStudio
 - `library("devtools")`
 - `library("tidyverse")`
+- `library("duckdb")`
+- `library("here")`
+
 
 More details on our [pre-requisites page](https://posit-conf-2023.github.io/programming-r/pre-reqs.html).
 

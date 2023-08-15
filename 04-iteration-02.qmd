@@ -1,4 +1,371 @@
 ---
-title: "04-iteration-02"
+title: "Iteration: Part 2"
 format: revealjs
 ---
+
+## Reading multiple files
+
+Using {purrr} to iterate can help you perform many tasks repeatably and reproducibly.
+
+### Example
+
+Read Excel files from a directory, then combine into a single data-frame.
+
+## {here} package
+
+When you first call `here::here()`, (simplified):
+
+-   climbs your local directory until it finds a `.RProj` file
+-   sets directory containing `.RProj` as reference-path
+-   `here::here()` prepends reference-path to argument
+
+If project in `/Users/ian/important-project/`:
+
+``` r
+here("data/file.csv")
+```
+
+```         
+"/Users/ian/important-project/data/file.csv"
+```
+
+## Our turn
+
+In the `programming-r-exercises` repository:
+
+-   open `iteration-02-reading-files.R`
+-   restart R
+
+## Our turn: reading data manually
+
+Here's our starting code:
+
+``` r
+data1952 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
+data1957 <- readxl::read_excel(here("data/gapminder/1957.xlsx"))
+data1962 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
+data1967 <- readxl::read_excel(here("data/gapminder/1967.xlsx"))
+
+data_manual <- bind_rows(data1952, data1957, data1962, data1967)
+```
+
+What problems do you see?
+
+(I see two real problems, and one philisophical problem)
+
+Run this example code, discuss with your neighbor.
+
+## Our turn: make list of paths
+
+I see this as a two step problem:
+
+-   make a named list of paths, name is year
+-   use list of paths to read data frames, combine
+
+Let's work together to improve this code:
+
+``` r
+paths <-
+  # get the filepaths from the directory
+  fs::dir_ls(here("data/gapminder")) |>
+  # extract the year as names
+  # convert to list
+  identity()
+```
+
+## Our turn: read data
+
+``` r
+data <-
+  paths |>
+  # read each file from excel, into data frame
+  # keep only non-null elements
+  # set list-names as column `year`
+  # bind into single data-frame
+  # convert year to number
+  identity()
+```
+
+## Handling failures
+
+If we have a failure, we may not want to stop everything.
+
+We can use a function-operator to return a modified function.
+
+```{r}
+#| error: true
+library("readxl")
+read_excel("not/a/file.txt")
+```
+
+<hr>
+
+```{r}
+#| error: true
+library("purrr")
+poss_rdxl <- possibly(read_excel, otherwise = NULL, quiet = TRUE)
+poss_rdxl("not/a/file.txt")
+```
+
+<hr>
+
+```{r}
+#| message: true
+poss_rdxl <- possibly(read_excel, otherwise = NULL, quiet = FALSE)
+poss_rdxl("not/a/file.txt")
+```
+
+## Our turn: handle failure
+
+In the `programming-r-exercises` repository:
+
+-   look at `data/gapminder_party/`
+-   try running your script using this directory
+
+Create a new function:
+
+``` r
+possibly_read_excel <- possibly(<you do the rest>)
+```
+
+Use this function in your script.
+
+## Functional sandwiches
+
+![[Anjana Vakil's Functional Sandwiches](https://observablehq.com/collection/@anjana/functional-javascript-first-steps)](images/anjana-vakil-functional-sanwiches.png){fig-alt="Shows ingredients of a sandwich: onions and pickles *filtered* out, remaining ingredients *mapped* to a slicer-function, then *reduced* to a sandwich" fig-align="center"}
+
+## If we have time
+
+Implement `list_rbind()` using functional-programming techniques:
+
+-   *filters* in not-`NULL` values, `purrr::keep()`
+-   *maps* name of element to data-column, `purrr::imap()`
+-   *reduces* list to single data-frame, `purrr::reduce()`
+
+``` r
+list_rbind2 <- function(df, names_to) {
+  df |>
+    purrr::keep(\(x) !is.null(x)) |>
+    purrr::imap(\(d, name) dplyr::mutate(d, "{names_to}" := name)) |>
+    purrr::reduce(rbind)
+}
+```
+
+## Our turn: saving multiple outputs
+
+**Goal**: write out a csv file for each value of `clarity` within ggplot2's `diamonds` dataset.
+
+<hr>
+
+When we read "for each", we might think of using `map()`:
+
+-   Writing out a file is a *side effect*.
+
+-   We aren't interested in the return value.
+
+{purrr} has a function for that: `walk()` (and friends).
+
+## Our turn - starter code
+
+```r
+# ?dplyr::group_nest
+# ?stringr::str_glue
+
+# from diamonds, create tibble with columns: clarity, data, filename
+by_clarity_csv <-
+  diamonds |>
+  # nest by clarity
+  # create column for filename
+  identity()
+
+# ?readr::write_csv
+
+# using the data and filename, write out csv files
+walk2(
+  by_clarity_csv$data,
+  by_clarity_csv$filename,
+  \(data, filename) # write csv file to data/clarity directory
+)
+```
+
+## Our turn: writing multiple plots
+
+**Goal**: write out a histogram PNG for each value of `clarity` within ggplot2's `diamonds` dataset.
+
+<hr>
+
+Tactic: create a `plot` column, where each element is a ggplot. 
+
+This will be a list-column.
+
+You can use `map()` within `mutate()`, with all the tidy-eval goodness!
+
+(To me, this feels like a superpower 💪)
+
+## Our turn: starter-code
+
+```r
+# from diamonds, create tibble with columns: clarity, data, plot, filename
+by_clarity_plots <-
+  diamonds |>
+  # nest by clarity
+  # create columns for filename, plot
+  mutate(
+    filename = str_glue(),
+    plot = map()
+  ) |>
+  identity()
+
+# ?ggplot2::ggsave
+
+# using the data and filename, write out plots to png files
+walk2(
+  by_clarity_plot$filename,
+  by_clarity_plot$plot,
+  \(filename, plot) # write plot file to data/clarity directory
+)
+```
+
+## Extras
+
+Three fundamental operations in functional programming
+
+Given a list and a function:
+
+-   `map()`: make a new list, operating on each element
+-   `filter()`: make a new list, subset of old list
+-   `reduce()`: make a new "thing"
+
+## dplyr using purrr?
+
+We can use `map()`, `filter()`, `reduce()` to "implement", using purrr:
+
+-   `dplyr::mutate()`
+-   `dplyr::filter()`
+-   `dplyr::summarise()`
+
+I claim it's possible, I don't claim it's a good idea.
+
+## Tabular data: two perspectives
+
+-   column-based: named list of column vectors
+
+    ``` json
+    {
+      mpg: [21.0, 22.8, ...],
+      cyl: [6, 4, ...],
+      ...
+    }
+    ```
+
+-   row-based: collection of rows, each a named list
+
+    ``` json
+    [
+      {mpg: 21.0, cyl: 6, ...}, 
+      {mpg: 22.8, cyl: 4, ...}, 
+      ...
+    ]
+    ```
+
+## `dpurrr_filter()`
+
+```{r}
+library("tidyverse")
+
+dpurrr_filter <- function(df, predicate) {
+  df |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
+    purrr::keep(predicate) |>
+    purrr::list_transpose() |>
+    as.data.frame() 
+}
+```
+
+<hr>
+
+```{r}
+dpurrr_filter(mtcars, \(d) d$gear == 3) |> head()
+```
+
+## `dpurrr_mutate()`
+
+```{r}
+dpurrr_mutate <- function(df, mapper) {
+  df |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
+    purrr::map(\(d) c(d, mapper(d))) |>
+    purrr::list_transpose() |>
+    as.data.frame() 
+}
+```
+
+<hr>
+
+```{r}
+mtcars |> 
+  dpurrr_mutate(\(d) list(wt_kg = d$wt * 1000 / 2.2)) |> 
+  head()
+```
+
+## `dpurrr_summarise()`
+
+```{r}
+dpurrr_summarise <- function(df, reducer, .init) {
+  df |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
+    purrr::reduce(reducer, .init = .init) |>
+    as.data.frame()
+}
+```
+
+<hr>
+
+```{r}
+mtcars |> 
+  dpurrr_summarise(
+    reducer = \(acc, val) list(
+      wt_min = min(acc$wt_min, val$wt), 
+      wt_max = max(acc$wt_max, val$wt)
+    ),
+    .init = list(wt_min = Inf, wt_max = -Inf)
+  )
+```
+
+## With grouping
+
+First, a little prep work:
+
+```{r}
+ireduce <- function(x, reducer, .init) {
+  purrr::reduce2(x, names(x), reducer, .init = .init)
+}
+
+summariser <- purrr::partial(
+  dpurrr_summarise,
+  reducer = \(acc, val) list(
+    wt_min = min(acc$wt_min, val$wt), 
+    wt_max = max(acc$wt_max, val$wt)
+  ),
+  .init = list(wt_min = Inf, wt_max = -Inf)
+)
+```
+
+## Et voilà
+
+```{r}
+mtcars |> 
+  split(mtcars$gear) |>
+  purrr::map(summariser) |> 
+  ireduce( 
+    reducer = \(acc, x, y) rbind(acc, c(list(gear = y), x)),
+    .init = data.frame()
+  ) 
+```
+
+We can agree this presents no danger to dplyr.
+
+In JavaScript, data frames are often arrays of objects (lists), so you'll see formulations like this (e.g. **tidyjs**).
