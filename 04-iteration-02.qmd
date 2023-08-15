@@ -15,32 +15,32 @@ Read Excel files from a directory, then combine into a single data-frame.
 
 When you first call `here::here()`, (simplified):
 
-  - climbs your local directory until it finds a `.RProj` file
-  - sets directory containing `.RProj` as reference-path
-  - `here::here()` prepends reference-path to argument
+-   climbs your local directory until it finds a `.RProj` file
+-   sets directory containing `.RProj` as reference-path
+-   `here::here()` prepends reference-path to argument
 
 If project in `/Users/ian/important-project/`:
- 
-```r
+
+``` r
 here("data/file.csv")
 ```
-  
-```
+
+```         
 "/Users/ian/important-project/data/file.csv"
-```  
+```
 
 ## Our turn
 
 In the `programming-r-exercises` repository:
 
-- open `iteration-02-reading-files.R`
-- restart R
+-   open `iteration-02-reading-files.R`
+-   restart R
 
 ## Our turn: reading data manually
 
 Here's our starting code:
 
-```r
+``` r
 data1952 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
 data1957 <- readxl::read_excel(here("data/gapminder/1957.xlsx"))
 data1962 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
@@ -49,7 +49,7 @@ data1967 <- readxl::read_excel(here("data/gapminder/1967.xlsx"))
 data_manual <- bind_rows(data1952, data1957, data1962, data1967)
 ```
 
-What problems do you see? 
+What problems do you see?
 
 (I see two real problems, and one philisophical problem)
 
@@ -59,12 +59,12 @@ Run this example code, discuss with your neighbor.
 
 I see this as a two step problem:
 
-- make a named list of paths, name is year
-- use list of paths to read data frames, combine
+-   make a named list of paths, name is year
+-   use list of paths to read data frames, combine
 
 Let's work together to improve this code:
 
-```r
+``` r
 paths <-
   # get the filepaths from the directory
   fs::dir_ls(here("data/gapminder")) |>
@@ -75,7 +75,7 @@ paths <-
 
 ## Our turn: read data
 
-```r
+``` r
 data <-
   paths |>
   # read each file from excel, into data frame
@@ -119,26 +119,30 @@ poss_rdxl("not/a/file.txt")
 
 In the `programming-r-exercises` repository:
 
-- look at `data/gapminder_party/`
-- try running your script using this directory
+-   look at `data/gapminder_party/`
+-   try running your script using this directory
 
 Create a new function:
 
-```r
+``` r
 possibly_read_excel <- possibly(<you do the rest>)
 ```
 
 Use this function in your script.
 
+## Functional sandwiches
+
+![[Anjana Vakil's Functional Sandwiches](https://observablehq.com/collection/@anjana/functional-javascript-first-steps)](images/anjana-vakil-functional-sanwiches.png){fig-alt="Shows ingredients of a sandwich: onions and pickles *filtered* out, remaining ingredients *mapped* to a slicer-function, then *reduced* to a sandwich" fig-align="center"}
+
 ## If we have time
 
 Implement `list_rbind()` using functional-programming techniques:
 
-- *filters* out `NULL` values, `purrr::keep()`
-- *maps* name of element to data-column, `purrr::imap()`
-- *reduces* list to single data-frame, `purrr::reduce()`
+-   *filters* in not-`NULL` values, `purrr::keep()`
+-   *maps* name of element to data-column, `purrr::imap()`
+-   *reduces* list to single data-frame, `purrr::reduce()`
 
-```r
+``` r
 list_rbind2 <- function(df, names_to) {
   df |>
     purrr::keep(\(x) !is.null(x)) |>
@@ -147,23 +151,80 @@ list_rbind2 <- function(df, names_to) {
 }
 ```
 
-## Saving multiple outputs
+## Our turn: saving multiple outputs
 
 **Goal**: write out a csv file for each value of `clarity` within ggplot2's `diamonds` dataset.
 
 <hr>
 
-When we read "for each", we might think of using `map()`: 
+When we read "for each", we might think of using `map()`:
 
-  - Writing out a file is a *side effect*.
+-   Writing out a file is a *side effect*.
 
-  - We aren't interested in the return value.
+-   We aren't interested in the return value.
 
 {purrr} has a function for that: `walk()` (and friends).
 
-## Our turn
+## Our turn - starter code
 
-## Writing multiple plots
+```r
+# ?dplyr::group_nest
+# ?stringr::str_glue
+
+# from diamonds, create tibble with columns: clarity, data, filename
+by_clarity_csv <-
+  diamonds |>
+  # nest by clarity
+  # create column for filename
+  identity()
+
+# ?readr::write_csv
+
+# using the data and filename, write out csv files
+walk2(
+  by_clarity_csv$data,
+  by_clarity_csv$filename,
+  \(data, filename) # write csv file to data/clarity directory
+)
+```
+
+## Our turn: writing multiple plots
+
+**Goal**: write out a histogram PNG for each value of `clarity` within ggplot2's `diamonds` dataset.
+
+<hr>
+
+Tactic: create a `plot` column, where each element is a ggplot. 
+
+This will be a list-column.
+
+You can use `map()` within `mutate()`, with all the tidy-eval goodness!
+
+(To me, this feels like a superpower 💪)
+
+## Our turn: starter-code
+
+```r
+# from diamonds, create tibble with columns: clarity, data, plot, filename
+by_clarity_plots <-
+  diamonds |>
+  # nest by clarity
+  # create columns for filename, plot
+  mutate(
+    filename = str_glue(),
+    plot = map()
+  ) |>
+  identity()
+
+# ?ggplot2::ggsave
+
+# using the data and filename, write out plots to png files
+walk2(
+  by_clarity_plot$filename,
+  by_clarity_plot$plot,
+  \(filename, plot) # write plot file to data/clarity directory
+)
+```
 
 ## Extras
 
@@ -171,42 +232,42 @@ Three fundamental operations in functional programming
 
 Given a list and a function:
 
- - `map()`:  make a new list, operating on each element
- - `filter()`: make a new list, subset of old list
- - `reduce()`: make a new "thing"
+-   `map()`: make a new list, operating on each element
+-   `filter()`: make a new list, subset of old list
+-   `reduce()`: make a new "thing"
 
 ## dplyr using purrr?
- 
+
 We can use `map()`, `filter()`, `reduce()` to "implement", using purrr:
 
- - `dplyr::mutate()`
- - `dplyr::filter()`
- - `dplyr::summarise()`
+-   `dplyr::mutate()`
+-   `dplyr::filter()`
+-   `dplyr::summarise()`
 
 I claim it's possible, I don't claim it's a good idea.
 
 ## Tabular data: two perspectives
 
-- column-based: named list of column vectors
+-   column-based: named list of column vectors
 
-  ```json
-  {
-    mpg: [21.0, 22.8, ...],
-    cyl: [6, 4, ...],
-    ...
-  }
-  ```
+    ``` json
+    {
+      mpg: [21.0, 22.8, ...],
+      cyl: [6, 4, ...],
+      ...
+    }
+    ```
 
-- row-based: collection of rows, each a named list
+-   row-based: collection of rows, each a named list
 
-  ```json
-  [
-    {mpg: 21.0, cyl: 6, ...}, 
-    {mpg: 22.8, cyl: 4, ...}, 
-    ...
-  ]
-  ```
-  
+    ``` json
+    [
+      {mpg: 21.0, cyl: 6, ...}, 
+      {mpg: 22.8, cyl: 4, ...}, 
+      ...
+    ]
+    ```
+
 ## `dpurrr_filter()`
 
 ```{r}
