@@ -39,12 +39,12 @@ diamonds |> histogram(carat, 0.1)
 
 ## Your turn
 
-Write out the `histogram()` function yourself:
+Complete this function yourself:
 
 ```r
 histogram <- function(df, var, binwidth = NULL) {
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
+  df |>
+    ggplot(aes()) +
     geom_histogram(binwidth = binwidth)
 }
 ```
@@ -55,44 +55,45 @@ histogram <- function(df, var, binwidth = NULL) {
 
   - add `theme_minimal()`?
 
-  - fill the bars with `"red"`?
+  - fill the bars with `"steelblue"`?
 
 ## Your turn (solution)
 
 Adding a theme: `histogram()` returns a `ggplot` object, so you can add a theme in the "usual" way:
 
 ```{r}
-starwars |> histogram(height) + theme_minimal()
+histogram(starwars, height) + theme_minimal()
 ```
 
 ## Your turn (solution)
 
-Changing fill color: *as is*, there is no easy way to specify `"red"`
+Changing fill color: *as is*, there is no easy way to specify `"steelblue"`
 
 However, you can build an escape hatch: `...`:
 
   - called "dot-dot-dot" or "dots"
 
 ```r
-histogram <- function(df, var, binwidth = NULL, ...) {
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
+# extra args `...` passed to `geom_histogram()`
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |>
+    ggplot(aes(x = {{var}})) +
     geom_histogram(binwidth = binwidth, ...)
 }
 ```
 
-Passes unspecified arguments from your function to another.
+Passes unspecified arguments from your function to another (tell your users where).
 
-[Advanced R](https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot) and the [Tidyverse Design Guide](https://design.tidyverse.org/dots-position.html) have more details.
+[Tidyverse Design Guide](https://design.tidyverse.org/dots-after-required.html) has more details.
 
 ## Your turn (continued)
 
 Incorporate dot-dot-dot into `histogram()`:
 
 ```r
-histogram <- function(df, var, binwidth ...) {
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
+histogram <- function(df, var, ..., binwidth = NULL) {
+  df |>
+    ggplot(aes(x = {{var}})) +
     geom_histogram(binwidth = binwidth, ...)
 }
 ```
@@ -100,7 +101,7 @@ histogram <- function(df, var, binwidth ...) {
 Try, e.g.:
 
 ```r
-starwars |> histogram(height, binwidth = 5, fill = "steelblue")
+histogram(starwars, height, binwidth = 5, fill = "steelblue")
 ```
 
 ## Tradeoffs
@@ -130,13 +131,12 @@ temp(val, 0.4)
 
 ## Your turn
 
-Adapt the `histogram()` function to include a title that specifies:
+Adapt the `histogram()` function to include a title that describes:
 
-  - which `var` is binned
-  - the `binwidth`
+  - which `var` is binned, and the `binwidth`
 
 ```r
-histogram <- function(df, var, binwidth, ...) {
+histogram <- function(df, var, ..., binwidth = NULL) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
     geom_histogram(binwidth = binwidth, ...) + 
@@ -146,19 +146,28 @@ histogram <- function(df, var, binwidth, ...) {
 }
 ```
 
-(note, now you *have* to specify `binwidth`)
+Try:
+
+```r
+histogram(starwars, height, binwidth = 5)
+histogram(starwars, height) # "extra credit"
+```
 
 ## Your turn (solution)
 
 ```{r}
-histogram <- function(df, var, binwidth, ...) {
+histogram <- function(df, var, ..., binwidth = NULL) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
     geom_histogram(binwidth = binwidth, ...) + 
-    labs(title = rlang::englue("Histogram of {{ var }}, with binwidth {binwidth}"))
+    labs(
+      title = rlang::englue(
+        "Histogram of {{ var }}, with binwidth {binwidth %||% 'default'}"
+      )
+    )
 }
 
-starwars |> histogram(height, 5)
+histogram(starwars, height, binwidth = 5)
 ```
 
 ## Mixing in other tidyverse functions
@@ -191,10 +200,24 @@ sorted_bars <- function(df, var) {
 
 - If using `{{ }}` to specify a new column, use `:=`, not `=`.
 
-- `fct_infreq()` reorders by decreasing frequency-of-observation
+- `fct_infreq()` reorders by decreasing frequency
 
 - `fct_rev()` reverses order, as y-axis starts at bottom 
 
+- **Our turn**: let's try it
+
+## Summary (so far)
+
+- use embracing `{{}}` to interpolate bare column-names
+
+  - function receiving the "embracing" has to be aware
+  - look for `<data-masking>` in the help
+  - use `rlang::englue()` to interpolate variables `{{}}` and values `{}`
+
+- `...` is a useful "escape hatch" in function design:
+
+  - put after required args, and before details
+  - tell your users where the dots are going
 
 ## Design and style
 
@@ -214,31 +237,29 @@ Use descriptive name, usually starts with a verb, unless it returns a well-known
 
 - **details**: arguments with default values
 
-Tidyverse Design Guide:
-
- - [Data, descriptors, details](https://design.tidyverse.org/args-data-details.html)
+Tidyverse Design:
 
  - [Position of dots](https://design.tidyverse.org/dots-position.html)
+ 
+ - [Hadley's *first* Substack article](https://tidydesign.substack.com/p/argument-ordering)
 
 ## Order of arguments
 
-Let's change the signature of our function:
+Our histogram function:
 
 ```{r}
 histogram <- function(df, var, ..., binwidth = NULL) {
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
-    geom_histogram(binwidth = binwidth, ...) 
+  df |>
+    ggplot(aes(x = {{var}})) +
+    geom_histogram(binwidth = binwidth, ...)
 }
 ```
 
-- **data**: `df`
-
-- **descriptors**: `var`
+- **required**: `df`, `var`
 
 - **dots**: `...`
 
-- **details**: `binwidth`
+- **optional**: `binwidth`
 
 ## Order of arguments
 
@@ -250,14 +271,13 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
-Why *details* after *dots*?
+Why *optional* after *dots*?
 
-- user must name *detail* arguments, in this case `binwidth`.
+- user must name *optional* arguments, in this case `binwidth`.
 
-- makes code easier to read when *detail* arguments used.
+- makes code easier to read when *optional* arguments used.
 
 - more reasoning given in the [Tidyverse design guide](https://design.tidyverse.org/dots-position.html).
-
 
 ## Namespacing functions
 
@@ -275,12 +295,6 @@ Three ways to sort this out:
 
 ```r
 library("conflicted")
-
-histogram <- function(df, var, ..., binwidth = NULL) {
-  df |> 
-    ggplot(aes(x = {{ var }})) + 
-    geom_histogram(binwidth = binwidth, ...) 
-}
 ```
 
 `{conflicted}` lets you know when you use a function that exists two-or-more packages that you've loaded.
@@ -289,11 +303,22 @@ To avoid conflicts, declare a preference:
 
 ```r
 # put in a conspicuous place, near the top of your script
-conflicts_prefer(
-  dplyr::filter(),
-  dplyr::lag(),
-)
+conflicts_prefer(dplyr::filter)
 ```
+
+## Your turn
+
+Given this code:
+
+```r
+library("tidyverse")
+
+mtcars |> filter(cyl == 6)
+```
+
+- run it as-is
+- add `library("conflicted")`, run again
+- add a `conflict_prefer()` directive
 
 ## `package::function()`
 
@@ -346,13 +371,15 @@ Makes your code less verbose, but also less transparent
 - put all your `@importFrom` in one conspicuous file: `{packagename}-package.R`
 - use judiciously
 
-## Style references
+## Design and style references
 
 [R for Data Science](https://r4ds.hadley.nz/functions.html#style)
 
 [Tidyverse Style Guide](https://style.tidyverse.org/functions.html)
 
 [Tidyverse Design Guide](https://design.tidyverse.org/dots-position.html)
+
+[Tidydesign Substack (Hadley)](https://tidydesign.substack.com/)
 
 Also, look at tidyverse code at GitHub (my favorite is [{usethis}](https://github.com/r-lib/usethis/))
 
@@ -410,6 +437,15 @@ x <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 x <- sort(c("apple", "Banana", "candle"))
 ```
 
+## Our turn: checking locale
+
+Can be useful to consult `devtools::session_info()`: 
+
+```{r}
+# using `info = "platform"` to fit output on screen
+devtools::session_info(info = "platform")
+```
+
 ## Manage side effects using 📦 withr
 
 Side effects can include:
@@ -422,7 +458,7 @@ Side effects can include:
  
 {withr} makes it a lot easier to "leave no footprints".
 
-## Modifying locale
+## Our turn: modifying locale
 
 `sort()` uses locale (environment) for string-sorting rules 
 
@@ -445,21 +481,12 @@ withr::with_locale(
 Sys.getlocale("LC_COLLATE")
 ```
 
-## Locale aside
-
-Can be useful to consult `devtools::session_info()`: 
-
-```{r}
-# using `info = "platform"` to fit output on screen
-devtools::session_info(info = "platform")
-```
-
-## Setting only within curly-brackets
+## Our turn: setting only within scope
 
 ```{r}
 #| collapse: true
 c_sort <- function(...) {
-  # set only within enclosing curly-brackets {}
+  # set only within function block
   withr::local_locale(list(LC_COLLATE = "C"))
   
   sort(...)
@@ -470,9 +497,7 @@ c_sort(c("apple", "Banana", "candle"))
 Sys.getlocale("LC_COLLATE")
 ```
 
-*Within curly brackets* applies to functions.
-
-It also applies to {testthat} blocks.
+*Within curly brackets* applies to function blocks, it also applies to {testthat} blocks.
 
 ## Your turn
 
@@ -506,6 +531,7 @@ test_that("mtcars has expected columns", {
   expect_type(mtcars$cy, "double")
 })
 ```
+
 And yet...
 
 ```{r}
@@ -514,7 +540,10 @@ getOption("warnPartialMatchDollar")
 
 ## Summary
 
-You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and include {dplyr} preprocessing
+You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and include {dplyr} preprocessing:
+
+  - embracing `{{}}` for `<data-masking>` functions
+  - be aware of `<tidy-select>` functions, work differently
 
 <hr>
 
