@@ -437,6 +437,15 @@ x <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 x <- sort(c("apple", "Banana", "candle"))
 ```
 
+## Our turn: checking locale
+
+Can be useful to consult `devtools::session_info()`: 
+
+```{r}
+# using `info = "platform"` to fit output on screen
+devtools::session_info(info = "platform")
+```
+
 ## Manage side effects using 📦 withr
 
 Side effects can include:
@@ -449,7 +458,7 @@ Side effects can include:
  
 {withr} makes it a lot easier to "leave no footprints".
 
-## Modifying locale
+## Our turn: modifying locale
 
 `sort()` uses locale (environment) for string-sorting rules 
 
@@ -472,21 +481,12 @@ withr::with_locale(
 Sys.getlocale("LC_COLLATE")
 ```
 
-## Locale aside
-
-Can be useful to consult `devtools::session_info()`: 
-
-```{r}
-# using `info = "platform"` to fit output on screen
-devtools::session_info(info = "platform")
-```
-
-## Setting only within curly-brackets
+## Our turn: setting only within scope
 
 ```{r}
 #| collapse: true
 c_sort <- function(...) {
-  # set only within enclosing curly-brackets {}
+  # set only within function block
   withr::local_locale(list(LC_COLLATE = "C"))
   
   sort(...)
@@ -497,9 +497,7 @@ c_sort(c("apple", "Banana", "candle"))
 Sys.getlocale("LC_COLLATE")
 ```
 
-*Within curly brackets* applies to functions.
-
-It also applies to {testthat} blocks.
+*Within curly brackets* applies to function blocks, it also applies to {testthat} blocks.
 
 ## Your turn
 
@@ -533,6 +531,7 @@ test_that("mtcars has expected columns", {
   expect_type(mtcars$cy, "double")
 })
 ```
+
 And yet...
 
 ```{r}
@@ -541,7 +540,10 @@ getOption("warnPartialMatchDollar")
 
 ## Summary
 
-You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and include {dplyr} preprocessing
+You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and include {dplyr} preprocessing:
+
+  - embracing `{{}}` for `<data-masking>` functions
+  - be aware of `<tidy-select>` functions, work differently
 
 <hr>
 
