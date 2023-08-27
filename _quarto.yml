@@ -5,8 +5,6 @@ execute:
   echo: true
   warning: false
 
-
-
 website:
   title: "From R User to R Programmer"
   navbar:
@@ -22,22 +20,23 @@ website:
         - text: ---
         - text: Functions
         - text: ---
-        - text: "👋 & Functions part 1"
+        - text: "👋 & Functions Part 1"
           href: 01-functions-01.qmd
-        - text: "something 2"
+        - text: "Functions Part 2"
           href: 02-functions-02.qmd
         - text: ---
         - text: Iteration
         - text: ---
-        - text: "something 3"
+        - text: "Iteration Part 1"
           href: 03-iteration-01.qmd
-        - text: "something 4"
+        - text: "Iteration Part 2"
           href: 04-iteration-02.qmd
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
+    
 comments:
   hypothesis: true
   
