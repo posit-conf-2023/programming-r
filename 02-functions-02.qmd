@@ -106,11 +106,17 @@ histogram(starwars, height, binwidth = 5, fill = "steelblue")
 
 ## Tradeoffs
 
+
 You write a function to make some things easier.
+
+. . .
 
 The cost is that some things become more difficult.
 
+. . .
+
 This is unavoidable, the best you can do is be deliberate about what you make easier and more difficult.
+
 
 ## Labelling 
 
