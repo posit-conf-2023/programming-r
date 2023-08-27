@@ -7,8 +7,8 @@ title: "From R User to R Programmer"
 by Emma Rand and Ian Lyttle
 
 🗓️ September 18, 2023\
-⏰  09:00 - 17:00\
-🏨 ROOM TBD\
+⏰ 09:00 - 17:00\
+🏨 Grand Hall J\
 ✍️ [pos.it/conf](http://pos.it/conf)
 
 ------------------------------------------------------------------------
@@ -27,16 +27,14 @@ This is a one-day, hands-on workshop for those who have embraced the tidyverse a
 
 ### Please note
 
-These materials are under active development, which will likely continue through August 2023. 
-Given this context: if you have a concern, please [file an issue](https://github.com/posit-conf-2023/programming-r/issues).
+These materials are under active development, which will likely continue through August 2023. Given this context: if you have a concern, please [file an issue](https://github.com/posit-conf-2023/programming-r/issues).
 
 ## Prework
 
 In short:
 
-- Current versions of R & RStudio
-- `library("devtools")`
-- `library("tidyverse")`
+-   Current versions of R & RStudio
+-   `install.packages(c("devtools", "tidyverse", "palmerpenguins", "here"))`
 
 More details on our [pre-requisites page](pre-reqs.qmd).
 

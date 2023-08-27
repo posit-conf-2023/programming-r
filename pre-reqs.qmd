@@ -78,23 +78,10 @@ Download the relevant installer for your OS listed under "Installers for Support
 
 ## Install packages {#packages}
 
-The aim of **`devtools`** [@devtools] is to make package development easier by providing R functions that simplify and expedite common tasks. The [R Packages](https://r-pkgs.org/) [@wickham2020a] book and the Building Tidy Tools workshop are based on a **`devtools`** workflow.
+Most of the packages we use are imported by **`tidyverse`** and **`devtools`**: 
 
-Install **`devtools`**:
-
-```r
-install.packages("devtools")
-```
-
-Install **`tidyverse`**:
-
-```r
-# question - why not `install.packages()`?
-devtools::install_github("tidyverse")
-```
-
-```r
-install.packages(c("duckdb", "here"))
+``` r
+install.packages(c("devtools", "tidyverse", "palmerpenguins", "here"))
 ```
 
 ## Git
