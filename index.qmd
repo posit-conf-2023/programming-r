@@ -35,6 +35,14 @@ In short:
 
 -   Current versions of R & RStudio
 -   `install.packages(c("devtools", "tidyverse", "palmerpenguins", "here"))`
+-   During the workshop we will have experienced helpers to troubleshoot and will use Discord to enhance workshop interactions: 
+
+    - [Please sign up for an account](https://discord.com/) if you don’t already have one.
+    - Make sure your [display name](https://support.discord.com/hc/en-us/articles/12620128861463-New-Usernames-Display-Names#h_01GXPQABMYGEHGPRJJXJMPHF5C) is the one you used to register for the conference.
+    - In your “About Me”, put the name of your workshop(s).
+
+    Closer to the start of the conference, we will invite you to the posit::conf Discord server.
+
 
 More details on our [pre-requisites page](pre-reqs.qmd).
 
