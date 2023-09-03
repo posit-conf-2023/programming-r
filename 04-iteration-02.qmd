@@ -7,17 +7,23 @@ format: revealjs
 
 Using {purrr} to iterate can help you perform many tasks repeatably and reproducibly.
 
+. . .
+
 ### Example
 
 Read Excel files from a directory, then combine into a single data-frame.
 
-## {here} package
+## Aside: {here} package
 
 When you first call `here::here()`, (simplified):
 
+:::{.incremental}
 -   climbs your local directory until it finds a `.RProj` file
 -   sets directory containing `.RProj` as reference-path
 -   `here::here()` prepends reference-path to argument
+:::
+
+. . .
 
 If project in `/Users/ian/important-project/`:
 
@@ -49,6 +55,8 @@ data1967 <- readxl::read_excel(here("data/gapminder/1967.xlsx"))
 data_manual <- bind_rows(data1952, data1957, data1962, data1967)
 ```
 
+. . .
+
 What problems do you see?
 
 (I see two real problems, and one philisophical problem)
@@ -62,7 +70,9 @@ I see this as a two step problem:
 -   make a named list of paths, name is year
 -   use list of paths to read data frames, combine
 
-Let's work together to improve this code:
+. . .
+
+Let's work together to improve this code to get paths:
 
 ``` r
 paths <-
@@ -74,6 +84,8 @@ paths <-
 ```
 
 ## Our turn: read data
+
+Let's work together to improve this code to read data:
 
 ``` r
 data <-
@@ -98,6 +110,8 @@ library("readxl")
 read_excel("not/a/file.txt")
 ```
 
+. . .
+
 <hr>
 
 ```{r}
@@ -106,6 +120,8 @@ library("purrr")
 poss_rdxl <- possibly(read_excel, otherwise = NULL, quiet = TRUE)
 poss_rdxl("not/a/file.txt")
 ```
+
+. . . 
 
 <hr>
 
@@ -130,11 +146,22 @@ possibly_read_excel <- possibly(<you do the rest>)
 
 Use this function in your script.
 
+## If we have time
+
+Functional programming has three fundamental operations:
+
+:::{.incremental}
+ - `filter()` - like spaghetti, not coffee: `purrr::keep()`
+ - `map()` - do *this* to each element: `purrr::map()`
+ - `reduce()` - combine into new thing: `purrr::reduce()`
+:::
+
 ## Functional sandwiches
 
 ![[Anjana Vakil's Functional Sandwiches](https://observablehq.com/collection/@anjana/functional-javascript-first-steps)](images/anjana-vakil-functional-sanwiches.png){fig-alt="Shows ingredients of a sandwich: onions and pickles *filtered* out, remaining ingredients *mapped* to a slicer-function, then *reduced* to a sandwich" fig-align="center"}
 
-## If we have time
+
+## Horrible example
 
 Implement `list_rbind()` using functional-programming techniques:
 
@@ -153,7 +180,9 @@ list_rbind2 <- function(df, names_to) {
 
 ## Our turn: saving multiple outputs
 
-**Goal**: write out a csv file for each value of `clarity` within ggplot2's `diamonds` dataset.
+**Goal**: write out a csv file *for each* value of `clarity` within ggplot2's `diamonds` dataset.
+
+. . .
 
 <hr>
 
@@ -163,11 +192,13 @@ When we read "for each", we might think of using `map()`:
 
 -   We aren't interested in the return value.
 
+. . .
+
 {purrr} has a function for that: `walk()` (and friends).
 
 ## Our turn - starter code
 
-```r
+``` r
 # ?dplyr::group_nest
 # ?stringr::str_glue
 
@@ -192,11 +223,15 @@ walk2(
 
 **Goal**: write out a histogram PNG for each value of `clarity` within ggplot2's `diamonds` dataset.
 
+. . .
+
 <hr>
 
-Tactic: create a `plot` column, where each element is a ggplot. 
+Tactic: create a `plot` column, where each element is a ggplot.
 
 This will be a list-column.
+
+. . .
 
 You can use `map()` within `mutate()`, with all the tidy-eval goodness!
 
@@ -204,7 +239,7 @@ You can use `map()` within `mutate()`, with all the tidy-eval goodness!
 
 ## Our turn: starter-code
 
-```r
+``` r
 # from diamonds, create tibble with columns: clarity, data, plot, filename
 by_clarity_plots <-
   diamonds |>
@@ -226,14 +261,14 @@ walk2(
 )
 ```
 
-## Extras
+## If we have time (2)
 
 Three fundamental operations in functional programming
 
 Given a list and a function:
 
--   `map()`: make a new list, operating on each element
 -   `filter()`: make a new list, subset of old list
+-   `map()`: make a new list, operating on each element
 -   `reduce()`: make a new "thing"
 
 ## dplyr using purrr?
@@ -244,10 +279,13 @@ We can use `map()`, `filter()`, `reduce()` to "implement", using purrr:
 -   `dplyr::filter()`
 -   `dplyr::summarise()`
 
+. . .
+
 I claim it's possible, I don't claim it's a good idea.
 
 ## Tabular data: two perspectives
 
+:::{.incremental}
 -   column-based: named list of column vectors
 
     ``` json
@@ -267,6 +305,7 @@ I claim it's possible, I don't claim it's a good idea.
       ...
     ]
     ```
+:::
 
 ## `dpurrr_filter()`
 
@@ -282,6 +321,8 @@ dpurrr_filter <- function(df, predicate) {
     as.data.frame() 
 }
 ```
+
+. . .
 
 <hr>
 
@@ -302,6 +343,8 @@ dpurrr_mutate <- function(df, mapper) {
 }
 ```
 
+. . .
+
 <hr>
 
 ```{r}
@@ -321,6 +364,8 @@ dpurrr_summarise <- function(df, reducer, .init) {
     as.data.frame()
 }
 ```
+
+. . .
 
 <hr>
 
