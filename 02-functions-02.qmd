@@ -67,14 +67,18 @@ histogram(starwars, height) + theme_minimal()
 
 ## Your turn (solution)
 
-Changing fill color: *as is*, there is no easy way to specify `"steelblue"`
+*As is*, there is no easy way to specify `"steelblue"`.
 
-However, you can build an escape hatch: `...`:
+. . .
 
-  - called "dot-dot-dot" or "dots"
+However, you can build an escape hatch.
+
+`...` are called "dot-dot-dot" or "dots".
+
+. . .
 
 ```r
-# extra args `...` passed to `geom_histogram()`
+# `...` passed to `geom_histogram()`
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |>
     ggplot(aes(x = {{var}})) +
@@ -83,6 +87,8 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 ```
 
 Passes unspecified arguments from your function to another (tell your users where).
+
+. . .
 
 [Tidyverse Design Guide](https://design.tidyverse.org/dots-after-required.html) has more details.
 
@@ -106,20 +112,30 @@ histogram(starwars, height, binwidth = 5, fill = "steelblue")
 
 ## Tradeoffs
 
+
 You write a function to make some things easier.
+
+. . .
 
 The cost is that some things become more difficult.
 
+. . .
+
 This is unavoidable, the best you can do is be deliberate about what you make easier and more difficult.
+
 
 ## Labelling 
 
-Let's say we want to build a string, using variable-names and values.
+How to build a string, using variable-names and values?
+
+. . .
   
 `rlang::englue()` was built for this purpose:
 
   - embrace 🤗 variable-names: `{{}}`
   - glue values: `{}`
+  
+. . .
 
 ```{r}
 temp <- function(varname, value) {
@@ -131,7 +147,7 @@ temp(val, 0.4)
 
 ## Your turn
 
-Adapt the `histogram()` function to include a title that describes:
+Adapt `histogram()` to include a title that describes:
 
   - which `var` is binned, and the `binwidth`
 
@@ -198,16 +214,19 @@ sorted_bars <- function(df, var) {
 }
 ```
 
+:::{.incremental}
 - If using `{{ }}` to specify a new column, use `:=`, not `=`.
 
-- `fct_infreq()` reorders by decreasing frequency
+- `fct_infreq()` reorders by decreasing frequency.
 
-- `fct_rev()` reverses order, as y-axis starts at bottom 
+- `fct_rev()` reverses order, as y-axis starts at bottom.
 
 - **Our turn**: let's try it
+:::
 
 ## Summary (so far)
 
+:::{.incremental}
 - use embracing `{{}}` to interpolate bare column-names
 
   - function receiving the "embracing" has to be aware
@@ -218,14 +237,17 @@ sorted_bars <- function(df, var) {
 
   - put after required args, and before details
   - tell your users where the dots are going
+:::
 
 ## Design and style
 
 Use descriptive name, usually starts with a verb, unless it returns a well-known noun.
 
-`mutate()` - verb, describes what it does
+. . .
 
-`median()` - noun, describes what it returns
+`mutate()`: verb, describes what it does
+
+`median()`: noun, describes what it returns
 
 ## Order of arguments
 
@@ -236,6 +258,8 @@ Use descriptive name, usually starts with a verb, unless it returns a well-known
 - **dots**: can be passed on functions that your function calls
 
 - **details**: arguments with default values
+
+. . .
 
 Tidyverse Design:
 
@@ -285,11 +309,13 @@ Are we using `filter()` from `{dplyr}` or `{stats}`?
 
 Three ways to sort this out:
 
+:::{.incremental}
   - `library("conflicted")`, suitable for R scripts
   
   - `package::function()`, used in package functions
 
   - `#' @importFrom`, also used (sparingly) in packages
+:::
 
 ## 📦 conflicted
 
@@ -298,6 +324,8 @@ library("conflicted")
 ```
 
 `{conflicted}` lets you know when you use a function that exists two-or-more packages that you've loaded.
+
+. . .
 
 To avoid conflicts, declare a preference: 
 
@@ -332,8 +360,12 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
+:::{.incremental}
 - makes it very clear where you are getting the function from
 - can be verbose, especially if calling an external function often
+:::
+
+. . .
 
 There is a balance to be struck.
 
@@ -347,6 +379,8 @@ Put this in `{packagename}-package.R`:
 #' @importFrom ggplot2 ggplot aes geom_histogram
 NULL
 ```
+
+. . .
 
 Alternatively, from the R command prompt:
 
@@ -365,6 +399,8 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 ```
 
 Makes your code less verbose, but also less transparent
+
+. . .
 
 **To mitigate**: 
 
@@ -387,15 +423,19 @@ Also, look at tidyverse code at GitHub (my favorite is [{usethis}](https://githu
 
 There are two kinds of functions:
 
-### Pure function
+. . .
 
-Returns a value that depends only on its inputs, e.g. `sum()`
+**Pure function**:
 
-### Uses side effects
+- Returns a value that depends only on its inputs, e.g. `sum()`
 
-Depends on something other than inputs, e.g. `read.csv()`
+. . .
 
-Or, makes a change in the environment, e.g. `print()`
+**Uses side effects**:
+
+- Depends on something other than inputs, e.g. `read.csv()`
+
+- Or, makes a change in the environment, e.g. `print()`
 
 ## Pure function
 
@@ -414,10 +454,14 @@ Easier to test.
 Side-effects can slow down your function:
 
  - it can be costly to read/write to disk, print to the screen.
+
+. . .
  
 Depending on side effects can introduce uncertainty:
 
  - are you *certain* of what `file.csv` contains?
+
+. . .
 
 Side effects aren't necessarily bad, but you need to take them into account:
 
@@ -450,11 +494,15 @@ devtools::session_info(info = "platform")
 
 Side effects can include:
 
+:::{.incremental}
  - modifying environment: `Sys.setenv()`
  - modifying options: `options()`
  - setting random seed: `set.seed()`
  - setting working directory: `setwd()`
  - creating and wrting to a temporary file
+:::
+
+. . .
  
 {withr} makes it a lot easier to "leave no footprints".
 
@@ -468,6 +516,8 @@ Sys.getlocale("LC_COLLATE")
 
 sort(c("apple", "Banana", "candle"))
 ```
+
+. . .
 
 To temporarily set locale:
 
@@ -545,9 +595,13 @@ You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and 
   - embracing `{{}}` for `<data-masking>` functions
   - be aware of `<tidy-select>` functions, work differently
 
+. . .
+
 <hr>
 
 Using "standard" style and design makes things easier for you, your users, and *future you*.
+
+. . .
 
 <hr>
 

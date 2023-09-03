@@ -31,12 +31,13 @@ website:
           href: 03-iteration-01.qmd
         - text: "Iteration Part 2"
           href: 04-iteration-02.qmd
+
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
-    
+
 comments:
   hypothesis: true
   
