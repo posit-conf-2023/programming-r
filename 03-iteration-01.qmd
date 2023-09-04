@@ -1,4 +1,455 @@
 ---
-title: "03-iteration-01"
-format: revealjs
+title: "useR to programmeR"
+subtitle: "Iteration 1"
+author: "Emma Rand and Ian Lyttle"
+format: 
+  revealjs:
+    theme: [simple]
+    slide-number: true
+    chalkboard: true
+    code-link: true
+    code-line-numbers: false
+bibliography: references.bib
 ---
+
+# Overview
+
+## Overview
+
+brief intro
+
+## Learning Objectives
+
+At the end of this section you will be able to:
+
+::: {style="font-size: 70%;"}
+-   
+
+-   
+
+-   
+
+-   
+
+-   
+:::
+
+## What is iteration
+
+lksdjfjksdf
+
+## Iteration in R
+
+Iteration is different in R because much is an inherent part of the language.
+
+. . . 
+
+For example, if
+
+```{r}
+nums <- c(3, 1, 6, 4)
+
+```
+
+Then
+
+```{r}
+#| eval: false
+2 * nums
+```
+is
+
+. . . 
+
+``` r
+[1]  6  2 12  8
+```
+and NOT
+
+. . . 
+
+``` r
+[1]  6  2 12  8  6  2 12  8
+```
+
+other languages, a for loop would be right after hello world
+
+## Iteration in R
+
+For examples
+
+-   `group_by()` with `summarize()`
+
+-   `facet_wrap()`
+
+## slide
+
+"functional programming" because functions take other functions as input
+
+-   modifying multiple columns {dplyr}
+
+-   reading multiple files {purrr}
+
+-   saving multiple outputs {purrr}
+
+# Set up
+
+## Project and Packages
+
+🎬 Create a Project:
+
+```{r}
+#| eval: false
+
+usethis::create_project("workshop-iterations")
+```
+
+. . . 
+
+🎬 Load packages:
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Data
+
+🎬 Load `penguins` data set
+
+```{r}
+data(penguins)
+glimpse(penguins)
+```
+
+# Modifying multiple columns
+
+## Scenario
+
+Recall our standard error function from this morning:
+
+```{r}
+sd_error <- function(x){
+  sd(x, na.rm = TRUE) / sqrt(sum(!is.na(x)))
+}
+```
+
+## Scenario
+
+Which we might use as:
+
+```{r}
+penguins |> 
+  summarise(se_bill_len = sd_error(bill_length_mm),
+            se_bill_dep = sd_error(bill_depth_mm),
+            se_flip_len = sd_error(flipper_length_mm ),
+            se_body_mas = sd_error(body_mass_g))
+```
+
+. . .
+
+⚠️ Code repetition!
+
+## Solution: `across()`
+
+```{r}
+penguins |> 
+  summarise(across(bill_length_mm:body_mass_g, sd_error))
+```
+
+## `across()` Arguments
+
+`across(.cols, .fns, .names)`
+
+
+3 important arguments
+
+-   which columns you want to iterate over: `.cols = bill_length_mm:body_mass_g`
+
+. . .
+
+-   what you want to do to each column: `.fns = sd_error`
+
+    -   single function
+    -   include arguments to that function
+    -   more than one function
+
+. . .
+
+-   `.names` to control output
+
+## selecting columns with `.cols`
+
+-   we could use colon notation, `bill_length_mm:body_mass_g`, because columns are adjacent
+
+-   `.cols` uses same specification as `select()`: `starts_with()`, `ends_with()`, `contains()`, `matches()`
+
+## selecting columns with `.cols`
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), sd_error))
+```
+
+## selecting columns with `.cols`
+
+-   `everything()`: all non-grouping columns
+
+```{r}
+penguins |> 
+  group_by(species, island, sex) |> 
+  summarise(across(everything(), sd_error))
+```
+
+## selecting columns with `.cols`
+
+-   `everything()`: all non-grouping columns without year
+
+```{r}
+penguins |> 
+  select(-year) |>
+  group_by(species, island, sex) |> 
+  summarise(across(everything(), sd_error))
+```
+
+## selecting columns with `.cols`
+
+-   all the numeric columns *without* grouping: `where()`
+
+```{r}
+penguins |> 
+  select(-year) |>
+  summarise(across(where(is.numeric), sd_error))
+```
+
+## Your turn
+
+🎬 Write a function .......
+
+(maybe based on gapminder)
+
+## `.funs`: calling one function
+
+-   we can pass a function, `sd_error` to `across()` since R is a functional programming language
+
+-   note we are not calling `sd_error()`
+
+-   instead we pass `sd_error` so `across()` can call it
+
+-   thus function name is **not** followed by `()`
+
+show the error - easy to forget in functions eg my_summary <- function(df, cols = where(is.numeric)){...}
+
+
+## Include arguments
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), mean))
+```
+
+. . .
+
+We get the NA because we have missing values[^1].
+
+
+[^1]: There is no problem when we use `sd_error()` because we accounted for NA in our function definition
+
+
+## Include arguments
+
+`mean()` has an `na.rm` argument. How can we pass on `na.rm = TRUE`?
+
+. . . 
+
+The solution is to create a new function that calls `mean()` with `na.rm = TRUE`
+
+. . . 
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), 
+                   function(x) mean(x, na.rm = TRUE)))
+```
+
+## Anonymous functions
+
+Instead of writing `function` we can use `\`
+
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), \(x) mean(x, na.rm = TRUE)))
+```
+
+. . .
+
+-   This is called an **anonymous** or **lambda** function. 
+
+-   It is anonymous because we do not give it a name with `<-`
+
+
+
+## `.funs`: calling \> one function
+
+How can we use more than one function across the columns?
+
+```
+penguins |> 
+  summarise(across(ends_with("mm"), _MORE THAN ONE FUNCTION_))
+```
+
+. . . 
+
+by using a list
+
+## `.funs`: calling \> 1 function
+
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), list(
+    \(x) mean(x, na.rm = TRUE),
+    \(x) sd(x, na.rm = TRUE))))
+```
+
+. . .
+
+the `_1` and `_2` are not very useful.
+
+
+## `.funs`: calling \> one function
+
+We can improve with naming the elements in the list
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), list(
+    mean = \(x) mean(x, na.rm = TRUE),
+    sdev = \(x) sd(x, na.rm = TRUE))))
+```
+
+. . .
+
+The column name is `{.col}_{.fn}`: `bill_length_mm_mean`
+
+. . .
+
+We can change using `.names`
+
+## `.names` to control output
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"),
+                   list(mean = \(x) mean(x, na.rm = TRUE),
+                        sdev = \(x) sd(x, na.rm = TRUE)),
+                   .names = "{.fn}_of_{.col}"))
+```
+
+## `.names` to control output
+
+Especially important for mutate because column names are used in `across()`
+
+
+Recall our `to_z()` function
+```{r}
+to_z <- function(x, middle = 1) {
+  trim = (1 - middle)/2
+  (x - mean(x, na.rm = TRUE, trim = trim)) / sd(x, na.rm = TRUE)
+}
+```
+
+which we used like this
+
+```{r}
+penguins |>
+  mutate(
+    z_bill_length_mm = to_z(bill_length_mm),
+    z_bill_depth_mm = to_z(bill_depth_mm),
+    z_flipper_length_mm = to_z(flipper_length_mm)
+  ) |> 
+  glimpse()
+```
+## `.names` to control output
+
+
+
+```{r}
+penguins |>
+  mutate(across(ends_with("mm"),
+                to_z)
+  ) |> 
+  glimpse()
+```
+
+Results go into existing columns
+
+##
+
+```{r}
+penguins |>
+  mutate(across(ends_with("mm"),
+                to_z,
+                .names = "z_{.col}")
+  ) |> 
+  glimpse()
+```
+
+## A note on dots in argument names
+
+- 
+
+-   
+
+## Iteration over columns in `filter()`
+
+??
+
+## `across()` in functions
+
+
+
+```{r}
+my_summary <- function(df, cols){
+  df |> 
+    summarise(across({{cols}},
+                     list(mean = \(x) mean(x, na.rm = TRUE),
+                          sdev = \(x) sd(x, na.rm = TRUE)),
+                     .names = "{.fn}_of_{.col}"),
+              .groups = "drop")
+}
+
+```
+
+
+```{r}
+my_summary(penguins, ends_with("mm"))
+```
+
+```{r}
+my_summary <- function(df, cols = where(is.numeric)){
+  df |> 
+    summarise(across({{cols}},
+                     list(mean = \(x) mean(x, na.rm = TRUE),
+                          sdev = \(x) sd(x, na.rm = TRUE)),
+                     .names = "{.fn}_of_{.col}"),
+              .groups = "drop")
+}
+
+```
+
+```{r}
+my_summary(penguins)
+```
+
+
+
+## Your turn
+
+
+## link between across and pivot_longer
+
+??
+
+## Summary
