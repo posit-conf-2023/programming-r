@@ -42,7 +42,7 @@ lksdjfjksdf
 
 Iteration is different in R because much is an inherent part of the language.
 
-. . . 
+. . .
 
 For example, if
 
@@ -57,16 +57,18 @@ Then
 #| eval: false
 2 * nums
 ```
+
 is
 
-. . . 
+. . .
 
 ``` r
 [1]  6  2 12  8
 ```
+
 and NOT
 
-. . . 
+. . .
 
 ``` r
 [1]  6  2 12  8  6  2 12  8
@@ -104,7 +106,7 @@ For examples
 usethis::create_project("workshop-iterations")
 ```
 
-. . . 
+. . .
 
 🎬 Load packages:
 
@@ -160,7 +162,6 @@ penguins |>
 ## `across()` Arguments
 
 `across(.cols, .fns, .names)`
-
 
 3 important arguments
 
@@ -238,8 +239,7 @@ penguins |>
 
 -   thus function name is **not** followed by `()`
 
-show the error - easy to forget in functions eg my_summary <- function(df, cols = where(is.numeric)){...}
-
+show the error - easy to forget in functions eg my_summary \<- function(df, cols = where(is.numeric)){...}
 
 ## Include arguments
 
@@ -252,19 +252,15 @@ penguins |>
 
 We get the NA because we have missing values[^1].
 
-
-[^1]: There is no problem when we use `sd_error()` because we accounted for NA in our function definition
-
-
 ## Include arguments
 
 `mean()` has an `na.rm` argument. How can we pass on `na.rm = TRUE`?
 
-. . . 
+. . .
 
 The solution is to create a new function that calls `mean()` with `na.rm = TRUE`
 
-. . . 
+. . .
 
 ```{r}
 penguins |> 
@@ -276,7 +272,6 @@ penguins |>
 
 Instead of writing `function` we can use `\`
 
-
 ```{r}
 penguins |> 
   summarise(across(ends_with("mm"), \(x) mean(x, na.rm = TRUE)))
@@ -284,27 +279,24 @@ penguins |>
 
 . . .
 
--   This is called an **anonymous** or **lambda** function. 
+-   This is called an **anonymous** or **lambda** function.
 
 -   It is anonymous because we do not give it a name with `<-`
-
-
 
 ## `.funs`: calling \> one function
 
 How can we use more than one function across the columns?
 
-```
+```         
 penguins |> 
   summarise(across(ends_with("mm"), _MORE THAN ONE FUNCTION_))
 ```
 
-. . . 
+. . .
 
 by using a list
 
 ## `.funs`: calling \> 1 function
-
 
 ```{r}
 penguins |> 
@@ -316,7 +308,6 @@ penguins |>
 . . .
 
 the `_1` and `_2` are not very useful.
-
 
 ## `.funs`: calling \> one function
 
@@ -351,8 +342,8 @@ penguins |>
 
 Especially important for mutate because column names are used in `across()`
 
-
 Recall our `to_z()` function
+
 ```{r}
 to_z <- function(x, middle = 1) {
   trim = (1 - middle)/2
@@ -371,9 +362,8 @@ penguins |>
   ) |> 
   glimpse()
 ```
+
 ## `.names` to control output
-
-
 
 ```{r}
 penguins |>
@@ -385,7 +375,7 @@ penguins |>
 
 Results go into existing columns
 
-##
+## 
 
 ```{r}
 penguins |>
@@ -398,7 +388,7 @@ penguins |>
 
 ## A note on dots in argument names
 
-- 
+-   
 
 -   
 
@@ -407,8 +397,6 @@ penguins |>
 ??
 
 ## `across()` in functions
-
-
 
 ```{r}
 my_summary <- function(df, cols){
@@ -421,7 +409,6 @@ my_summary <- function(df, cols){
 }
 
 ```
-
 
 ```{r}
 my_summary(penguins, ends_with("mm"))
@@ -443,13 +430,12 @@ my_summary <- function(df, cols = where(is.numeric)){
 my_summary(penguins)
 ```
 
-
-
 ## Your turn
-
 
 ## link between across and pivot_longer
 
 ??
 
 ## Summary
+
+[^1]: There is no problem when we use `sd_error()` because we accounted for NA in our function definition
