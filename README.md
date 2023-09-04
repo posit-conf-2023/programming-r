@@ -25,7 +25,7 @@ This is a one-day, hands-on workshop for those who have embraced the tidyverse a
 
 ### Please note
 
-These materials are under active development, which will likely continue through August 2023. Given this context: if you have a concern, please [file an issue](https://github.com/posit-conf-2023/programming-r/issues).
+These materials are under active development, which will likely continue until the start of the workshop. Given this context: if you have a concern, please [file an issue](https://github.com/posit-conf-2023/programming-r/issues).
 
 ## Prework
 
