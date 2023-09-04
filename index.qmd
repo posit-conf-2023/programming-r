@@ -8,7 +8,7 @@ by Emma Rand and Ian Lyttle
 
 🗓️ September 18, 2023\
 ⏰ 09:00 - 17:00\
-🏨 Grand Hall J\
+🏨 Grand Hall MN\
 ✍️ [pos.it/conf](http://pos.it/conf)
 
 ------------------------------------------------------------------------
@@ -41,7 +41,7 @@ In short:
     - Make sure your [display name](https://support.discord.com/hc/en-us/articles/12620128861463-New-Usernames-Display-Names#h_01GXPQABMYGEHGPRJJXJMPHF5C) is the one you used to register for the conference.
     - In your “About Me”, put the name of your workshop(s).
 
-    Closer to the start of the conference, we will invite you to the posit::conf Discord server.
+    Closer to the start of the conference, we will invite you to the posit::conf() Discord server.
 
 
 More details on our [pre-requisites page](pre-reqs.qmd).
