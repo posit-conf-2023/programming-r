@@ -4,7 +4,7 @@ subtitle: "👋 & Functions 1"
 author: "Emma Rand and Ian Lyttle"
 format: 
   revealjs:
-    theme: [simple]
+    theme: [simple, styles.scss]
     slide-number: true
     chalkboard: true
     code-link: true
@@ -24,22 +24,25 @@ This is a two-day, hands-on workshop for those who have embraced the tidyverse a
 
 \
 
-### WiFi
+### Material
 
--   Username: `conf22`
--   Password: `together!`
+-   <https://posit-conf-2023.github.io/programming-r/>
 
 ## The team
 
 ::: columns
-::: {.column width="50%"}
-Emma Rand 🐦[\@er13_r](https://twitter.com/er13_r)
+::: {.column width="55%"}
+Emma Rand
+
+🐘[\@3mma\@mastodon.social](https://mastodon.social/@3mma)
 
 Stephanie Hazlitt
 :::
 
-::: {.column width="50%"}
-Ian Lyttle 🐦[\@ijlyttle](https://twitter.com/ijlyttle)
+::: {.column width="45%"}
+Ian Lyttle
+
+🐘[\@ijlyttle\@vis.social](https://mastodon.social/@ijlyttle@vis.social)
 
 Mouna Belaid
 :::
@@ -47,7 +50,15 @@ Mouna Belaid
 
  
 
-Standing on the shoulders of [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023, [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham
+Standing on the shoulders of
+
+::: {style="font-size: 80%;"}
+-   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
+
+-   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham
+
+-   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr-2
+:::
 
 \
 
@@ -80,13 +91,13 @@ Reporting:
     -   Username: `conf22`
     -   Password: `together!`
 -   Gender neutral bathrooms xxxxxxxxx.
--   The meditation room is xxxxx. Open 8am - 5pm, Monday - Thursday.
--   The lactation room is located at xxxxx. Open 8am - 5pm, Monday - Thursday.
--   Participants who do not wish to be photographed have red lanyards, please note lanyard colors before taking a photo and respect their choices.
+-   Meditation room xxxxx. 8am - 5pm, Monday - Thursday.
+-   Lactation room xxxxx. 8am - 5pm, Monday - Thursday.
+-   Participants who do not wish to be photographed have red lanyards
 
 ## 🙏 to
 
--   the TAs
+-   the Steph and Mouna
 
 -   colleagues, friends and learners at Schneider Electric, University of York and RForwards!
 
@@ -96,28 +107,32 @@ Reporting:
 
 -   Ian!
 
+. . .
+
+-   Experience 🍱 🥗 🌮 🍴 🕐
+
 ## Prerequisites TOFIX
 
 You need a laptop with the following installed:
 
--   R version \>= 4.2 and RStudio \>= 2023.03
--   The following packages:
+-   R version ≥4.2 and RStudio ≥2023.03
+-   The following packages: {tidyverse}, {palmerpenguins}
 
 🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.qmd)
 
-## Schedule
+## Schedule {.smaller}
 
 | Time          | Activity                                                                                                          |
-|:----------------------------------|:------------------------------------|
+|:--------------------|:--------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, indirection and tidy evaluation |
 | 10:30 - 11:00 | *Coffee break*                                                                                                    |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                                        |
 | 12:30 - 13:30 | *Lunch break*                                                                                                     |
-| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns       |
+| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns                                   |
 | 15:00 - 15:30 | *Coffee break*                                                                                                    |
-| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                                            |
 
-## How we will work
+## How we will work TOFIX
 
 -   stickies
 
@@ -129,17 +144,20 @@ You need a laptop with the following installed:
 
 -   no stupid questions
 
--   🎬 Action! (today)
+-   🎬 Action!
 
 ## Learning Objectives
 
-::: small
 At the end of this section you will be able to:
 
--   xx
--   x
--   x
--   x
+::: {style="font-size: 70%;"}
+-   explain the rationale for writing functions
+-   write vector functions
+    -   that take one or more vectors as input and output a vector
+    -   that take one or more vectors as input and output a single value
+-   specify defaults for function argument
+-   write functions that take dataframes as input and output a dataframe
+-   using embracing to allow data masking and tidy selection within functions
 :::
 
 # Set up
@@ -404,18 +422,15 @@ to_z(penguins$bill_length_mm)
 
 ## Your turn
 
-🎬 Write that performs the Box-Cox power transformation using the value of (non-zero) lambda ($\lambda$) supplied.
+🎬 Write a function that performs the Box-Cox power transformation using the value of (non-zero) lambda ($\lambda$) supplied.
 
 $$bc = \frac{x^{\lambda} - 1}{\lambda}$$
-
 
 ## A solution
 
 ```{r}
 
 ```
-
-
 
 ## Summary functions
 
