@@ -123,7 +123,7 @@ You need a laptop with the following installed:
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                                          |
-|:--------------------|:--------------------------------------------------|
+|:---------------------|:-------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, indirection and tidy evaluation |
 | 10:30 - 11:00 | *Coffee break*                                                                                                    |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                                        |
@@ -169,7 +169,7 @@ At the end of this section you will be able to:
 ```{r}
 #| eval: false
 
-usethis::create_project("workshop-functions")
+usethis::use_course("posit-conf-2023/programming-r-exercises")
 ```
 
 🎬 Load packages:
