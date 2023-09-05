@@ -249,32 +249,50 @@ glimpse(penguins)
 -   impact from code: reach and clarity
 -   efficiency: update code in one place, decrease error rate, improve ability to reuse
 
-## Example
+## Example 
 
-We have several measurements `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm` and `body_mass_g`
+We have several measurements:
 
-```{r}
-#| echo: false
-#| layout-ncol: 2
-penguins |> ggplot(aes(x = bill_length_mm)) +
-  geom_histogram(bins = 20) 
-penguins |> ggplot(aes(x = bill_depth_mm)) +
-  geom_histogram(bins = 20) 
-penguins |> ggplot(aes(x = flipper_length_mm)) +
-  geom_histogram(bins = 20) 
-penguins |> ggplot(aes(x = body_mass_g)) +
-  geom_histogram(bins = 20) 
-```
+-   `bill_length_mm`
+-   `bill_depth_mm`
+-   `flipper_length_mm`
+-   `body_mass_g`
+
 
 These are on very different scales
 
+## 
+```{r}
+#| echo: false
+#| layout-ncol: 2
+
+penguins |> ggplot(aes(x = bill_length_mm)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+penguins |> ggplot(aes(x = bill_depth_mm)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+penguins |> ggplot(aes(x = flipper_length_mm)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+penguins |> ggplot(aes(x = body_mass_g)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+```
+
+
+
 ## Example
 
-A common solution is to apply a $z$ score transformation to each variable which normalises the values to have a mean of 0 and a standard deviation of 1
+-   difficult to plot on same axis or determine what value is large for that variable
+
+-   A common solution is to apply a $z$ score transformation to each variable.
+
+-   Normalises the values to have a mean of 0 and a standard deviation of 1
 
 $$z = \frac{x - \bar{x}}{s.d.}$$
 
-## Example
+## Apply transformation
 
 We can apply the same transformation to each variable:
 
@@ -288,14 +306,32 @@ penguins <- penguins |>
   )
 ```
 
-How to shorten and make more clear: `(bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE)`
+## Long, unclear
+
+`(bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE)`
+
+-   Quite a lot of code
+-   Difficult to determine what the transformation is
+
+How to shorten and make more clear?
 
 ## Coping and pasting
 
-1.  Error prone
-2.  Difficult to follow: more code than needed, difficult to determine what the transformation is
+-   is error prone
 
-key point: you may think you have to write complex functions - you don't, start with the simple things.
+
+How to make fewer mistakes?
+
+. . . 
+
+Writing a function:
+
+-   can be named to make transformation transparent
+-   will make code shorter
+-   can be reused
+
+
+🔑️ You may think you have to write complex functions - you don't! Start with the simple things.
 
 # Types of function
 
