@@ -520,19 +520,19 @@ to_z <- function(x, middle) {
 
 ## Try it out
 
-::: {style="font-size: 60%;"}
+::: {style="font-size: 80%;"}
 ```{r}
 to_z(penguins$bill_length_mm, middle = 0.2)
+
 ```
 :::
 
-##
-
-But what if we forget?
+## But what if we forget?
 
 ```{r}
 #| error: true
 to_z(penguins$bill_length_mm)
+
 ```
 
 ## Give a default
@@ -544,6 +544,7 @@ to_z <- function(x, middle = 1) {
   trim = (1 - middle)/2
   (x - mean(x, na.rm = TRUE, trim = trim)) / sd(x, na.rm = TRUE)
 }
+
 ```
 
 Try it out
