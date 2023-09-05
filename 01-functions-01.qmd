@@ -56,7 +56,7 @@ Standing on the shoulders of
 
 -   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham
 
--   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr-2
+-   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
 :::
 
 \
@@ -72,17 +72,16 @@ To each other!
 
 ## Code of Conduct TOFIX
 
-[Full Code of Conduct & COVID](https://www.rstudio.com/conference/2022/2022-conf-code-of-conduct/). **Please Review**
+[Full Code of Conduct](https://posit.co/code-of-conduct/). **Please Review**
 
--   😷 Please wear a mask
 -   💙 Treat everyone with respect
--   🧡 Everyone should feel welcome
+-   🧡 Everyone should feel welcome and safe
 
 Reporting:
 
--   🗣️ any posit::conf staff member, xxx is our contact
--   📧 `cc@cccccc.com`
--   ☎️ +
+-   🗣️ any posit::conf staff member (t-shirt) or Info desk
+-   📧 `conf@posit.com`
+-   ☎️ 844-448-1212
 
 ## Housekeeping TOFIX
 
@@ -117,19 +116,19 @@ You need a laptop with the following installed:
 -   R version ≥4.2 and RStudio ≥2023.03
 -   The following packages: {tidyverse}, {palmerpenguins}
 
-🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.qmd)
+🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.html)
 
 ## Schedule {.smaller}
 
-| Time          | Activity                                                                                                          |
-|:---------------------|:-------------------------------------------------|
-| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, indirection and tidy evaluation |
-| 10:30 - 11:00 | *Coffee break*                                                                                                    |
-| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                                        |
-| 12:30 - 13:30 | *Lunch break*                                                                                                     |
-| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns                                   |
-| 15:00 - 15:30 | *Coffee break*                                                                                                    |
-| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                                            |
+| Time          | Activity                                                                                      |
+|:---------------------|:---------------------------------------------------------------------------------------|
+| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing   |
+| 10:30 - 11:00 | ☕ *Coffee break*                                                                             |
+| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                    |
+| 12:30 - 13:30 | 🍱 🥗 🌮 🍴   *Lunch break*                                                                   |
+| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns               |
+| 15:00 - 15:30 | ☕ *Coffee break*                                                                             |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                        |
 
 ## How we will work TOFIX
 
@@ -149,7 +148,7 @@ You need a laptop with the following installed:
 
 At the end of this section you will be able to:
 
-::: {style="font-size: 70%;"}
+::: {style="font-size: 80%;"}
 -   explain the rationale for writing functions
 -   write vector functions
     -   that take one or more vectors as input and output a vector
@@ -177,6 +176,9 @@ usethis::use_course("posit-conf-2023/programming-r-exercises")
 library(tidyverse)
 library(palmerpenguins)
 ```
+
+
+. . .
 
 ## Data
 
