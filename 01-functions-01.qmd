@@ -557,13 +557,61 @@ to_z(penguins$bill_length_mm)
 
 🎬 Write a function that performs the Box-Cox power transformation using the value of (non-zero) lambda ($\lambda$) supplied.
 
-$$bc = \frac{x^{\lambda} - 1}{\lambda}$$
+## Your turn: Box-Cox
 
-## A solution
+$$bc = \frac{x^{\lambda} - 1}{\lambda}  \text{ for }\lambda \ne 0$$ 
+
+-   Set the default $\lambda = 1$
+
+. . . 
+
+-   Still have time? Check $\lambda \ne 0$
+-   Still have time? Check and amend for: 
+
+$$
+bc = \begin{cases}
+  \frac{x^{\lambda} - 1}{\lambda} & \text{for }\lambda \ne 0\\    
+  log(x) & \text{for }\lambda = 0    
+\end{cases}
+$$
+
+
+## A solution 1
 
 ```{r}
-
+to_box_cox <- function(x, lambda = 1) {
+  (x^lambda - 1) / lambda
+}
 ```
+
+## A solution 1 - test
+
+```{r}
+vals <- rexp(10000, 10) 
+vals |> hist()
+```
+
+## A solution 1 - test
+
+```{r}
+to_box_cox(vals, 0.3) |> 
+  hist()
+```
+
+## A solution 2
+
+Check $\lambda \ne 0$
+
+## A solution 3
+
+Check and amend for: 
+
+$$
+bc = \begin{cases}
+  \frac{x^{\lambda} - 1}{\lambda} & \text{for }\lambda \ne 0\\    
+  log(x) & \text{for }\lambda = 0    
+\end{cases}
+$$
 
 ## Summary functions
 
