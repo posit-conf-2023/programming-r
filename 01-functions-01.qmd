@@ -160,7 +160,12 @@ At the end of this section you will be able to:
 
 # Set up
 
-## Project and Packages
+## Project
+
+
+https://github.com/posit-conf-2023/programming-r-exercises
+
+
 
 🎬 Create a Project:
 
@@ -170,17 +175,65 @@ At the end of this section you will be able to:
 usethis::use_course("posit-conf-2023/programming-r-exercises")
 ```
 
+##
+
+```
+> usethis::use_course("posit-conf-2023/programming-r-exercises")
+✔ Downloading from 'https://github.com/posit-conf-2023/programming-r-exercises/zipball/HEAD'
+Downloaded: 0.26 MB  
+✔ Download stored in 'C:/Users/er13/OneDrive - University of York/Desktop/Desktop/posit-conf-2023-programming-r-exercises-978baff.zip'
+✔ Unpacking ZIP file into 'posit-conf-2023-programming-r-exercises-978baff/' (45 files extracted)
+Shall we delete the ZIP file ('posit-conf-2023-programming-r-exercises-978baff.zip')?
+
+1: Not now
+2: Yeah
+3: Nope
+```
+🎬 Choose the option that means yes!
+
+##
+
+```
+✔ Deleting 'posit-conf-2023-programming-r-exercises-978baff.zip'
+✔ Opening project in RStudio
+```
+. . .
+
+RStudio will restart
+
+## Create a `.R`
+
+```{r}
+#| eval: false
+
+usethis::use_r("functions-01")
+```
+
+
+
+## Packages
+
+
 🎬 Load packages:
 
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
 ```
+```
+── Attaching core tidyverse packages ──────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     ── Conflicts ────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package to force all conflicts to become errors'
+```
 
+## Load `penguins`
 
-. . .
-
-## Data
 
 🎬 Load `penguins` data set
 
