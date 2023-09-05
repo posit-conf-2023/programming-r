@@ -54,7 +54,7 @@ Standing on the shoulders of
 ::: {style="font-size: 80%;"}
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
 
--   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham
+-   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham-style
 
 -   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
 :::
@@ -335,7 +335,18 @@ Writing a function:
 
 # Types of function
 
-## Types of function
+## Types of function {auto-animate=true}
+
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+. . .
+
+2.  data frame functions: df as input and df as output
+
+
+## Types of function {auto-animate=true}
 
 We will cover two types of function
 
@@ -347,13 +358,14 @@ We will cover two types of function
 
 2.  data frame functions: df as input and df as output
 
+
 # Vector functions
 
 ## Output same length as input
 
 -   output same length as input
 -   work well in `mutate()`
--   appropriate for the example
+-   appropriate for the *z*-transformation example
 
 ## General
 
@@ -363,6 +375,8 @@ To turn your code into a function you need:
 -   the arguments - which represent the bits that vary
 -   the code body for the function
 
+. . .
+
 ``` r
 name <- function(arguments) {
   code body
@@ -371,7 +385,9 @@ name <- function(arguments) {
 
 ## Function name
 
-Use a verb - The tidyverse style guide @wickham but good advice regardless
+Use a verb - [The tidyverse style guide](https://style.tidyverse.org/index.html) [@wickham-style] but good advice regardless
+
+. . .
 
 Difficulty in naming? Should this be two or three functions?
 
@@ -413,29 +429,42 @@ penguins <- penguins |>
 
 Identify the arguments: the things that vary across calls
 
+::: {style="font-size: 60%;"}
 ``` r
- 
 (bill_length_mm    - mean(bill_length_mm,    na.rm = TRUE)) / sd(bill_length_mm,    na.rm = TRUE)
 (bill_depth_mm     - mean(bill_depth_mm,     na.rm = TRUE)) / sd(bill_depth_mm,     na.rm = TRUE)
 (flipper_length_mm - mean(flipper_length_mm, na.rm = TRUE)) / sd(flipper_length_mm, na.rm = TRUE)
 (body_mass_g       - mean(body_mass_g,       na.rm = TRUE)) / sd(body_mass_g,       na.rm = TRUE)
 ```
+:::
+
+\
 
 . . .
 
+::: {style="font-size: 60%;"}
 ``` r
- 
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 ```
+:::
 
 🟧 is x
 
 ## Example
 
 Put into the template
+
+``` r
+name <- function(x) {
+  body does things with x
+}
+```
+
+\
+
 
 ```{r}
 to_z <- function(x) {
@@ -445,7 +474,7 @@ to_z <- function(x) {
 
 ## Apply
 
-Rewrite the call to`mutate()` as:
+Rewrite the call to `mutate()` as:
 
 ```{r}
 penguins <- penguins |>
@@ -467,9 +496,18 @@ Much shorter, much more clear.
 
 *the fraction (0 to 0.5) of observations to be trimmed from each end of x before the mean is computed.*
 
-Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end\[\^1\]
+. . .
 
-![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstflipper_length_mming that trim - (1 - middle)/2"}
+Suppose we want to specify the *middle* proportion left rather than the proportion trimmed from each end [^1]
+
+## A modification
+
+-   A value of 0.1 for `trim` trims 0.1 from each end leaving 0.8 in the middle
+
+-   trim = (1 - middle)/2
+
+
+![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim = (1 - middle)/2"}
 
 ## Add an argument
 
@@ -480,11 +518,15 @@ to_z <- function(x, middle) {
 }
 ```
 
-Try it out
+## Try it out
 
+::: {style="font-size: 60%;"}
 ```{r}
 to_z(penguins$bill_length_mm, middle = 0.2)
 ```
+:::
+
+##
 
 But what if we forget?
 
