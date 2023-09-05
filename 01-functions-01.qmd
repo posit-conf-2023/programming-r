@@ -16,11 +16,10 @@ bibliography: references.bib
 
 ## Introductions
 
-This is a two-day, hands-on workshop for those who have embraced the tidyverse and want to build their own packages.
+This is a two-day, hands-on workshop for those who have embraced the tidyverse and want to improve their R programming skills and, especially, reduce the amount of duplication in their code.
 
--   Have you written a few of your own R functions?
--   Are you ready to start sharing your code (or data) through R packages?
--   Are you curious what you can do to make your first R packages easy for your users to use, and for you to maintain?
+-   do you have experience equivalent to an introductory data science course using tidyverse?
+-   are you comfortable with the [Whole game](https://r4ds.hadley.nz/whole-game.html) chapter of [R for Data Science (2nd Edition)](https://r4ds.hadley.nz/) by by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
 
 \
 
