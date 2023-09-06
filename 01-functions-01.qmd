@@ -120,15 +120,15 @@ You need a laptop with the following installed:
 
 ## Schedule {.smaller}
 
-| Time          | Activity                                                                                      |
-|:---------------------|:---------------------------------------------------------------------------------------|
-| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing   |
-| 10:30 - 11:00 | ☕ *Coffee break*                                                                             |
-| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                    |
-| 12:30 - 13:30 | 🍱 🥗 🌮 🍴   *Lunch break*                                                                   |
-| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns               |
-| 15:00 - 15:30 | ☕ *Coffee break*                                                                             |
-| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                        |
+| Time          | Activity                                                                                    |
+|:----------------|:------------------------------------------------------|
+| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
+| 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
+| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
+| 12:30 - 13:30 | 🍱 🥗 🌮 🍴 *Lunch break*                                                                   |
+| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns             |
+| 15:00 - 15:30 | ☕ *Coffee break*                                                                           |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                      |
 
 ## How we will work TOFIX
 
@@ -162,10 +162,7 @@ At the end of this section you will be able to:
 
 ## Project
 
-
 https://github.com/posit-conf-2023/programming-r-exercises
-
-
 
 🎬 Create a Project:
 
@@ -175,9 +172,9 @@ https://github.com/posit-conf-2023/programming-r-exercises
 usethis::use_course("posit-conf-2023/programming-r-exercises")
 ```
 
-##
+## 
 
-```
+```         
 > usethis::use_course("posit-conf-2023/programming-r-exercises")
 ✔ Downloading from 'https://github.com/posit-conf-2023/programming-r-exercises/zipball/HEAD'
 Downloaded: 0.26 MB  
@@ -189,14 +186,16 @@ Shall we delete the ZIP file ('posit-conf-2023-programming-r-exercises-978baff.z
 2: Yeah
 3: Nope
 ```
+
 🎬 Choose the option that means yes!
 
-##
+## 
 
-```
+```         
 ✔ Deleting 'posit-conf-2023-programming-r-exercises-978baff.zip'
 ✔ Opening project in RStudio
 ```
+
 . . .
 
 RStudio will restart
@@ -209,10 +208,7 @@ RStudio will restart
 usethis::use_r("functions-01")
 ```
 
-
-
 ## Packages
-
 
 🎬 Load packages:
 
@@ -220,7 +216,8 @@ usethis::use_r("functions-01")
 library(tidyverse)
 library(palmerpenguins)
 ```
-```
+
+```         
 ── Attaching core tidyverse packages ──────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.2     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.0
@@ -233,7 +230,6 @@ library(palmerpenguins)
 ```
 
 ## Load `penguins`
-
 
 🎬 Load `penguins` data set
 
@@ -249,7 +245,7 @@ glimpse(penguins)
 -   impact from code: reach and clarity
 -   efficiency: update code in one place, decrease error rate, improve ability to reuse
 
-## Example 
+## Example
 
 We have several measurements:
 
@@ -258,10 +254,10 @@ We have several measurements:
 -   `flipper_length_mm`
 -   `body_mass_g`
 
-
 These are on very different scales
 
 ## 
+
 ```{r}
 #| echo: false
 #| layout-ncol: 2
@@ -279,8 +275,6 @@ penguins |> ggplot(aes(x = body_mass_g)) +
   geom_histogram(bins = 20) +
   theme_gray(base_size = 22)
 ```
-
-
 
 ## Example
 
@@ -319,10 +313,9 @@ How to shorten and make more clear?
 
 -   is error prone
 
-
 How to make fewer mistakes?
 
-. . . 
+. . .
 
 Writing a function:
 
@@ -330,12 +323,11 @@ Writing a function:
 -   will make code shorter
 -   can be reused
 
-
 🔑️ You may think you have to write complex functions - you don't! Start with the simple things.
 
 # Types of function
 
-## Types of function {auto-animate=true}
+## Types of function {auto-animate="true"}
 
 We will cover two types of function
 
@@ -345,8 +337,7 @@ We will cover two types of function
 
 2.  data frame functions: df as input and df as output
 
-
-## Types of function {auto-animate=true}
+## Types of function {auto-animate="true"}
 
 We will cover two types of function
 
@@ -357,7 +348,6 @@ We will cover two types of function
     ii. summary functions: input is vector, output is a single value
 
 2.  data frame functions: df as input and df as output
-
 
 # Vector functions
 
@@ -465,7 +455,6 @@ name <- function(x) {
 
 \
 
-
 ```{r}
 to_z <- function(x) {
   (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
@@ -498,14 +487,13 @@ Much shorter, much more clear.
 
 . . .
 
-Suppose we want to specify the *middle* proportion left rather than the proportion trimmed from each end [^1]
+Suppose we want to specify the *middle* proportion left rather than the proportion trimmed from each end \[\^1\]
 
 ## A modification
 
 -   A value of 0.1 for `trim` trims 0.1 from each end leaving 0.8 in the middle
 
 -   trim = (1 - middle)/2
-
 
 ![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim = (1 - middle)/2"}
 
@@ -547,11 +535,13 @@ to_z <- function(x, middle = 1) {
 
 ```
 
-Try it out
+## Try it out
 
+::: {style="font-size: 80%;"}
 ```{r}
 to_z(penguins$bill_length_mm)
 ```
+:::
 
 ## Your turn
 
@@ -559,14 +549,14 @@ to_z(penguins$bill_length_mm)
 
 ## Your turn: Box-Cox
 
-$$bc = \frac{x^{\lambda} - 1}{\lambda}  \text{ for }\lambda \ne 0$$ 
+$$bc = \frac{x^{\lambda} - 1}{\lambda}  \text{ for }\lambda \ne 0$$
 
 -   Set the default $\lambda = 1$
 
-. . . 
+. . .
 
 -   Still have time? Check $\lambda \ne 0$
--   Still have time? Check and amend for: 
+-   Still have time? Check and amend for:
 
 $$
 bc = \begin{cases}
@@ -574,7 +564,6 @@ bc = \begin{cases}
   log(x) & \text{for }\lambda = 0    
 \end{cases}
 $$
-
 
 ## A solution 1
 
@@ -604,7 +593,7 @@ Check $\lambda \ne 0$
 
 ## A solution 3
 
-Check and amend for: 
+Check and amend for:
 
 $$
 bc = \begin{cases}
@@ -612,6 +601,18 @@ bc = \begin{cases}
   log(x) & \text{for }\lambda = 0    
 \end{cases}
 $$
+
+## Types of function
+
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+    i.  ✔️ output same length as input.
+
+    **ii. ➡️ summary functions: input is vector, output is a single value**
+
+2.  data frame functions: df as input and df as output
 
 ## Summary functions
 
@@ -634,13 +635,21 @@ sd_error <- function(x){
 
 ```
 
-Note: `sum(TRUE)` = 1 and `sum(FALSE)` = 0 `sum(!is.na(x))` is a bit sorter than `length(x[!is.na(x)])`
+. . .
 
-## 
+Note: `sum(TRUE)` = 1 and `sum(FALSE)` = 0 Thus,`sum(!is.na(x))` gives you the number of `TRUE` (i.e., the number of non-NA values) and is a bit shorter than `length(x[!is.na(x)])`
+
+## Try it out
+
+🎬 Call the function on `penguins$bill_length_mm`
 
 ```{r}
 sd_error(penguins$bill_length_mm)
 ```
+
+. . .
+
+Or in a pipeline
 
 ```{r}
 penguins |> 
@@ -657,7 +666,7 @@ or
 
 $$SS(x) = s^2 * (n-1)$$
 
-## $SS(x)$
+## A solution - 1
 
 ```{r}
 sum_sq <- function(x){
@@ -665,9 +674,31 @@ sum_sq <- function(x){
 }
 ```
 
+
+. . . 
+
+🎬 Try it out
+
 ```{r}
 sum_sq(penguins$bill_length_mm)
 ```
+
+
+
+
+## Types of function
+
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+    i.  ✔️ output same length as input.
+
+    ii. ✔️ summary functions: input is vector, output is a single value
+
+**2.  ➡️ data frame functions: df as input and df as output**
+
+
 
 # Dataframe functions
 
@@ -803,3 +834,5 @@ When tidy evaluation is used
 -   Tests interactive? Unit tests with ChatGTP?
 
 ## Summary
+
+## References
