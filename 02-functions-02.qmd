@@ -1,7 +1,34 @@
 ---
-title: "Functions: Part 2"
-format: revealjs
+title: "useR to programmeR"
+subtitle: "Functions 2"
+author: "Emma Rand and Ian Lyttle"
+format: 
+  revealjs:
+    theme: [simple, styles.scss]
+    slide-number: true
+    chalkboard: true
+    code-link: true
+    code-line-numbers: false
+bibliography: references.bib
 ---
+
+## Learning objectives
+
+In this session, we will discuss:
+
+:::{.incremental}
+  - embracing `{{}}` for `<data-masking>` functions
+  - "standard" style and design of functions
+  - the joys of side-effects
+:::
+
+. . .
+
+<hr>
+
+For coding, we will use `r-programming-exercises`:
+
+ - `R/functions-02-01-embrace.R`, etc.
 
 ## Plot functions: Motivation 
 
@@ -251,19 +278,17 @@ Use descriptive name, usually starts with a verb, unless it returns a well-known
 
 ## Order of arguments
 
-- **data**: data frame (where applicable)
-
-- **descriptors**: arguments without default values
+- **required**: arguments without default values
 
 - **dots**: can be passed on functions that your function calls
 
-- **details**: arguments with default values
+- **optional**: arguments with default values
 
 . . .
 
 Tidyverse Design:
 
- - [Position of dots](https://design.tidyverse.org/dots-position.html)
+ - [Position of dots](https://design.tidyverse.org/dots-after-required.html)
  
  - [Hadley's *first* Substack article](https://tidydesign.substack.com/p/argument-ordering)
 
@@ -336,7 +361,7 @@ conflicts_prefer(dplyr::filter)
 
 ## Your turn
 
-Given this code:
+In `functions-02-02-style.R`:
 
 ```r
 library("tidyverse")
@@ -470,6 +495,8 @@ Side effects aren't necessarily bad, but you need to take them into account:
 ## Your turn
 
 Discuss with your neighbor, are these function-calls are pure, or do they use side effects?
+
+In `functions-02-03-side-effects.R`:
 
 ```r
 x <- prod(1, 2, 3)

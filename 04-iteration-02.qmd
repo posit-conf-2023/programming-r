@@ -1,7 +1,34 @@
 ---
-title: "Iteration: Part 2"
-format: revealjs
+title: "useR to programmeR"
+subtitle: "Iteration 2"
+author: "Emma Rand and Ian Lyttle"
+format: 
+  revealjs:
+    theme: [simple, styles.scss]
+    slide-number: true
+    chalkboard: true
+    code-link: true
+    code-line-numbers: false
+bibliography: references.bib
 ---
+
+## Learning objectives
+
+In this session, we will discuss:
+
+:::{.incremental}
+  - using `purrr::map()` to read a bunch of files
+  - using `purrr::walk()` to write a bunch of files
+  - functional programming, more generally
+:::
+
+. . .
+
+<hr>
+
+For coding, we will use `r-programming-exercises`:
+
+ - `R/iteration-02-01-reading-files.R`, etc.
 
 ## Reading multiple files
 
@@ -39,7 +66,7 @@ here("data/file.csv")
 
 In the `programming-r-exercises` repository:
 
--   open `iteration-02-reading-files.R`
+-   open `iteration-02-01-reading-files.R`
 -   restart R
 
 ## Our turn: reading data manually
@@ -197,6 +224,8 @@ When we read "for each", we might think of using `map()`:
 {purrr} has a function for that: `walk()` (and friends).
 
 ## Our turn - starter code
+
+`iteration-02-02-writing-files.R`
 
 ``` r
 # ?dplyr::group_nest
@@ -367,8 +396,6 @@ dpurrr_summarise <- function(df, reducer, .init) {
 
 . . .
 
-<hr>
-
 ```{r}
 mtcars |> 
   dpurrr_summarise(
@@ -411,6 +438,33 @@ mtcars |>
   ) 
 ```
 
+. . .
+
 We can agree this presents no danger to dplyr.
 
+. . .
+
 In JavaScript, data frames are often arrays of objects (lists), so you'll see formulations like this (e.g. **tidyjs**).
+
+## Summary
+
+:::{.incremental}
+- you can use `purrr::map()` to read a bunch of files
+- you can use `purrr::walk()` to write a bunch of files
+- functional programming has three foundational operations:
+  - filter (`purrr::keep()`)
+  - map
+  - reduce
+:::
+
+. . .
+
+<hr>
+
+Functional programming comes up a lot in JavaScript
+
+
+
+## Wrap-up
+
+TODO: link for survey
