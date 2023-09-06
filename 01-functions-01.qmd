@@ -16,11 +16,10 @@ bibliography: references.bib
 
 ## Introductions
 
-This is a two-day, hands-on workshop for those who have embraced the tidyverse and want to build their own packages.
+This is a two-day, hands-on workshop for those who have embraced the tidyverse and want to improve their R programming skills and, especially, reduce the amount of duplication in their code.
 
--   Have you written a few of your own R functions?
--   Are you ready to start sharing your code (or data) through R packages?
--   Are you curious what you can do to make your first R packages easy for your users to use, and for you to maintain?
+-   do you have experience equivalent to an introductory data science course using tidyverse?
+-   are you comfortable with the [Whole game](https://r4ds.hadley.nz/whole-game.html) chapter of [R for Data Science (2nd Edition)](https://r4ds.hadley.nz/) by by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
 
 \
 
@@ -55,9 +54,9 @@ Standing on the shoulders of
 ::: {style="font-size: 80%;"}
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
 
--   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham
+-   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham-style
 
--   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr-2
+-   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
 :::
 
 \
@@ -73,17 +72,16 @@ To each other!
 
 ## Code of Conduct TOFIX
 
-[Full Code of Conduct & COVID](https://www.rstudio.com/conference/2022/2022-conf-code-of-conduct/). **Please Review**
+[Full Code of Conduct](https://posit.co/code-of-conduct/). **Please Review**
 
--   😷 Please wear a mask
 -   💙 Treat everyone with respect
--   🧡 Everyone should feel welcome
+-   🧡 Everyone should feel welcome and safe
 
 Reporting:
 
--   🗣️ any posit::conf staff member, xxx is our contact
--   📧 `cc@cccccc.com`
--   ☎️ +
+-   🗣️ any posit::conf staff member (t-shirt) or Info desk
+-   📧 `conf@posit.com`
+-   ☎️ 844-448-1212
 
 ## Housekeeping TOFIX
 
@@ -118,19 +116,19 @@ You need a laptop with the following installed:
 -   R version ≥4.2 and RStudio ≥2023.03
 -   The following packages: {tidyverse}, {palmerpenguins}
 
-🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.qmd)
+🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.html)
 
 ## Schedule {.smaller}
 
-| Time          | Activity                                                                                                          |
-|:---------------------|:-------------------------------------------------|
-| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, indirection and tidy evaluation |
-| 10:30 - 11:00 | *Coffee break*                                                                                                    |
-| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                                        |
-| 12:30 - 13:30 | *Lunch break*                                                                                                     |
-| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns                                   |
-| 15:00 - 15:30 | *Coffee break*                                                                                                    |
-| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                                            |
+| Time          | Activity                                                                                    |
+|:----------------|:------------------------------------------------------|
+| 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
+| 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
+| 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
+| 12:30 - 13:30 | 🍱 🥗 🌮 🍴 *Lunch break*                                                                   |
+| 13:30 - 15:00 | [Iteration 1](03-iteration-01.html) Introduction and modifying multiple columns             |
+| 15:00 - 15:30 | ☕ *Coffee break*                                                                           |
+| 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                      |
 
 ## How we will work TOFIX
 
@@ -150,7 +148,7 @@ You need a laptop with the following installed:
 
 At the end of this section you will be able to:
 
-::: {style="font-size: 70%;"}
+::: {style="font-size: 80%;"}
 -   explain the rationale for writing functions
 -   write vector functions
     -   that take one or more vectors as input and output a vector
@@ -162,7 +160,9 @@ At the end of this section you will be able to:
 
 # Set up
 
-## Project and Packages
+## Project
+
+https://github.com/posit-conf-2023/programming-r-exercises
 
 🎬 Create a Project:
 
@@ -172,6 +172,44 @@ At the end of this section you will be able to:
 usethis::use_course("posit-conf-2023/programming-r-exercises")
 ```
 
+## 
+
+```         
+> usethis::use_course("posit-conf-2023/programming-r-exercises")
+✔ Downloading from 'https://github.com/posit-conf-2023/programming-r-exercises/zipball/HEAD'
+Downloaded: 0.26 MB  
+✔ Download stored in 'C:/Users/er13/OneDrive - University of York/Desktop/Desktop/posit-conf-2023-programming-r-exercises-978baff.zip'
+✔ Unpacking ZIP file into 'posit-conf-2023-programming-r-exercises-978baff/' (45 files extracted)
+Shall we delete the ZIP file ('posit-conf-2023-programming-r-exercises-978baff.zip')?
+
+1: Not now
+2: Yeah
+3: Nope
+```
+
+🎬 Choose the option that means yes!
+
+## 
+
+```         
+✔ Deleting 'posit-conf-2023-programming-r-exercises-978baff.zip'
+✔ Opening project in RStudio
+```
+
+. . .
+
+RStudio will restart
+
+## Create a `.R`
+
+```{r}
+#| eval: false
+
+usethis::use_r("functions-01")
+```
+
+## Packages
+
 🎬 Load packages:
 
 ```{r}
@@ -179,7 +217,19 @@ library(tidyverse)
 library(palmerpenguins)
 ```
 
-## Data
+```         
+── Attaching core tidyverse packages ──────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     ── Conflicts ────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package to force all conflicts to become errors'
+```
+
+## Load `penguins`
 
 🎬 Load `penguins` data set
 
@@ -197,30 +247,46 @@ glimpse(penguins)
 
 ## Example
 
-We have several measurements `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm` and `body_mass_g`
+We have several measurements:
+
+-   `bill_length_mm`
+-   `bill_depth_mm`
+-   `flipper_length_mm`
+-   `body_mass_g`
+
+These are on very different scales
+
+## 
 
 ```{r}
 #| echo: false
 #| layout-ncol: 2
-penguins |> ggplot(aes(x = bill_length_mm)) +
-  geom_histogram(bins = 20) 
-penguins |> ggplot(aes(x = bill_depth_mm)) +
-  geom_histogram(bins = 20) 
-penguins |> ggplot(aes(x = flipper_length_mm)) +
-  geom_histogram(bins = 20) 
-penguins |> ggplot(aes(x = body_mass_g)) +
-  geom_histogram(bins = 20) 
-```
 
-These are on very different scales
+penguins |> ggplot(aes(x = bill_length_mm)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+penguins |> ggplot(aes(x = bill_depth_mm)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+penguins |> ggplot(aes(x = flipper_length_mm)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+penguins |> ggplot(aes(x = body_mass_g)) +
+  geom_histogram(bins = 20) +
+  theme_gray(base_size = 22)
+```
 
 ## Example
 
-A common solution is to apply a $z$ score transformation to each variable which normalises the values to have a mean of 0 and a standard deviation of 1
+-   difficult to plot on same axis or determine what value is large for that variable
+
+-   A common solution is to apply a $z$ score transformation to each variable.
+
+-   Normalises the values to have a mean of 0 and a standard deviation of 1
 
 $$z = \frac{x - \bar{x}}{s.d.}$$
 
-## Example
+## Apply transformation
 
 We can apply the same transformation to each variable:
 
@@ -234,18 +300,44 @@ penguins <- penguins |>
   )
 ```
 
-How to shorten and make more clear: `(bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE)`
+## Long, unclear
+
+`(bill_length_mm - mean(bill_length_mm, na.rm = TRUE)) / sd(bill_length_mm, na.rm = TRUE)`
+
+-   Quite a lot of code
+-   Difficult to determine what the transformation is
+
+How to shorten and make more clear?
 
 ## Coping and pasting
 
-1.  Error prone
-2.  Difficult to follow: more code than needed, difficult to determine what the transformation is
+-   is error prone
 
-key point: you may think you have to write complex functions - you don't, start with the simple things.
+How to make fewer mistakes?
+
+. . .
+
+Writing a function:
+
+-   can be named to make transformation transparent
+-   will make code shorter
+-   can be reused
+
+🔑️ You may think you have to write complex functions - you don't! Start with the simple things.
 
 # Types of function
 
-## Types of function
+## Types of function {auto-animate="true"}
+
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+. . .
+
+2.  data frame functions: df as input and df as output
+
+## Types of function {auto-animate="true"}
 
 We will cover two types of function
 
@@ -263,7 +355,7 @@ We will cover two types of function
 
 -   output same length as input
 -   work well in `mutate()`
--   appropriate for the example
+-   appropriate for the *z*-transformation example
 
 ## General
 
@@ -273,6 +365,8 @@ To turn your code into a function you need:
 -   the arguments - which represent the bits that vary
 -   the code body for the function
 
+. . .
+
 ``` r
 name <- function(arguments) {
   code body
@@ -281,7 +375,9 @@ name <- function(arguments) {
 
 ## Function name
 
-Use a verb - The tidyverse style guide @wickham but good advice regardless
+Use a verb - [The tidyverse style guide](https://style.tidyverse.org/index.html) [@wickham-style] but good advice regardless
+
+. . .
 
 Difficulty in naming? Should this be two or three functions?
 
@@ -323,29 +419,41 @@ penguins <- penguins |>
 
 Identify the arguments: the things that vary across calls
 
+::: {style="font-size: 60%;"}
 ``` r
- 
 (bill_length_mm    - mean(bill_length_mm,    na.rm = TRUE)) / sd(bill_length_mm,    na.rm = TRUE)
 (bill_depth_mm     - mean(bill_depth_mm,     na.rm = TRUE)) / sd(bill_depth_mm,     na.rm = TRUE)
 (flipper_length_mm - mean(flipper_length_mm, na.rm = TRUE)) / sd(flipper_length_mm, na.rm = TRUE)
 (body_mass_g       - mean(body_mass_g,       na.rm = TRUE)) / sd(body_mass_g,       na.rm = TRUE)
 ```
+:::
+
+\
 
 . . .
 
+::: {style="font-size: 60%;"}
 ``` r
- 
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 (🟧 - mean(🟧, na.rm = TRUE)) / sd(🟧, na.rm = TRUE)
 ```
+:::
 
 🟧 is x
 
 ## Example
 
 Put into the template
+
+``` r
+name <- function(x) {
+  body does things with x
+}
+```
+
+\
 
 ```{r}
 to_z <- function(x) {
@@ -355,7 +463,7 @@ to_z <- function(x) {
 
 ## Apply
 
-Rewrite the call to`mutate()` as:
+Rewrite the call to `mutate()` as:
 
 ```{r}
 penguins <- penguins |>
@@ -377,9 +485,17 @@ Much shorter, much more clear.
 
 *the fraction (0 to 0.5) of observations to be trimmed from each end of x before the mean is computed.*
 
-Suppose we want to specify the **middle** proportion left rather than the proportion trimmed from each end\[\^1\]
+. . .
 
-![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstflipper_length_mming that trim - (1 - middle)/2"}
+Suppose we want to specify the *middle* proportion left rather than the proportion trimmed from each end \[\^1\]
+
+## A modification
+
+-   A value of 0.1 for `trim` trims 0.1 from each end leaving 0.8 in the middle
+
+-   trim = (1 - middle)/2
+
+![Trim is the proportion trimmed off each end; middle is what's left](images/vector-functions-trim.png){fig-alt="schematic of trim and middle demonstrating that trim = (1 - middle)/2"}
 
 ## Add an argument
 
@@ -390,17 +506,21 @@ to_z <- function(x, middle) {
 }
 ```
 
-Try it out
+## Try it out
 
+::: {style="font-size: 80%;"}
 ```{r}
 to_z(penguins$bill_length_mm, middle = 0.2)
-```
 
-But what if we forget?
+```
+:::
+
+## But what if we forget?
 
 ```{r}
 #| error: true
 to_z(penguins$bill_length_mm)
+
 ```
 
 ## Give a default
@@ -412,25 +532,87 @@ to_z <- function(x, middle = 1) {
   trim = (1 - middle)/2
   (x - mean(x, na.rm = TRUE, trim = trim)) / sd(x, na.rm = TRUE)
 }
+
 ```
 
-Try it out
+## Try it out
 
+::: {style="font-size: 80%;"}
 ```{r}
 to_z(penguins$bill_length_mm)
 ```
+:::
 
 ## Your turn
 
 🎬 Write a function that performs the Box-Cox power transformation using the value of (non-zero) lambda ($\lambda$) supplied.
 
-$$bc = \frac{x^{\lambda} - 1}{\lambda}$$
+## Your turn: Box-Cox
 
-## A solution
+$$bc = \frac{x^{\lambda} - 1}{\lambda}  \text{ for }\lambda \ne 0$$
+
+-   Set the default $\lambda = 1$
+
+. . .
+
+-   Still have time? Check $\lambda \ne 0$
+-   Still have time? Check and amend for:
+
+$$
+bc = \begin{cases}
+  \frac{x^{\lambda} - 1}{\lambda} & \text{for }\lambda \ne 0\\    
+  log(x) & \text{for }\lambda = 0    
+\end{cases}
+$$
+
+## A solution 1
 
 ```{r}
-
+to_box_cox <- function(x, lambda = 1) {
+  (x^lambda - 1) / lambda
+}
 ```
+
+## A solution 1 - test
+
+```{r}
+vals <- rexp(10000, 10) 
+vals |> hist()
+```
+
+## A solution 1 - test
+
+```{r}
+to_box_cox(vals, 0.3) |> 
+  hist()
+```
+
+## A solution 2
+
+Check $\lambda \ne 0$
+
+## A solution 3
+
+Check and amend for:
+
+$$
+bc = \begin{cases}
+  \frac{x^{\lambda} - 1}{\lambda} & \text{for }\lambda \ne 0\\    
+  log(x) & \text{for }\lambda = 0    
+\end{cases}
+$$
+
+## Types of function
+
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+    i.  ✔️ output same length as input.
+
+    **ii. ➡️ summary functions: input is vector, output is a single value**
+
+2.  data frame functions: df as input and df as output
 
 ## Summary functions
 
@@ -453,13 +635,21 @@ sd_error <- function(x){
 
 ```
 
-Note: `sum(TRUE)` = 1 and `sum(FALSE)` = 0 `sum(!is.na(x))` is a bit sorter than `length(x[!is.na(x)])`
+. . .
 
-## 
+Note: `sum(TRUE)` = 1 and `sum(FALSE)` = 0 Thus,`sum(!is.na(x))` gives you the number of `TRUE` (i.e., the number of non-NA values) and is a bit shorter than `length(x[!is.na(x)])`
+
+## Try it out
+
+🎬 Call the function on `penguins$bill_length_mm`
 
 ```{r}
 sd_error(penguins$bill_length_mm)
 ```
+
+. . .
+
+Or in a pipeline
 
 ```{r}
 penguins |> 
@@ -476,7 +666,7 @@ or
 
 $$SS(x) = s^2 * (n-1)$$
 
-## $SS(x)$
+## A solution - 1
 
 ```{r}
 sum_sq <- function(x){
@@ -484,9 +674,31 @@ sum_sq <- function(x){
 }
 ```
 
+
+. . . 
+
+🎬 Try it out
+
 ```{r}
 sum_sq(penguins$bill_length_mm)
 ```
+
+
+
+
+## Types of function
+
+We will cover two types of function
+
+1.  vector functions: one of more vectors as input, one vector as output
+
+    i.  ✔️ output same length as input.
+
+    ii. ✔️ summary functions: input is vector, output is a single value
+
+**2.  ➡️ data frame functions: df as input and df as output**
+
+
 
 # Dataframe functions
 
@@ -496,29 +708,21 @@ Dataframe as input and Dataframe as output
 
 . . .
 
-We might summarise one of our columns like this:
+For example, we might summarise one of our columns like this:
 
 ```{r}
 penguins |> 
-  summarise(mean = mean(bill_length_mm),
-            n = length(bill_length_mm),
-            sd = sd(bill_length_mm),
+  summarise(mean = mean(bill_length_mm, na.rm = TRUE),
+            n = sum(!is.na(bill_length_mm)),
+            sd = sd(bill_length_mm, na.rm = TRUE),
             se = sd_error(bill_length_mm))
 ```
 
 Output is a dataframe
 
-## 
+## Dataframe functions
 
-and want to summarise several in the same way
-
-```{r}
-penguins |> 
-  summarise(mean = mean(bill_depth_mm),
-            n = length(bill_depth_mm),
-            sd = sd(bill_depth_mm),
-            se = sd_error(bill_depth_mm))
-```
+and summarise several dataframes in the same way
 
 Good candidate for a function to avoid repetitive code: `my_summary()`
 
@@ -527,9 +731,9 @@ Good candidate for a function to avoid repetitive code: `my_summary()`
 ```{r}
 my_summary <- function(df, column){
   df |> 
-  summarise(mean = mean(column),
-            n = length(column),
-            sd = sd(column),
+  summarise(mean = mean(column, na.rm = TRUE),
+            n = sum(!is.na(column)),
+            sd = sd(column, na.rm = TRUE),
             se = sd_error(column))
 }
 ```
@@ -545,44 +749,52 @@ my_summary(penguins, bill_length_mm)
 
 ## Tidy evaluation
 
-`tidyverse` functions like `dplyr::summarise()` use tidy evaluation so you can refer to the names of variables inside dataframes. For example, you can use:
+`tidyverse` functions like `dplyr::summarise()` use "tidy evaluation" so you can refer to the names of variables inside dataframes. For example, you can use:
 
+either
 ``` r
 penguins |> summarise(mean = mean(bill_depth_mm))
+```
+
+Or
+``` r
 summarise(penguins, mean = mean(bill_depth_mm))
 ```
 
-rather than
+rather than `$` notation
 
 ``` r
 summarise(penguins, mean = mean(penguins$bill_depth_mm))
 ```
+. . . 
 
 This is known as data-masking: the dataframe environment masks the user environment by giving priority to the dataframe.
 
-## 
+## Data masking is great....
+
+and makes life easier when working interactively
+
+. . . 
+
+But not so useful in functions
 
 Because of data-masking, `summarise()` in `my_summary()` is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable `column` for the name of column you want to give it.
 
+. . . 
+
 [Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
 
-## Tidy evaluation
-
--   easy to code interactively
--   harder to write functions
-
-TODO: decide whether to go in to data masking and tidy selection more
 
 ## Fix `my_summary()` function
 
-The solution is to use embracing: {{ var }}
+The solution is to use embracing: `{{ var }}`
 
 ```{r}
 my_summary <- function(df, column){
   df |> 
-  summarise(mean = mean({{ column }}),
-            n = length({{ column }}),
-            sd = sd({{ column }}),
+  summarise(mean = mean({{ column }}, na.rm = TRUE),
+            n = sum(!is.na({{ column }})),
+            sd = sd({{ column }}, na.rm = TRUE),
             se = sd_error({{ column }}),
             .groups = "drop")
 }
@@ -608,7 +820,88 @@ When tidy evaluation is used
 
 ## Your turn
 
-🎬 Write a function to
+🎬 Write a function to calculate the median, maximum and minimum values of a variable grouped by another variable.
+
+
+## A solution - 1
+
+```{r}
+my_summary <- function(df, summary_var, group_var){
+  df |> 
+    group_by({{ group_var }}) |> 
+  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+            minimum = min({{summary_var  }}, na.rm = TRUE),
+            maximum = max({{summary_var  }}, na.rm = TRUE),
+            .groups = "drop")
+}
+```
+
+
+## Your turn
+
+🎬 Try it out
+
+```{r}
+my_summary(penguins, bill_length_mm, species)
+```
+
+## A solution - 2
+
+Improvement: Have a default of `NULL` for the grouping variable
+
+```{r}
+my_summary <- function(df, summary_var, group_var = NULL){
+  df |> 
+    group_by({{ group_var }}) |> 
+  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+            minimum = min({{summary_var  }}, na.rm = TRUE),
+            maximum = max({{summary_var  }}, na.rm = TRUE),
+            .groups = "drop")
+}
+```
+
+
+## Your turn
+
+🎬 Try it out
+
+```{r}
+my_summary(penguins, bill_length_mm)
+```
+
+## Your turn
+
+🎬 Try it out with more than one group
+
+```{r}
+#| error: true
+my_summary(penguins, bill_length_mm, c(species, island),)
+```
+
+😕
+
+## A solution - 3
+
+Use `pick()`
+
+```{r}
+my_summary <- function(df, summary_var, group_var = NULL){
+  df |> 
+    group_by(pick({{ group_var }})) |> 
+  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+            minimum = min({{summary_var  }}, na.rm = TRUE),
+            maximum = max({{summary_var  }}, na.rm = TRUE),
+            .groups = "drop")
+}
+```
+
+🎬 Try it out with more than one group
+
+```{r}
+#| error: true
+my_summary(penguins, bill_length_mm, c(species, island))
+```
+
 
 ## Extras
 
@@ -617,8 +910,11 @@ When tidy evaluation is used
     -   put cursor on a function call and press F2 to find its definition
     -   Ctrl+. opens section/file search
 
--   Document: Roxygen? ChatGTP?
-
--   Tests interactive? Unit tests with ChatGTP?
-
 ## Summary
+
+-   
+-   
+-   
+-   
+
+## References
