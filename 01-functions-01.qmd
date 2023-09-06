@@ -708,29 +708,21 @@ Dataframe as input and Dataframe as output
 
 . . .
 
-We might summarise one of our columns like this:
+For example, we might summarise one of our columns like this:
 
 ```{r}
 penguins |> 
-  summarise(mean = mean(bill_length_mm),
-            n = length(bill_length_mm),
-            sd = sd(bill_length_mm),
+  summarise(mean = mean(bill_length_mm, na.rm = TRUE),
+            n = sum(!is.na(bill_length_mm)),
+            sd = sd(bill_length_mm, na.rm = TRUE),
             se = sd_error(bill_length_mm))
 ```
 
 Output is a dataframe
 
-## 
+## Dataframe functions
 
-and want to summarise several in the same way
-
-```{r}
-penguins |> 
-  summarise(mean = mean(bill_depth_mm),
-            n = length(bill_depth_mm),
-            sd = sd(bill_depth_mm),
-            se = sd_error(bill_depth_mm))
-```
+and summarise several dataframes in the same way
 
 Good candidate for a function to avoid repetitive code: `my_summary()`
 
@@ -739,9 +731,9 @@ Good candidate for a function to avoid repetitive code: `my_summary()`
 ```{r}
 my_summary <- function(df, column){
   df |> 
-  summarise(mean = mean(column),
-            n = length(column),
-            sd = sd(column),
+  summarise(mean = mean(column, na.rm = TRUE),
+            n = sum(!is.na(column)),
+            sd = sd(column, na.rm = TRUE),
             se = sd_error(column))
 }
 ```
@@ -757,44 +749,52 @@ my_summary(penguins, bill_length_mm)
 
 ## Tidy evaluation
 
-`tidyverse` functions like `dplyr::summarise()` use tidy evaluation so you can refer to the names of variables inside dataframes. For example, you can use:
+`tidyverse` functions like `dplyr::summarise()` use "tidy evaluation" so you can refer to the names of variables inside dataframes. For example, you can use:
 
+either
 ``` r
 penguins |> summarise(mean = mean(bill_depth_mm))
+```
+
+Or
+``` r
 summarise(penguins, mean = mean(bill_depth_mm))
 ```
 
-rather than
+rather than `$` notation
 
 ``` r
 summarise(penguins, mean = mean(penguins$bill_depth_mm))
 ```
+. . . 
 
 This is known as data-masking: the dataframe environment masks the user environment by giving priority to the dataframe.
 
-## 
+## Data masking is great....
+
+and makes life easier when working interactively
+
+. . . 
+
+But not so useful in functions
 
 Because of data-masking, `summarise()` in `my_summary()` is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable `column` for the name of column you want to give it.
 
+. . . 
+
 [Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
 
-## Tidy evaluation
-
--   easy to code interactively
--   harder to write functions
-
-TODO: decide whether to go in to data masking and tidy selection more
 
 ## Fix `my_summary()` function
 
-The solution is to use embracing: {{ var }}
+The solution is to use embracing: `{{ var }}`
 
 ```{r}
 my_summary <- function(df, column){
   df |> 
-  summarise(mean = mean({{ column }}),
-            n = length({{ column }}),
-            sd = sd({{ column }}),
+  summarise(mean = mean({{ column }}, na.rm = TRUE),
+            n = sum(!is.na({{ column }})),
+            sd = sd({{ column }}, na.rm = TRUE),
             se = sd_error({{ column }}),
             .groups = "drop")
 }
@@ -820,7 +820,88 @@ When tidy evaluation is used
 
 ## Your turn
 
-🎬 Write a function to
+🎬 Write a function to calculate the median, maximum and minimum values of a variable grouped by another variable.
+
+
+## A solution - 1
+
+```{r}
+my_summary <- function(df, summary_var, group_var){
+  df |> 
+    group_by({{ group_var }}) |> 
+  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+            minimum = min({{summary_var  }}, na.rm = TRUE),
+            maximum = max({{summary_var  }}, na.rm = TRUE),
+            .groups = "drop")
+}
+```
+
+
+## Your turn
+
+🎬 Try it out
+
+```{r}
+my_summary(penguins, bill_length_mm, species)
+```
+
+## A solution - 2
+
+Improvement: Have a default of `NULL` for the grouping variable
+
+```{r}
+my_summary <- function(df, summary_var, group_var = NULL){
+  df |> 
+    group_by({{ group_var }}) |> 
+  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+            minimum = min({{summary_var  }}, na.rm = TRUE),
+            maximum = max({{summary_var  }}, na.rm = TRUE),
+            .groups = "drop")
+}
+```
+
+
+## Your turn
+
+🎬 Try it out
+
+```{r}
+my_summary(penguins, bill_length_mm)
+```
+
+## Your turn
+
+🎬 Try it out with more than one group
+
+```{r}
+#| error: true
+my_summary(penguins, bill_length_mm, c(species, island),)
+```
+
+😕
+
+## A solution - 3
+
+Use `pick()`
+
+```{r}
+my_summary <- function(df, summary_var, group_var = NULL){
+  df |> 
+    group_by(pick({{ group_var }})) |> 
+  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+            minimum = min({{summary_var  }}, na.rm = TRUE),
+            maximum = max({{summary_var  }}, na.rm = TRUE),
+            .groups = "drop")
+}
+```
+
+🎬 Try it out with more than one group
+
+```{r}
+#| error: true
+my_summary(penguins, bill_length_mm, c(species, island))
+```
+
 
 ## Extras
 
@@ -829,10 +910,11 @@ When tidy evaluation is used
     -   put cursor on a function call and press F2 to find its definition
     -   Ctrl+. opens section/file search
 
--   Document: Roxygen? ChatGTP?
-
--   Tests interactive? Unit tests with ChatGTP?
-
 ## Summary
+
+-   
+-   
+-   
+-   
 
 ## References
