@@ -18,7 +18,7 @@ In this session, we will discuss:
 
 :::{.incremental}
   - embracing `{{}}` for `<data-masking>` functions
-  - "standard" style and design of functions
+  - tidyverse style and design of functions
   - the joys of side-effects
 :::
 
@@ -553,12 +553,24 @@ Side effects can include:
 
 ```{r}
 #| collapse: true
-Sys.getlocale("LC_COLLATE")
+(temp <- Sys.getlocale("LC_COLLATE"))
 
 sort(c("apple", "Banana", "candle"))
 ```
-
 . . .
+
+<hr>
+
+```{r}
+#| collapse: true
+Sys.setlocale("LC_COLLATE", "C")
+
+sort(c("apple", "Banana", "candle"))
+
+Sys.setlocale("LC_COLLATE", temp)
+```
+
+## Our turn: setting within call
 
 To temporarily set locale:
 
@@ -656,7 +668,7 @@ You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and 
 
 <hr>
 
-Using "standard" style and design makes things easier for you, your users, and *future you*.
+Using tidyverse style and design can make things easier for you, your users, and *future you*.
 
 . . .
 
