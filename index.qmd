@@ -23,7 +23,7 @@ This is a one-day, hands-on workshop for those who have embraced the tidyverse a
 ### This workshop is for you if you...
 
 -   have experience equivalent to an introductory data science course using tidyverse
--   feel comfortable with the [Whole game](https://r4ds.hadley.nz/whole-game.html) chapter of [R for Data Science (2nd Edition)](https://r4ds.hadley.nz/) by by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+-   feel comfortable with the [Whole game](https://r4ds.hadley.nz/whole-game.html) chapter of [R for Data Science (2nd Edition)](https://r4ds.hadley.nz/) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
 
 ### Please note
 

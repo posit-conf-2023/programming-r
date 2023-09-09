@@ -18,7 +18,7 @@ In this session, we will discuss:
 
 :::{.incremental}
   - embracing `{{}}` for `<data-masking>` functions
-  - "standard" style and design of functions
+  - tidyverse style and design of functions
   - the joys of side-effects
 :::
 
@@ -29,6 +29,7 @@ In this session, we will discuss:
 For coding, we will use `r-programming-exercises`:
 
  - `R/functions-02-01-embrace.R`, etc.
+ - with each new file, restart R.
 
 ## Plot functions: Motivation 
 
@@ -54,17 +55,21 @@ diamonds |>
 
 `aes()` is a data-masking function; you can embrace 🤗
 
+ - pass "bare-name" variables for data-frames
+ - look for `<data-masking>` in help
+
 ```{r}
+#| output: false
 histogram <- function(df, var, binwidth = NULL) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
     geom_histogram(binwidth = binwidth)
 }
 
-diamonds |> histogram(carat, 0.1) 
+histogram(diamonds, carat, 0.1) 
 ```
 
-## Your turn
+## Our turn
 
 Complete this function yourself:
 
@@ -84,7 +89,7 @@ histogram <- function(df, var, binwidth = NULL) {
 
   - fill the bars with `"steelblue"`?
 
-## Your turn (solution)
+## Our turn (solution)
 
 Adding a theme: `histogram()` returns a `ggplot` object, so you can add a theme in the "usual" way:
 
@@ -92,7 +97,7 @@ Adding a theme: `histogram()` returns a `ggplot` object, so you can add a theme 
 histogram(starwars, height) + theme_minimal()
 ```
 
-## Your turn (solution)
+## Our turn (solution)
 
 *As is*, there is no easy way to specify `"steelblue"`.
 
@@ -119,7 +124,7 @@ Passes unspecified arguments from your function to another (tell your users wher
 
 [Tidyverse Design Guide](https://design.tidyverse.org/dots-after-required.html) has more details.
 
-## Your turn (continued)
+## Our turn (continued)
 
 Incorporate dot-dot-dot into `histogram()`:
 
@@ -199,6 +204,7 @@ histogram(starwars, height) # "extra credit"
 ## Your turn (solution)
 
 ```{r}
+#| output: false
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
@@ -225,7 +231,7 @@ sorted_bars <- function(df, var) {
     geom_bar()
 }
 
-diamonds |> sorted_bars(clarity)
+sorted_bars(diamonds, clarity)
 ```
 
 ## Mixing in other tidyverse functions
@@ -267,6 +273,12 @@ sorted_bars <- function(df, var) {
 :::
 
 ## Design and style
+
+Restart R, open `functions-02-02-style.R`
+
+. . .
+
+<hr>
 
 Use descriptive name, usually starts with a verb, unless it returns a well-known noun.
 
@@ -330,7 +342,14 @@ Why *optional* after *dots*?
 
 ## Namespacing functions
 
-Are we using `filter()` from `{dplyr}` or `{stats}`?
+When we write `filter()`, do we mean...
+
+:::{.incremental}
+- `dplyr::filter()`?
+- `stats::filter()`?
+:::
+
+. . .
 
 Three ways to sort this out:
 
@@ -371,7 +390,7 @@ mtcars |> filter(cyl == 6)
 
 - run it as-is
 - add `library("conflicted")`, run again
-- add a `conflict_prefer()` directive
+- add a `conflicts_prefer()` directive
 
 ## `package::function()`
 
@@ -446,9 +465,11 @@ Also, look at tidyverse code at GitHub (my favorite is [{usethis}](https://githu
 
 ## Side effects
 
-There are two kinds of functions:
+Restart R, open `functions-02-03-side-effects.R`
 
 . . .
+
+<hr>
 
 **Pure function**:
 
@@ -526,7 +547,7 @@ Side effects can include:
  - modifying options: `options()`
  - setting random seed: `set.seed()`
  - setting working directory: `setwd()`
- - creating and wrting to a temporary file
+ - creating and writing to a temporary file
 :::
 
 . . .
@@ -539,12 +560,24 @@ Side effects can include:
 
 ```{r}
 #| collapse: true
-Sys.getlocale("LC_COLLATE")
+(temp <- Sys.getlocale("LC_COLLATE"))
 
 sort(c("apple", "Banana", "candle"))
 ```
-
 . . .
+
+<hr>
+
+```{r}
+#| collapse: true
+Sys.setlocale("LC_COLLATE", "C")
+
+sort(c("apple", "Banana", "candle"))
+
+Sys.setlocale("LC_COLLATE", temp)
+```
+
+## Our turn: setting within call
 
 To temporarily set locale:
 
@@ -576,6 +609,22 @@ Sys.getlocale("LC_COLLATE")
 
 *Within curly brackets* applies to function blocks, it also applies to {testthat} blocks.
 
+## But what about dplyr?
+
+:::{.incremental}
+- `?dplyr::arrange()`
+- `arrange()` uses the `"C"` locale by default
+:::
+
+. . . 
+
+<hr>
+
+```{r}
+tibble(text = c("apple", "Banana", "candle")) |>
+  arrange(text)
+```
+
 ## Your turn
 
 ```{r}
@@ -588,7 +637,7 @@ test_that("mtcars has expected columns", {
 
 This passes, but R is doing partial matching on the `$`.
 
-Modify the `test_that()` block to warn on partial matching.
+Modify `test_that()` block to warn on partial matching.
 
 You can get the current setting using:
 
@@ -626,7 +675,7 @@ You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and 
 
 <hr>
 
-Using "standard" style and design makes things easier for you, your users, and *future you*.
+Using tidyverse style and design can make things easier for you, your users, and *future you*.
 
 . . .
 
