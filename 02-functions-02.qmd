@@ -342,7 +342,14 @@ Why *optional* after *dots*?
 
 ## Namespacing functions
 
-Are we using `filter()` from `{dplyr}` or `{stats}`?
+When we write `filter()`, do we mean...
+
+:::{.incremental}
+- `dplyr::filter()`?
+- `stats::filter()`?
+:::
+
+. . .
 
 Three ways to sort this out:
 
