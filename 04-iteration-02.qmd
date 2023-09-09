@@ -29,6 +29,7 @@ In this session, we will discuss:
 For coding, we will use `r-programming-exercises`:
 
  - `R/iteration-02-01-reading-files.R`, etc.
+ - restart R
 
 ## Reading multiple files
 
@@ -94,8 +95,10 @@ Run this example code, discuss with your neighbor.
 
 I see this as a two step problem:
 
+:::{.incremental}
 -   make a named list of paths, name is year
 -   use list of paths to read data frames, combine
+:::
 
 . . .
 
@@ -129,34 +132,49 @@ data <-
 
 If we have a failure, we may not want to stop everything.
 
-We can use a function-operator to return a modified function.
+. . .
 
 ```{r}
 #| error: true
-library("readxl")
-read_excel("not/a/file.txt")
+library("readr")
+read_csv("not/a/file.csv")
 ```
 
-. . .
 
-<hr>
+## Function operators
+
+Function operators:
+
+  - take a function
+  - return a modified function
+
+. . .
 
 ```{r}
 #| error: true
 library("purrr")
-poss_rdxl <- possibly(read_excel, otherwise = NULL, quiet = TRUE)
-poss_rdxl("not/a/file.txt")
+poss_read_csv <- 
+  possibly(read_csv, otherwise = NULL, quiet = TRUE)
+
+poss_read_csv("not/a/file.csv")
 ```
 
-. . . 
 
-<hr>
+## Function operators
+
+Function operators:
+
+  - take a function
+  - return a modified function
 
 ```{r}
 #| message: true
-poss_rdxl <- possibly(read_excel, otherwise = NULL, quiet = FALSE)
-poss_rdxl("not/a/file.txt")
+poss_read_csv <- 
+  possibly(read_csv, otherwise = NULL, quiet = FALSE)
+
+poss_read_csv("not/a/file.csv")
 ```
+
 
 ## Our turn: handle failure
 
@@ -192,10 +210,6 @@ Functional programming has three fundamental operations:
 
 Implement `list_rbind()` using functional-programming techniques:
 
--   *filters* in not-`NULL` values, `purrr::keep()`
--   *maps* name of element to data-column, `purrr::imap()`
--   *reduces* list to single data-frame, `purrr::reduce()`
-
 ``` r
 list_rbind2 <- function(df, names_to) {
   df |>
@@ -204,6 +218,12 @@ list_rbind2 <- function(df, names_to) {
     purrr::reduce(rbind)
 }
 ```
+
+:::{.incremental}
+-   *filters* in not-`NULL` values, `purrr::keep()`
+-   *maps* name of element to data-column, `purrr::imap()`
+-   *reduces* list to single data-frame, `purrr::reduce()`
+:::
 
 ## Our turn: saving multiple outputs
 
@@ -228,8 +248,7 @@ When we read "for each", we might think of using `map()`:
 `iteration-02-02-writing-files.R`
 
 ``` r
-# ?dplyr::group_nest
-# ?stringr::str_glue
+# ?dplyr::group_nest(), ?stringr::str_glue(), ?readr::write_csv
 
 # from diamonds, create tibble with columns: clarity, data, filename
 by_clarity_csv <-
@@ -237,8 +256,6 @@ by_clarity_csv <-
   # nest by clarity
   # create column for filename
   identity()
-
-# ?readr::write_csv
 
 # using the data and filename, write out csv files
 walk2(
@@ -256,15 +273,22 @@ walk2(
 
 <hr>
 
-Tactic: create a `plot` column, where each element is a ggplot.
+Create a `plot` column, where each element is a ggplot.
 
 This will be a list-column.
 
 . . .
 
-You can use `map()` within `mutate()`, with all the tidy-eval goodness!
+You can use `map()`:
 
-(To me, this feels like a superpower 💪)
+ - within `mutate()`, with all the tidy-eval goodness!
+ - with additional arguments (after the function), e.g.:
+   
+```r
+mutate(
+  plot = map(data, histogram, binwidth = 0.1)
+)
+```
 
 ## Our turn: starter-code
 
@@ -281,7 +305,6 @@ by_clarity_plots <-
   identity()
 
 # ?ggplot2::ggsave
-
 # using the data and filename, write out plots to png files
 walk2(
   by_clarity_plot$filename,
@@ -296,9 +319,11 @@ Three fundamental operations in functional programming
 
 Given a list and a function:
 
+:::{.incremental}
 -   `filter()`: make a new list, subset of old list
 -   `map()`: make a new list, operating on each element
 -   `reduce()`: make a new "thing"
+:::
 
 ## dplyr using purrr?
 
@@ -339,8 +364,6 @@ I claim it's possible, I don't claim it's a good idea.
 ## `dpurrr_filter()`
 
 ```{r}
-library("tidyverse")
-
 dpurrr_filter <- function(df, predicate) {
   df |>
     as.list() |>
