@@ -23,18 +23,20 @@ brief intro
 At the end of this section you will be able to:
 
 ::: {style="font-size: 70%;"}
--   
 
--   
+-   recognise that much iteration comes free with R
 
--   
+-   iterate across rows using `across()`
+    -   use selection functions to select columns for iteration
+    -   use anonymous functions to pass arguments
+    -   use anonymous functions give more than one function
+    -   use `.names` to control the output
 
--   
+-   use `across()` in functions
 
--   
 :::
 
-## What is iteration
+## What is iteration?
 
 Iteration means repeating steps multiple times until a condition is met
 
