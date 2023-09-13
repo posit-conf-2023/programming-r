@@ -558,7 +558,9 @@ my_summary <- function(df, cols) {
 ## Try it out
 
 ```{r}
-my_summary(penguins, ends_with("mm"))
+penguins |> 
+  group_by(species) |> 
+  my_summary(ends_with("mm"))
 ```
 
 
@@ -581,7 +583,9 @@ my_summary <- function(df, cols = where(is.numeric)) {
 ## Try it out
 
 ```{r}
-my_summary(penguins)
+penguins |> 
+  select(-year) |>
+  my_summary()
 ```
 
 
