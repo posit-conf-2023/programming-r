@@ -9,6 +9,8 @@ format:
     chalkboard: true
     code-link: true
     code-line-numbers: false
+    width: 1600
+    height: 900
 bibliography: references.bib
 ---
 
@@ -75,10 +77,10 @@ In the `programming-r-exercises` repository:
 Here's our starting code:
 
 ``` r
-data1952 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
-data1957 <- readxl::read_excel(here("data/gapminder/1957.xlsx"))
-data1962 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
-data1967 <- readxl::read_excel(here("data/gapminder/1967.xlsx"))
+data1952 <- read_excel(here("data/gapminder/1952.xlsx"))
+data1957 <- read_excel(here("data/gapminder/1957.xlsx"))
+data1962 <- read_excel(here("data/gapminder/1952.xlsx"))
+data1967 <- read_excel(here("data/gapminder/1967.xlsx"))
 
 data_manual <- bind_rows(data1952, data1957, data1962, data1967)
 ```
@@ -108,9 +110,9 @@ Let's work together to improve this code to get paths:
 paths <-
   # get the filepaths from the directory
   fs::dir_ls(here("data/gapminder")) |>
-  # extract the year as names
   # convert to list
-  identity()
+  # extract the year as names
+  print()
 ```
 
 ## Our turn: read data
@@ -125,7 +127,7 @@ data <-
   # set list-names as column `year`
   # bind into single data-frame
   # convert year to number
-  identity()
+  print()
 ```
 
 ## Handling failures
@@ -140,7 +142,6 @@ library("readr")
 read_csv("not/a/file.csv")
 ```
 
-
 ## Function operators
 
 Function operators:
@@ -151,28 +152,26 @@ Function operators:
 . . .
 
 ```{r}
-#| error: true
 library("purrr")
-poss_read_csv <- 
-  possibly(read_csv, otherwise = NULL, quiet = TRUE)
 
-poss_read_csv("not/a/file.csv")
+poss_read_csv <- possibly(read_csv, otherwise = NULL, quiet = FALSE)
 ```
 
+. . .
 
-## Function operators
-
-Function operators:
-
-  - take a function
-  - return a modified function
+<hr>
 
 ```{r}
 #| message: true
-poss_read_csv <- 
-  possibly(read_csv, otherwise = NULL, quiet = FALSE)
-
 poss_read_csv("not/a/file.csv")
+```
+
+. . .
+
+<hr>
+
+```{r}
+poss_read_csv(I("a, b\n 1, 2"), col_types = "dd")
 ```
 
 
@@ -186,7 +185,7 @@ In the `programming-r-exercises` repository:
 Create a new function:
 
 ``` r
-possibly_read_excel <- possibly(<you do the rest>)
+possibly_read_excel <- possibly() # we do the rest
 ```
 
 Use this function in your script.
@@ -255,7 +254,7 @@ by_clarity_csv <-
   diamonds |>
   # nest by clarity
   # create column for filename
-  identity()
+  print()
 
 # using the data and filename, write out csv files
 walk2(
@@ -302,7 +301,7 @@ by_clarity_plots <-
     filename = str_glue(),
     plot = map()
   ) |>
-  identity()
+  print()
 
 # ?ggplot2::ggsave
 # using the data and filename, write out plots to png files
