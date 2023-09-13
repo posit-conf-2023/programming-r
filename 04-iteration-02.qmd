@@ -247,8 +247,7 @@ When we read "for each", we might think of using `map()`:
 `iteration-02-02-writing-files.R`
 
 ``` r
-# ?dplyr::group_nest(), ?stringr::str_glue(), ?readr::write_csv
-
+# ?dplyr::group_nest(), ?stringr::str_glue()
 # from diamonds, create tibble with columns: clarity, data, filename
 by_clarity_csv <-
   diamonds |>
@@ -256,24 +255,24 @@ by_clarity_csv <-
   # create column for filename
   print()
 
+# ?readr::write_csv()
 # using the data and filename, write out csv files
 walk2(
   by_clarity_csv$data,
   by_clarity_csv$filename,
-  \(data, filename) # write csv file to data/clarity directory
+  \(data, filename) NULL # replace with actual code
 )
 ```
 
 ## Our turn: writing multiple plots
 
-**Goal**: write out a histogram PNG for each value of `clarity` within ggplot2's `diamonds` dataset.
+**Goal**: Save histogram for `carat` for each value of `clarity` within `diamonds` dataset.
 
 . . .
 
 <hr>
 
 Create a `plot` column, where each element is a ggplot.
-
 This will be a list-column.
 
 . . .
@@ -285,30 +284,50 @@ You can use `map()`:
    
 ```r
 mutate(
-  plot = map(data, histogram, binwidth = 0.1)
+  plot = map(data, histogram, carat)
 )
+```
+
+. . .
+
+equivalent to 
+
+```r
+plot[[1]] = histogram(data[[1]], carat)
+plot[[2]] = histogram(data[[2]], carat)
+...
 ```
 
 ## Our turn: starter-code
 
 ``` r
 # from diamonds, create tibble with columns: clarity, data, plot, filename
-by_clarity_plots <-
+by_clarity_plot <-
   diamonds |>
   # nest by clarity
-  # create columns for filename, plot
+  group_nest(clarity) |>
+  # create columns for plot, filename
   mutate(
-    filename = str_glue(),
-    plot = map()
+    filename = str_glue("clarity-{clarity}.png")#,
+    #plot = map(),
   ) |>
   print()
+```
 
+## Our turn: more starter-code
+
+```r
 # ?ggplot2::ggsave
+ggsave_local <- function(filename, plot) {
+
+}
+
 # using the data and filename, write out plots to png files
 walk2(
   by_clarity_plot$filename,
   by_clarity_plot$plot,
-  \(filename, plot) # write plot file to data/clarity directory
+  # write plot file to data/clarity directory
+  ggsave_local
 )
 ```
 
@@ -485,8 +504,21 @@ In JavaScript, data frames are often arrays of objects (lists), so you'll see fo
 
 Functional programming comes up a lot in JavaScript
 
-
-
 ## Wrap-up
 
-TODO: link for survey
+Please go to [pos.it/conf-workshop-survey](https://pos.it/conf-workshop-survey). 
+
+Your feedback is crucial! 
+
+Data from the survey informs curriculum and format decisions for future conf workshops, and we really appreciate you taking the time to provide it.
+
+<hr>
+
+### Thank you!
+
+:::{.incremental}
+- Emma
+- Steph, Mouna, Garrett
+- Mine Çetinkaya-Rundel, Posit
+- **You** 🤗
+:::
