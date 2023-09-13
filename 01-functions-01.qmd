@@ -35,6 +35,8 @@ Emma Rand
 
 🐘[\@3mma\@mastodon.social](https://mastodon.social/@3mma)
 
+Garrett Grolemund
+
 Stephanie Hazlitt
 :::
 
@@ -49,17 +51,17 @@ Mouna Belaid
 
  
 
-Standing on the shoulders of
+## Standing on the shoulders of
 
-::: {style="font-size: 80%;"}
+
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
 
 -   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham-style
 
 -   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
-:::
 
-\
+
+
 
 ### WiFi TOFIX
 
@@ -99,7 +101,6 @@ To each other! With help from Yorkshire!
 :::
 :::
 :::
-
 
 ## Code of Conduct TOFIX
 
@@ -152,7 +153,7 @@ You need a laptop with the following installed:
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                    |
-|:--------------|:--------------------------------------------------------|
+|:----------------|:------------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
 | 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
