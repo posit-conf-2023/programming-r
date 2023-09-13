@@ -1,7 +1,7 @@
 ---
 title: "useR to programmeR"
 subtitle: "👋 & Functions 1"
-author: "Emma Rand and Ian Lyttle"
+author: "Emma Rand and Ian Lyttle <br>WiFi: Posit Conf 2023<br>Password: conf2023"
 format: 
   revealjs:
     theme: [simple, styles.scss]
@@ -23,7 +23,7 @@ This is a two-day, hands-on workshop for those who have embraced the tidyverse a
 
 \
 
-### Material
+## Material
 
 -   <https://posit-conf-2023.github.io/programming-r/>
 
@@ -63,12 +63,11 @@ Mouna Belaid
 
 
 
-### WiFi TOFIX
+### WiFi
 
--   Username: `conf22`
--   Password: `together!`
+-   Network: Posit Conf 2023
+-   Password: conf2023
 
-## Introductions
 
 ## Introductions
 
@@ -102,9 +101,9 @@ To each other! With help from Yorkshire!
 :::
 :::
 
-## Code of Conduct TOFIX
+## Code of Conduct 
 
-[Full Code of Conduct](https://posit.co/code-of-conduct/). **Please Review**
+[Code of Conduct and COVID policies](https://posit.co/code-of-conduct/). **Please Review**
 
 -   💙 Treat everyone with respect
 -   🧡 Everyone should feel welcome and safe
@@ -115,15 +114,15 @@ Reporting:
 -   📧 `conf@posit.com`
 -   ☎️ 844-448-1212
 
-## Housekeeping TOFIX
+## Housekeeping 
 
--   WiFi:
-    -   Username: `conf22`
-    -   Password: `together!`
--   Gender neutral bathrooms xxxxxxxxx.
--   Meditation room xxxxx. 8am - 5pm, Monday - Thursday.
--   Lactation room xxxxx. 8am - 5pm, Monday - Thursday.
--   Participants who do not wish to be photographed have red lanyards
+-   WiFi
+    -   Network: Posit Conf 2023
+    -   Password: conf2023
+-   There are gender-neutral bathrooms located are among the Grand Suite Bathrooms.
+-   Meditation/prayer rooms: Grand Suite 2A and Grand Suite 2B. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00  - 18:00
+-   Lactation room: in Grand Suite 1. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00  - 18:00
+-   Participants who do not wish to be photographed have red lanyards; please note and respect
 
 ## 🙏 to
 
