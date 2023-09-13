@@ -22,15 +22,19 @@ website:
         - text: ---
         - text: "👋 & Functions Part 1"
           href: 01-functions-01.qmd
+          target: "_blank"
         - text: "Functions Part 2"
           href: 02-functions-02.qmd
+          target: "_blank"
         - text: ---
         - text: Iteration
         - text: ---
         - text: "Iteration Part 1"
           href: 03-iteration-01.qmd
+          target: "_blank"
         - text: "Iteration Part 2"
           href: 04-iteration-02.qmd
+          target: "_blank"
 
 format:
   html:
