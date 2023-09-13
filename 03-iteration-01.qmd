@@ -4,7 +4,7 @@ subtitle: "Iteration 1"
 author: "Emma Rand and Ian Lyttle"
 format: 
   revealjs:
-    theme: [simple]
+    theme: [simple, styles.scss]
     slide-number: true
     chalkboard: true
     code-link: true
@@ -23,47 +23,33 @@ brief intro
 At the end of this section you will be able to:
 
 ::: {style="font-size: 70%;"}
-
 -   recognise that much iteration comes free with R
 
 -   iterate across rows using `across()`
+
     -   use selection functions to select columns for iteration
     -   use anonymous functions to pass arguments
-    -   use anonymous functions give more than one function
+    -   give more than one function for iteration
     -   use `.names` to control the output
 
 -   use `across()` in functions
-
 :::
 
 ## What is iteration?
 
-Iteration means repeating steps multiple times until a condition is met
+-   Iteration means repeating steps multiple times until a condition is met
 
-In other languages, all iteration is performed with loops: `for`, `while`
+-   In other languages, iteration is performed with loops: `for`, `while`
 
 . . .
 
-Iteration is different in R because 
+-   Iteration is different in R
 
-It is functional programming language. You *can* use loops....... bit you often don't *need* to 
-
-
-## Iteration in R
-
--   iteration is an inherent part of the language
-
--   the `apply()` family
-
--   `group_by()` with `summarize()`
-
--   `facet_wrap()`
-
--   `across()` and `purrr()`
+-   You *can* use loops....... but you often don't *need* to
 
 ## Iteration in R
 
-Part of the language. For example, if
+Iteration is an inherent part of the language. For example, if
 
 ```{r}
 nums <- c(3, 1, 6, 4)
@@ -93,9 +79,22 @@ and NOT
 [1]  6  2 12  8  6  2 12  8
 ```
 
+## Iteration in R
+
+We have:
+
+-   the `apply()` family
+
+-   `group_by()` with `summarize()`
+
+-   `facet_wrap()`
+
+-   `across()` and `purrr()`
+
+
+. . .
+
 other languages, a for loop would be right after hello world
-
-
 
 ## Functional programming
 
@@ -191,17 +190,16 @@ penguins |>
 
 3 important arguments
 
+## `across()` Arguments
 -   which columns you want to iterate over: `.cols = bill_length_mm:body_mass_g`
 
-## `across()` Arguments
+. . .
 
 -   what you want to do to each column: `.fns = sd_error`
 
-    -   single function
-    -   include arguments to that function
-    -   more than one function
+    -   single function, include arguments, more than one function
 
-## `across()` Arguments
+. . .
 
 -   `.names` to control output
 
@@ -209,10 +207,9 @@ penguins |>
 
 -   we could use colon notation, `bill_length_mm:body_mass_g`, because columns are adjacent
 
-. . . 
+. . .
 
 but
-
 
 -   `.cols` uses same specification as `select()`: `starts_with()`, `ends_with()`, `contains()`, `matches()`
 
@@ -242,9 +239,9 @@ penguins |>
   summarise(across(everything(), sd_error))
 ```
 
--  variables in `group_by()` are excluded
+-   variables in `group_by()` are excluded
 
--  all of `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `year`
+-   all of `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `year`
 
 ## selecting columns with `.cols`
 
@@ -271,7 +268,6 @@ penguins |>
   summarise(across(where(is.numeric), sd_error))
 ```
 
-
 ## `.funs`: calling one function
 
 -   we can pass a function, `sd_error` to `across()` since R is a functional programming language
@@ -284,12 +280,19 @@ penguins |>
 
 ## function name is **not** followed by `()`
 
+📢
+
+
 ```{r}
 #| error: true
 penguins |> 
   select(-year) |>
   summarise(across(where(is.numeric), sd_error()))
 ```
+
+. . .
+
+This error is easy to make!
 
 ## Include arguments
 
@@ -298,17 +301,17 @@ penguins |>
   summarise(across(ends_with("mm"), mean))
 ```
 
-
 We get the NA because we have missing values[^1].
 
 ## Include arguments
 
-`mean()` has an `na.rm` argument. 
+`mean()` has an `na.rm` argument.
 
 How can we pass on `na.rm = TRUE`?
 
 . . .
 
+We might try:
 
 ```{r}
 #| error: true
@@ -328,12 +331,13 @@ penguins |>
                    function(x) mean(x, na.rm = TRUE)))
 ```
 
-`mean` is replaced by a function definition
+. . .
 
+`mean` is replaced by a function definition
 
 ## Anonymous functions
 
-```r
+``` r
 penguins |> 
   summarise(across(ends_with("mm"), 
                    function(x) mean(x, na.rm = TRUE)))
@@ -347,42 +351,67 @@ penguins |>
 
 Shorthand
 
-. . . 
+. . .
 
 Instead of writing `function` we can use `\`
 
 ```{r}
 penguins |> 
-  summarise(across(ends_with("mm"), \(x) mean(x, na.rm = TRUE)))
+  summarise(across(ends_with("mm"), 
+                   \(x) mean(x, na.rm = TRUE)))
 ```
 
+
+## Anonymous functions
+
+Note, You might also see:
+
+```{r}
+penguins |> 
+  summarise(across(ends_with("mm"), 
+                   ~ mean(.x, na.rm = TRUE)))
+```
+. . .
+
+-   `\(x)` is base syntax new in in 4.1.0 **Recommended**
+
+-   `~ .x` is fine but only works in tidyverse functions
 
 
 ## `.funs`: calling more than one function
 
 How can we use more than one function across the columns?
 
-
-```r
+``` r
 penguins |> 
   summarise(across(ends_with("mm"), _MORE THAN ONE FUNCTION_))
 ```
 
 . . .
 
-
 by using a list
-
 
 ## `.funs`: calling more than one function
 
-```r
+Using a list:
+
+``` r
+penguins |> 
+  summarise(across(where(is.numeric), list(
+  sd_error, 
+  length)))
+```
+
+. . .
+
+Or, with anonymous functions:
+
+``` r
 penguins |> 
   summarise(across(ends_with("mm"), list(
     \(x) mean(x, na.rm = TRUE),
     \(x) sd(x, na.rm = TRUE))))
 ```
-
 
 ## `.funs`: calling more than one function
 
@@ -395,11 +424,11 @@ penguins |>
 
 . . .
 
-Output: the `_1` and `_2` are not very useful.
+Problem: the suffixes `_1` and `_2` for functions are not very useful.
 
 ## `.funs`: calling more than one function
 
-We can improve with naming the elements in the list
+We can improve by naming the elements in the list
 
 ```{r}
 penguins |> 
@@ -412,9 +441,11 @@ penguins |>
 
 The column name is `{.col}_{.fn}`: `bill_length_mm_mean`
 
+fn: **f**unction **n**ame
+
 . . .
 
-We can change using `.names`
+We can change using the `.names` argument
 
 ## `.names` to control output
 
@@ -455,6 +486,8 @@ penguins |>
 
 ## `.names` to control output
 
+It makes sense to use `across()` to apply the transformation to all three variables
+
 ```{r}
 penguins |>
   mutate(across(ends_with("mm"),
@@ -463,7 +496,7 @@ penguins |>
   glimpse()
 ```
 
-😮  Results go into existing columns!
+😮 Results go into existing columns!
 
 ## 
 
@@ -476,62 +509,90 @@ penguins |>
   glimpse()
 ```
 
-## A note on dots in argument names
+<!-- ## A note on dots in argument names -->
 
--   
+<!-- -    -->
 
--   
+<!-- -    -->
 
-## Iteration over columns in `filter()`
+<!-- ## Iteration over columns in `filter()` -->
 
-??
+<!-- ?? -->
 
-## `across()` in functions
+## Your turn
+
+Time to bring together functions and iteration!
+
+🎬 Write a function that summarises multiple specified columns of a data frame
+
+
+
+``` r
+my_summary <- function(df, cols) {
+
+   . . . .
+
+}
+
+```
+
+
+``` r
+my_summary(penguins, ends_with("mm"))
+```
+
+
+## A solution
 
 ```{r}
-my_summary <- function(df, cols){
+my_summary <- function(df, cols) {
   df |> 
-    summarise(across({{cols}},
+    summarise(across({{ cols }},
                      list(mean = \(x) mean(x, na.rm = TRUE),
-                          sdev = \(x) sd(x, na.rm = TRUE)),
-                     .names = "{.fn}_of_{.col}"),
+                          sdev = \(x) sd(x, na.rm = TRUE))),
               .groups = "drop")
 }
 
 ```
+
+## Try it out
 
 ```{r}
 my_summary(penguins, ends_with("mm"))
 ```
 
+
+## A improved solution
+
+Include a default.
+
 ```{r}
-my_summary <- function(df, cols = where(is.numeric)){
+my_summary <- function(df, cols = where(is.numeric)) {
   df |> 
     summarise(across({{cols}},
                      list(mean = \(x) mean(x, na.rm = TRUE),
-                          sdev = \(x) sd(x, na.rm = TRUE)),
-                     .names = "{.fn}_of_{.col}"),
+                          sdev = \(x) sd(x, na.rm = TRUE))),
               .groups = "drop")
 }
 
 ```
 
+
+## Try it out
+
 ```{r}
 my_summary(penguins)
 ```
 
-## Your turn
-
-
 
 ## Summary
 
-
--   
--   
--   
 -   
 
+-   
 
+-   
+
+-   
 
 [^1]: There is no problem when we use `sd_error()` because we accounted for NA in our function definition
