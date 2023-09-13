@@ -35,6 +35,8 @@ Emma Rand
 
 🐘[\@3mma\@mastodon.social](https://mastodon.social/@3mma)
 
+Garrett Grolemund
+
 Stephanie Hazlitt
 :::
 
@@ -49,17 +51,17 @@ Mouna Belaid
 
  
 
-Standing on the shoulders of
+## Standing on the shoulders of
 
-::: {style="font-size: 80%;"}
+
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
 
 -   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham-style
 
 -   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
-:::
 
-\
+
+
 
 ### WiFi TOFIX
 
@@ -68,7 +70,37 @@ Standing on the shoulders of
 
 ## Introductions
 
-To each other!
+## Introductions
+
+To each other! With help from Yorkshire!
+
+. . .
+
+::: columns
+::: {.column width="36%"}
+::: {style="font-size: 40%;"}
+![](images/quality-street.png){width="300"}
+
+*Ingredients*: Sugar, Glucose syrup, Cocoa mass, Vegetable fats (Palm, Rapeseed, Sunflower, Coconut,Mango kernel/ Sal/ Shea), Sweetened condensed skimmed milk (Skimmed milk, Sugar), Cocoa butter, Dried whole milk, Glucose-fructose syrup, Coconut, Lactose and proteins from whey (from Milk), Whey powder (from Milk), Hazelnuts, Skimmed milk powder, Butter (from Milk), Emulsifiers (Sunflower lecithin, E471), Flavourings, Butterfat (from Milk), Fat-reduced cocoa powder, Salt, Lactic acid.
+:::
+:::
+
+::: {.column width="32%"}
+::: {style="font-size: 40%;"}
+![](images/after-eight-thin-mint-squares-25-piece-box.jpg){width="300"}
+
+*Ingredients*: Sugar, Semi-Sweet Chocolate (Sugar, Chocolate, Cocoa Butter, Milkfat, Soy and Sunflower Lecithin, Natural Vanilla Flavor), Glucose Syrup, Peppermint Oil, Citric Acid, Invertase.
+:::
+:::
+
+::: {.column width="32%"}
+::: {style="font-size: 40%;"}
+![](images/haribo-strawbs.jpeg){width="300"}
+
+*Ingredients*: Glucose Syrup, Sugar, Starch, Acid: Citric Acid, Flavouring, Fruit and Plant Concentrates: Aronia, Blackcurrant, Elderberry, Grape, Lemon, Orange, Safflower Spirulina, Caramelised Sugar Syrup, Glazing Agents: Beeswax, Carnauba Wax, Elderberry Extract.
+:::
+:::
+:::
 
 ## Code of Conduct TOFIX
 
@@ -674,17 +706,13 @@ sum_sq <- function(x){
 }
 ```
 
-
-. . . 
+. . .
 
 🎬 Try it out
 
 ```{r}
 sum_sq(penguins$bill_length_mm)
 ```
-
-
-
 
 ## Types of function
 
@@ -696,9 +724,7 @@ We will cover two types of function
 
     ii. ✔️ summary functions: input is vector, output is a single value
 
-**2.  ➡️ data frame functions: df as input and df as output**
-
-
+**2. ➡️ data frame functions: df as input and df as output**
 
 # Dataframe functions
 
@@ -752,11 +778,13 @@ my_summary(penguins, bill_length_mm)
 `tidyverse` functions like `dplyr::summarise()` use "tidy evaluation" so you can refer to the names of variables inside dataframes. For example, you can use:
 
 either
+
 ``` r
 penguins |> summarise(mean = mean(bill_depth_mm))
 ```
 
 Or
+
 ``` r
 summarise(penguins, mean = mean(bill_depth_mm))
 ```
@@ -766,7 +794,8 @@ rather than `$` notation
 ``` r
 summarise(penguins, mean = mean(penguins$bill_depth_mm))
 ```
-. . . 
+
+. . .
 
 This is known as data-masking: the dataframe environment masks the user environment by giving priority to the dataframe.
 
@@ -774,16 +803,15 @@ This is known as data-masking: the dataframe environment masks the user environm
 
 and makes life easier when working interactively
 
-. . . 
+. . .
 
 But not so useful in functions
 
 Because of data-masking, `summarise()` in `my_summary()` is looking for a column literally called `column` in the dataframe that has been passed in. It is not looking in the variable `column` for the name of column you want to give it.
 
-. . . 
+. . .
 
 [Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
-
 
 ## Fix `my_summary()` function
 
@@ -822,7 +850,6 @@ When tidy evaluation is used
 
 🎬 Write a function to calculate the median, maximum and minimum values of a variable grouped by another variable.
 
-
 ## A solution - 1
 
 ```{r}
@@ -835,7 +862,6 @@ my_summary <- function(df, summary_var, group_var){
             .groups = "drop")
 }
 ```
-
 
 ## Your turn
 
@@ -859,7 +885,6 @@ my_summary <- function(df, summary_var, group_var = NULL){
             .groups = "drop")
 }
 ```
-
 
 ## Your turn
 
@@ -902,7 +927,6 @@ my_summary <- function(df, summary_var, group_var = NULL){
 my_summary(penguins, bill_length_mm, c(species, island))
 ```
 
-
 ## Extras
 
 -   Short cuts:
@@ -913,8 +937,11 @@ my_summary(penguins, bill_length_mm, c(species, island))
 ## Summary
 
 -   
+
 -   
+
 -   
+
 -   
 
 ## References
