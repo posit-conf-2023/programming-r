@@ -317,12 +317,12 @@ by_clarity_plot <-
 ## Our turn: more starter-code
 
 ```r
-# ?ggplot2::ggsave
+# ?ggplot2::ggsave()
 ggsave_local <- function(filename, plot) {
 
 }
 
-# using the data and filename, write out plots to png files
+# using filename and plot, write out plots to png files
 walk2(
   by_clarity_plot$filename,
   by_clarity_plot$plot,
@@ -330,6 +330,18 @@ walk2(
   ggsave_local
 )
 ```
+
+## Functions as arguments
+
+```{r}
+library("tidyverse")
+library("palmerpenguins")
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_discrete(labels = tolower) # tolower is a function
+```
+
 
 ## If we have time (2)
 
@@ -436,6 +448,8 @@ dpurrr_summarise <- function(df, reducer, .init) {
 ```
 
 . . .
+
+<hr>
 
 ```{r}
 mtcars |> 
