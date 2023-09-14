@@ -9,6 +9,8 @@ format:
     chalkboard: true
     code-link: true
     code-line-numbers: false
+    width: 1600
+    height: 900
 bibliography: references.bib
 ---
 
@@ -16,10 +18,10 @@ bibliography: references.bib
 
 In this session, we will discuss:
 
-:::{.incremental}
-  - embracing `{{}}` for `<data-masking>` functions
-  - tidyverse style and design of functions
-  - the joys of side-effects
+::: incremental
+-   embracing `{{}}` for `<data-masking>` functions
+-   tidyverse style and design of functions
+-   the joys of side-effects
 :::
 
 . . .
@@ -28,10 +30,10 @@ In this session, we will discuss:
 
 For coding, we will use `r-programming-exercises`:
 
- - `R/functions-02-01-embrace.R`, etc.
- - with each new file, restart R.
+-   `R/functions-02-01-embrace.R`, etc.
+-   with each new file, restart R.
 
-## Plot functions: Motivation 
+## Plot functions: Motivation
 
 ```{r}
 library("tidyverse")
@@ -39,7 +41,7 @@ library("tidyverse")
 
 Sometimes, you want to generalize a certain type of plot - let's say a histogram:
 
-```r
+``` r
 diamonds |> 
   ggplot(aes(x = carat)) +
   geom_histogram(binwidth = 0.1)
@@ -55,8 +57,8 @@ diamonds |>
 
 `aes()` is a data-masking function; you can embrace 🤗
 
- - pass "bare-name" variables for data-frames
- - look for `<data-masking>` in help
+-   pass "bare-name" variables for data-frames
+-   look for `<data-masking>` in help
 
 ```{r}
 #| output: false
@@ -73,7 +75,7 @@ histogram(diamonds, carat, 0.1)
 
 Complete this function yourself:
 
-```r
+``` r
 histogram <- function(df, var, binwidth = NULL) {
   df |>
     ggplot(aes()) +
@@ -81,13 +83,13 @@ histogram <- function(df, var, binwidth = NULL) {
 }
 ```
 
-- Try with other `df` and `var`, e.g. `starwars`, `mtcars`.
+-   Try with other `df` and `var`, e.g. `starwars`, `mtcars`.
 
-- Using *this* function *as is*, how can you:
+-   Using *this* function *as is*, how can you:
 
-  - add `theme_minimal()`?
+    -   add `theme_minimal()`?
 
-  - fill the bars with `"steelblue"`?
+    -   fill the bars with `"steelblue"`?
 
 ## Our turn (solution)
 
@@ -109,7 +111,7 @@ However, you can build an escape hatch.
 
 . . .
 
-```r
+``` r
 # `...` passed to `geom_histogram()`
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |>
@@ -128,7 +130,7 @@ Passes unspecified arguments from your function to another (tell your users wher
 
 Incorporate dot-dot-dot into `histogram()`:
 
-```r
+``` r
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |>
     ggplot(aes(x = {{var}})) +
@@ -138,12 +140,11 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 
 Try, e.g.:
 
-```r
+``` r
 histogram(starwars, height, binwidth = 5, fill = "steelblue")
 ```
 
 ## Tradeoffs
-
 
 You write a function to make some things easier.
 
@@ -155,18 +156,17 @@ The cost is that some things become more difficult.
 
 This is unavoidable, the best you can do is be deliberate about what you make easier and more difficult.
 
-
-## Labelling 
+## Labelling
 
 How to build a string, using variable-names and values?
 
 . . .
-  
+
 `rlang::englue()` was built for this purpose:
 
-  - embrace 🤗 variable-names: `{{}}`
-  - glue values: `{}`
-  
+-   embrace 🤗 variable-names: `{{}}`
+-   glue values: `{}`
+
 . . .
 
 ```{r}
@@ -181,9 +181,9 @@ temp(val, 0.4)
 
 Adapt `histogram()` to include a title that describes:
 
-  - which `var` is binned, and the `binwidth`
+-   which `var` is binned, and the `binwidth`
 
-```r
+``` r
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
@@ -196,7 +196,7 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 
 Try:
 
-```r
+``` r
 histogram(starwars, height, binwidth = 5)
 histogram(starwars, height) # "extra credit"
 ```
@@ -238,7 +238,7 @@ sorted_bars(diamonds, clarity)
 
 Your function can also include pre-processing of data.
 
-```r
+``` r
 sorted_bars <- function(df, var) {
   df |> 
     mutate({{ var }} := {{ var }} |> fct_infreq() |> fct_rev()) |>
@@ -247,29 +247,29 @@ sorted_bars <- function(df, var) {
 }
 ```
 
-:::{.incremental}
-- If using `{{ }}` to specify a new column, use `:=`, not `=`.
+::: incremental
+-   If using `{{ }}` to specify a new column, use `:=`, not `=`.
 
-- `fct_infreq()` reorders by decreasing frequency.
+-   `fct_infreq()` reorders by decreasing frequency.
 
-- `fct_rev()` reverses order, as y-axis starts at bottom.
+-   `fct_rev()` reverses order, as y-axis starts at bottom.
 
-- **Our turn**: let's try it
+-   **Our turn**: let's try it
 :::
 
 ## Summary (so far)
 
-:::{.incremental}
-- use embracing `{{}}` to interpolate bare column-names
+::: incremental
+-   use embracing `{{}}` to interpolate bare column-names
 
-  - function receiving the "embracing" has to be aware
-  - look for `<data-masking>` in the help
-  - use `rlang::englue()` to interpolate variables `{{}}` and values `{}`
+    -   function receiving the "embracing" has to be aware
+    -   look for `<data-masking>` in the help
+    -   use `rlang::englue()` to interpolate variables `{{}}` and values `{}`
 
-- `...` is a useful "escape hatch" in function design:
+-   `...` is a useful "escape hatch" in function design:
 
-  - put after required args, and before details
-  - tell your users where the dots are going
+    -   put after required args, and before details
+    -   tell your users where the dots are going
 :::
 
 ## Design and style
@@ -290,19 +290,19 @@ Use descriptive name, usually starts with a verb, unless it returns a well-known
 
 ## Order of arguments
 
-- **required**: arguments without default values
+-   **required**: arguments without default values
 
-- **dots**: can be passed on functions that your function calls
+-   **dots**: can be passed on functions that your function calls
 
-- **optional**: arguments with default values
+-   **optional**: arguments with default values
 
 . . .
 
 Tidyverse Design:
 
- - [Position of dots](https://design.tidyverse.org/dots-after-required.html)
- 
- - [Hadley's *first* Substack article](https://tidydesign.substack.com/p/argument-ordering)
+-   [Position of dots](https://design.tidyverse.org/dots-after-required.html)
+
+-   [Hadley's *first* Substack article](https://tidydesign.substack.com/p/argument-ordering)
 
 ## Order of arguments
 
@@ -316,11 +316,11 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
-- **required**: `df`, `var`
+-   **required**: `df`, `var`
 
-- **dots**: `...`
+-   **dots**: `...`
 
-- **optional**: `binwidth`
+-   **optional**: `binwidth`
 
 ## Order of arguments
 
@@ -334,36 +334,36 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 
 Why *optional* after *dots*?
 
-- user must name *optional* arguments, in this case `binwidth`.
+-   user must name *optional* arguments, in this case `binwidth`.
 
-- makes code easier to read when *optional* arguments used.
+-   makes code easier to read when *optional* arguments used.
 
-- more reasoning given in the [Tidyverse design guide](https://design.tidyverse.org/dots-position.html).
+-   more reasoning given in the [Tidyverse design guide](https://design.tidyverse.org/dots-position.html).
 
 ## Namespacing functions
 
 When we write `filter()`, do we mean...
 
-:::{.incremental}
-- `dplyr::filter()`?
-- `stats::filter()`?
+::: incremental
+-   `dplyr::filter()`?
+-   `stats::filter()`?
 :::
 
 . . .
 
 Three ways to sort this out:
 
-:::{.incremental}
-  - `library("conflicted")`, suitable for R scripts
-  
-  - `package::function()`, used in package functions
+::: incremental
+-   `library("conflicted")`, suitable for R scripts
 
-  - `#' @importFrom`, also used (sparingly) in packages
+-   `package::function()`, used in package functions
+
+-   `#' @importFrom`, also used (sparingly) in packages
 :::
 
 ## 📦 conflicted
 
-```r
+``` r
 library("conflicted")
 ```
 
@@ -371,9 +371,9 @@ library("conflicted")
 
 . . .
 
-To avoid conflicts, declare a preference: 
+To avoid conflicts, declare a preference:
 
-```r
+``` r
 # put in a conspicuous place, near the top of your script
 conflicts_prefer(dplyr::filter)
 ```
@@ -382,21 +382,21 @@ conflicts_prefer(dplyr::filter)
 
 In `functions-02-02-style.R`:
 
-```r
+``` r
 library("tidyverse")
 
 mtcars |> filter(cyl == 6)
 ```
 
-- run it as-is
-- add `library("conflicted")`, run again
-- add a `conflicts_prefer()` directive
+-   run it as-is
+-   add `library("conflicted")`, run again
+-   add a `conflicts_prefer()` directive
 
 ## `package::function()`
 
 This is the usual way when writing a function for a package:
 
-```r
+``` r
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |> 
     ggplot2::ggplot(ggplot2::aes(x = {{ var }})) + 
@@ -404,9 +404,9 @@ histogram <- function(df, var, ..., binwidth = NULL) {
 }
 ```
 
-:::{.incremental}
-- makes it very clear where you are getting the function from
-- can be verbose, especially if calling an external function often
+::: incremental
+-   makes it very clear where you are getting the function from
+-   can be verbose, especially if calling an external function often
 :::
 
 . . .
@@ -419,7 +419,7 @@ When you have a *lot* of calls to a given external function
 
 Put this in `{packagename}-package.R`:
 
-```r
+``` r
 #' @importFrom ggplot2 ggplot aes geom_histogram
 NULL
 ```
@@ -428,13 +428,13 @@ NULL
 
 Alternatively, from the R command prompt:
 
-```r
+``` r
 usethis::use_import_from("ggplot2", c("ggplot", "aes", "geom_histogram"))
 ```
 
 ## `#' @importFrom`
 
-```r
+``` r
 histogram <- function(df, var, ..., binwidth = NULL) {
   df |> 
     ggplot(aes(x = {{ var }})) + 
@@ -446,10 +446,10 @@ Makes your code less verbose, but also less transparent
 
 . . .
 
-**To mitigate**: 
+**To mitigate**:
 
-- put all your `@importFrom` in one conspicuous file: `{packagename}-package.R`
-- use judiciously
+-   put all your `@importFrom` in one conspicuous file: `{packagename}-package.R`
+-   use judiciously
 
 ## Design and style references
 
@@ -473,19 +473,19 @@ Restart R, open `functions-02-03-side-effects.R`
 
 **Pure function**:
 
-- Returns a value that depends only on its inputs, e.g. `sum()`
+-   Returns a value that depends only on its inputs, e.g. `sum()`
 
 . . .
 
 **Uses side effects**:
 
-- Depends on something other than inputs, e.g. `read.csv()`
+-   Depends on something other than inputs, e.g. `read.csv()`
 
-- Or, makes a change in the environment, e.g. `print()`
+-   Or, makes a change in the environment, e.g. `print()`
 
 ## Pure function
 
-```r
+``` r
 add <- function(x, y) {
   x + y
 }
@@ -499,19 +499,19 @@ Easier to test.
 
 Side-effects can slow down your function:
 
- - it can be costly to read/write to disk, print to the screen.
+-   it can be costly to read/write to disk, print to the screen.
 
 . . .
- 
+
 Depending on side effects can introduce uncertainty:
 
- - are you *certain* of what `file.csv` contains?
+-   are you *certain* of what `file.csv` contains?
 
 . . .
 
 Side effects aren't necessarily bad, but you need to take them into account:
 
-  - need to take care when testing.
+-   need to take care when testing.
 
 ## Your turn
 
@@ -519,7 +519,7 @@ Discuss with your neighbor, are these function-calls are pure, or do they use si
 
 In `functions-02-03-side-effects.R`:
 
-```r
+``` r
 x <- prod(1, 2, 3)
 
 x <- print("Hello")
@@ -531,7 +531,7 @@ x <- sort(c("apple", "Banana", "candle"))
 
 ## Our turn: checking locale
 
-Can be useful to consult `devtools::session_info()`: 
+Can be useful to consult `devtools::session_info()`:
 
 ```{r}
 # using `info = "platform"` to fit output on screen
@@ -542,21 +542,21 @@ devtools::session_info(info = "platform")
 
 Side effects can include:
 
-:::{.incremental}
- - modifying environment: `Sys.setenv()`
- - modifying options: `options()`
- - setting random seed: `set.seed()`
- - setting working directory: `setwd()`
- - creating and writing to a temporary file
+::: incremental
+-   modifying environment: `Sys.setenv()`
+-   modifying options: `options()`
+-   setting random seed: `set.seed()`
+-   setting working directory: `setwd()`
+-   creating and writing to a temporary file
 :::
 
 . . .
- 
+
 {withr} makes it a lot easier to "leave no footprints".
 
 ## Our turn: modifying locale
 
-`sort()` uses locale (environment) for string-sorting rules 
+`sort()` uses locale (environment) for string-sorting rules
 
 ```{r}
 #| collapse: true
@@ -564,6 +564,7 @@ Side effects can include:
 
 sort(c("apple", "Banana", "candle"))
 ```
+
 . . .
 
 <hr>
@@ -611,12 +612,12 @@ Sys.getlocale("LC_COLLATE")
 
 ## But what about dplyr?
 
-:::{.incremental}
-- `?dplyr::arrange()`
-- `arrange()` uses the `"C"` locale by default
+::: incremental
+-   `?dplyr::arrange()`
+-   `arrange()` uses the `"C"` locale by default
 :::
 
-. . . 
+. . .
 
 <hr>
 
@@ -668,8 +669,8 @@ getOption("warnPartialMatchDollar")
 
 You can use tidy evaluation in {ggplot2} to specify aesthetics, add labels, and include {dplyr} preprocessing:
 
-  - embracing `{{}}` for `<data-masking>` functions
-  - be aware of `<tidy-select>` functions, work differently
+-   embracing `{{}}` for `<data-masking>` functions
+-   be aware of `<tidy-select>` functions, work differently
 
 . . .
 
@@ -681,4 +682,4 @@ Using tidyverse style and design can make things easier for you, your users, and
 
 <hr>
 
-Be mindful of side effects, use {withr} to manage global state. 
+Be mindful of side effects, use {withr} to manage global state.

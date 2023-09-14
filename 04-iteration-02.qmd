@@ -9,6 +9,8 @@ format:
     chalkboard: true
     code-link: true
     code-line-numbers: false
+    width: 1600
+    height: 900
 bibliography: references.bib
 ---
 
@@ -75,10 +77,10 @@ In the `programming-r-exercises` repository:
 Here's our starting code:
 
 ``` r
-data1952 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
-data1957 <- readxl::read_excel(here("data/gapminder/1957.xlsx"))
-data1962 <- readxl::read_excel(here("data/gapminder/1952.xlsx"))
-data1967 <- readxl::read_excel(here("data/gapminder/1967.xlsx"))
+data1952 <- read_excel(here("data/gapminder/1952.xlsx"))
+data1957 <- read_excel(here("data/gapminder/1957.xlsx"))
+data1962 <- read_excel(here("data/gapminder/1952.xlsx"))
+data1967 <- read_excel(here("data/gapminder/1967.xlsx"))
 
 data_manual <- bind_rows(data1952, data1957, data1962, data1967)
 ```
@@ -108,9 +110,9 @@ Let's work together to improve this code to get paths:
 paths <-
   # get the filepaths from the directory
   fs::dir_ls(here("data/gapminder")) |>
-  # extract the year as names
   # convert to list
-  identity()
+  # extract the year as names
+  print()
 ```
 
 ## Our turn: read data
@@ -125,7 +127,7 @@ data <-
   # set list-names as column `year`
   # bind into single data-frame
   # convert year to number
-  identity()
+  print()
 ```
 
 ## Handling failures
@@ -140,7 +142,6 @@ library("readr")
 read_csv("not/a/file.csv")
 ```
 
-
 ## Function operators
 
 Function operators:
@@ -151,28 +152,26 @@ Function operators:
 . . .
 
 ```{r}
-#| error: true
 library("purrr")
-poss_read_csv <- 
-  possibly(read_csv, otherwise = NULL, quiet = TRUE)
 
-poss_read_csv("not/a/file.csv")
+poss_read_csv <- possibly(read_csv, otherwise = NULL, quiet = FALSE)
 ```
 
+. . .
 
-## Function operators
-
-Function operators:
-
-  - take a function
-  - return a modified function
+<hr>
 
 ```{r}
 #| message: true
-poss_read_csv <- 
-  possibly(read_csv, otherwise = NULL, quiet = FALSE)
-
 poss_read_csv("not/a/file.csv")
+```
+
+. . .
+
+<hr>
+
+```{r}
+poss_read_csv(I("a, b\n 1, 2"), col_types = "dd")
 ```
 
 
@@ -186,7 +185,7 @@ In the `programming-r-exercises` repository:
 Create a new function:
 
 ``` r
-possibly_read_excel <- possibly(<you do the rest>)
+possibly_read_excel <- possibly() # we do the rest
 ```
 
 Use this function in your script.
@@ -248,33 +247,32 @@ When we read "for each", we might think of using `map()`:
 `iteration-02-02-writing-files.R`
 
 ``` r
-# ?dplyr::group_nest(), ?stringr::str_glue(), ?readr::write_csv
-
+# ?dplyr::group_nest(), ?stringr::str_glue()
 # from diamonds, create tibble with columns: clarity, data, filename
 by_clarity_csv <-
   diamonds |>
   # nest by clarity
   # create column for filename
-  identity()
+  print()
 
+# ?readr::write_csv()
 # using the data and filename, write out csv files
 walk2(
   by_clarity_csv$data,
   by_clarity_csv$filename,
-  \(data, filename) # write csv file to data/clarity directory
+  \(data, filename) NULL # replace with actual code
 )
 ```
 
 ## Our turn: writing multiple plots
 
-**Goal**: write out a histogram PNG for each value of `clarity` within ggplot2's `diamonds` dataset.
+**Goal**: Save histogram for `carat` for each value of `clarity` within `diamonds` dataset.
 
 . . .
 
 <hr>
 
 Create a `plot` column, where each element is a ggplot.
-
 This will be a list-column.
 
 . . .
@@ -286,32 +284,64 @@ You can use `map()`:
    
 ```r
 mutate(
-  plot = map(data, histogram, binwidth = 0.1)
+  plot = map(data, histogram, carat)
 )
+```
+
+. . .
+
+equivalent to 
+
+```r
+plot[[1]] = histogram(data[[1]], carat)
+plot[[2]] = histogram(data[[2]], carat)
+...
 ```
 
 ## Our turn: starter-code
 
 ``` r
 # from diamonds, create tibble with columns: clarity, data, plot, filename
-by_clarity_plots <-
+by_clarity_plot <-
   diamonds |>
   # nest by clarity
-  # create columns for filename, plot
+  group_nest(clarity) |>
+  # create columns for plot, filename
   mutate(
-    filename = str_glue(),
-    plot = map()
+    filename = str_glue("clarity-{clarity}.png")#,
+    #plot = map(),
   ) |>
-  identity()
+  print()
+```
 
-# ?ggplot2::ggsave
-# using the data and filename, write out plots to png files
+## Our turn: more starter-code
+
+```r
+# ?ggplot2::ggsave()
+ggsave_local <- function(filename, plot) {
+
+}
+
+# using filename and plot, write out plots to png files
 walk2(
   by_clarity_plot$filename,
   by_clarity_plot$plot,
-  \(filename, plot) # write plot file to data/clarity directory
+  # write plot file to data/clarity directory
+  ggsave_local
 )
 ```
+
+## Functions as arguments
+
+```{r}
+library("tidyverse")
+library("palmerpenguins")
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  scale_color_discrete(labels = tolower) # tolower is a function
+```
+
 
 ## If we have time (2)
 
@@ -419,6 +449,8 @@ dpurrr_summarise <- function(df, reducer, .init) {
 
 . . .
 
+<hr>
+
 ```{r}
 mtcars |> 
   dpurrr_summarise(
@@ -486,8 +518,21 @@ In JavaScript, data frames are often arrays of objects (lists), so you'll see fo
 
 Functional programming comes up a lot in JavaScript
 
-
-
 ## Wrap-up
 
-TODO: link for survey
+Please go to [pos.it/conf-workshop-survey](https://pos.it/conf-workshop-survey). 
+
+Your feedback is crucial! 
+
+Data from the survey informs curriculum and format decisions for future conf workshops, and we really appreciate you taking the time to provide it.
+
+<hr>
+
+### Thank you!
+
+:::{.incremental}
+- Emma
+- Steph, Mouna, Garrett
+- Mine Çetinkaya-Rundel, Posit
+- **You** 🤗
+:::
