@@ -53,21 +53,16 @@ Mouna Belaid
 
 ## Standing on the shoulders of
 
-
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
 
 -   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham-style
 
 -   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
 
-
-
-
 ### WiFi
 
 -   Network: Posit Conf 2023
 -   Password: conf2023
-
 
 ## Introductions
 
@@ -101,7 +96,7 @@ To each other! With help from Yorkshire!
 :::
 :::
 
-## Code of Conduct 
+## Code of Conduct
 
 [Code of Conduct and COVID policies](https://posit.co/code-of-conduct/). **Please Review**
 
@@ -114,19 +109,19 @@ Reporting:
 -   📧 `conf@posit.com`
 -   ☎️ 844-448-1212
 
-## Housekeeping 
+## Housekeeping
 
 -   WiFi
     -   Network: Posit Conf 2023
     -   Password: conf2023
 -   There are gender-neutral bathrooms located are among the Grand Suite Bathrooms.
--   Meditation/prayer rooms: Grand Suite 2A and Grand Suite 2B. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00  - 18:00
--   Lactation room: in Grand Suite 1. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00  - 18:00
+-   Meditation/prayer rooms: Grand Suite 2A and Grand Suite 2B. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00 - 18:00
+-   Lactation room: in Grand Suite 1. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00 - 18:00
 -   Participants who do not wish to be photographed have red lanyards; please note and respect
 
 ## 🙏 to
 
--   the Steph and Mouna
+-   the Steph, Mouna and Garrett
 
 -   colleagues, friends and learners at Schneider Electric, University of York and RForwards!
 
@@ -152,7 +147,7 @@ You need a laptop with the following installed:
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                    |
-|:----------------|:------------------------------------------------------|
+|:-----------------|:-----------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
 | 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
