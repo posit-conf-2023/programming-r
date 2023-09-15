@@ -140,7 +140,7 @@ Reporting:
 You need a laptop with the following installed:
 
 -   R version ≥4.2 and RStudio ≥2023.03
--   The following packages: {tidyverse}, {palmerpenguins}
+-   The following packages: {tidyverse}, {palmerpenguins}, {devtools}, {here}
 
 🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.html)
 
