@@ -873,7 +873,7 @@ Improvement: Have a default of `NULL` for the grouping variable
 my_summary <- function(df, summary_var, group_var = NULL){
   df |> 
     group_by({{ group_var }}) |> 
-  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+    summarise(median = median({{summary_var  }}, na.rm = TRUE),
             minimum = min({{summary_var  }}, na.rm = TRUE),
             maximum = max({{summary_var  }}, na.rm = TRUE),
             .groups = "drop")
@@ -901,23 +901,27 @@ my_summary(penguins, bill_length_mm, c(species, island),)
 
 ## A solution - 3
 
-Use `pick()`
+Use `pick()` which allows you to select a subset of columns inside a data masking function:
+
+. . .
 
 ```{r}
 my_summary <- function(df, summary_var, group_var = NULL){
   df |> 
     group_by(pick({{ group_var }})) |> 
-  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+    summarise(median = median({{summary_var  }}, na.rm = TRUE),
             minimum = min({{summary_var  }}, na.rm = TRUE),
             maximum = max({{summary_var  }}, na.rm = TRUE),
             .groups = "drop")
 }
 ```
 
+
+##
+
 🎬 Try it out with more than one group
 
 ```{r}
-#| error: true
 my_summary(penguins, bill_length_mm, c(species, island))
 ```
 
@@ -930,12 +934,20 @@ my_summary(penguins, bill_length_mm, c(species, island))
 
 ## Summary
 
--   
+::: {style="font-size: 40%;"}
 
--   
+-   Writing functions can make you more efficient and make your code more readable. This can be just for your benefit.
 
--   
+-   Vector functions take one of more vectors as input; output can be a vector (useful in `mutate()` and `filter()`) or a single value (useful in `summarise()`)
 
--   
+-   Dataframe functions take a dataframe as input and output a dataframe
+
+-   Give arguments a default where possible
+
+-   We use `{{ var }}` embracing to manage data masking
+
+-   We use `pick()` to select more than one variable
+
+:::
 
 ## References
