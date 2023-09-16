@@ -5,6 +5,7 @@ author: "Emma Rand and Ian Lyttle <br>WiFi: Posit Conf 2023<br>Password: conf202
 format: 
   revealjs:
     theme: [simple, styles.scss]
+    footer: <https://pos.it/programming-r-conf-2023>
     slide-number: true
     chalkboard: true
     code-link: true
@@ -25,7 +26,7 @@ This is a two-day, hands-on workshop for those who have embraced the tidyverse a
 
 ## Material
 
--   <https://posit-conf-2023.github.io/programming-r/>
+-   pos.it/programming-r-conf-2023
 
 ## The team
 
@@ -147,7 +148,7 @@ You need a laptop with the following installed:
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                    |
-|:-----------------|:-----------------------------------------------------|
+|:------------------|:----------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
 | 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
@@ -916,8 +917,7 @@ my_summary <- function(df, summary_var, group_var = NULL){
 }
 ```
 
-
-##
+## 
 
 🎬 Try it out with more than one group
 
@@ -935,7 +935,6 @@ my_summary(penguins, bill_length_mm, c(species, island))
 ## Summary ☕
 
 ::: {style="font-size: 40%;"}
-
 -   Writing functions can make you more efficient and make your code more readable. This can be just for your benefit.
 
 -   Vector functions take one of more vectors as input; output can be a vector (useful in `mutate()` and `filter()`) or a single value (useful in `summarise()`)
@@ -947,7 +946,6 @@ my_summary(penguins, bill_length_mm, c(species, island))
 -   We use `{{ var }}` embracing to manage data masking
 
 -   We use `pick()` to select more than one variable
-
 :::
 
 ## References

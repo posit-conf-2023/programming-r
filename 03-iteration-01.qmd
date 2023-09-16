@@ -5,6 +5,7 @@ author: "Emma Rand and Ian Lyttle"
 format: 
   revealjs:
     theme: [simple, styles.scss]
+    footer: <https://pos.it/programming-r-conf-2023>
     slide-number: true
     chalkboard: true
     code-link: true
@@ -90,7 +91,6 @@ We have:
 -   `facet_wrap()`
 
 -   `across()` and `purrr()`
-
 
 . . .
 
@@ -191,6 +191,7 @@ penguins |>
 3 important arguments
 
 ## `across()` Arguments
+
 -   which columns you want to iterate over: `.cols = bill_length_mm:body_mass_g`
 
 . . .
@@ -282,7 +283,6 @@ penguins |>
 
 📢
 
-
 ```{r}
 #| error: true
 penguins |> 
@@ -361,7 +361,6 @@ penguins |>
                    \(x) mean(x, na.rm = TRUE)))
 ```
 
-
 ## Anonymous functions
 
 Note, You might also see:
@@ -371,12 +370,12 @@ penguins |>
   summarise(across(ends_with("mm"), 
                    ~ mean(.x, na.rm = TRUE)))
 ```
+
 . . .
 
 -   `\(x)` is base syntax new in in 4.1.0 **Recommended**
 
 -   `~ .x` is fine but only works in tidyverse functions
-
 
 ## `.funs`: calling more than one function
 
@@ -525,22 +524,17 @@ Time to bring together functions and iteration!
 
 🎬 Write a function that summarises multiple specified columns of a data frame
 
-
-
 ``` r
 my_summary <- function(df, cols) {
 
    . . . .
 
 }
-
 ```
-
 
 ``` r
 my_summary(penguins, ends_with("mm"))
 ```
-
 
 ## A solution
 
@@ -563,7 +557,6 @@ penguins |>
   my_summary(ends_with("mm"))
 ```
 
-
 ## A improved solution
 
 Include a default.
@@ -579,7 +572,6 @@ my_summary <- function(df, cols = where(is.numeric)) {
 
 ```
 
-
 ## Try it out
 
 ```{r}
@@ -587,7 +579,6 @@ penguins |>
   select(-year) |>
   my_summary()
 ```
-
 
 ## Summary
 
