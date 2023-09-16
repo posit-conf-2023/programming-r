@@ -932,7 +932,7 @@ my_summary(penguins, bill_length_mm, c(species, island))
     -   put cursor on a function call and press F2 to find its definition
     -   Ctrl+. opens section/file search
 
-## Summary
+## Summary ☕
 
 ::: {style="font-size: 40%;"}
 
