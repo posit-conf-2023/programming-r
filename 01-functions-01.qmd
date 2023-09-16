@@ -53,21 +53,16 @@ Mouna Belaid
 
 ## Standing on the shoulders of
 
-
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/) @wickham2023
 
 -   [The tidyverse style guide](https://style.tidyverse.org/index.html) @wickham-style
 
 -   [Programming with dplyr vignette](https://dplyr.tidyverse.org/articles/programming.html) @dplyr
 
-
-
-
 ### WiFi
 
 -   Network: Posit Conf 2023
 -   Password: conf2023
-
 
 ## Introductions
 
@@ -101,7 +96,7 @@ To each other! With help from Yorkshire!
 :::
 :::
 
-## Code of Conduct 
+## Code of Conduct
 
 [Code of Conduct and COVID policies](https://posit.co/code-of-conduct/). **Please Review**
 
@@ -114,19 +109,19 @@ Reporting:
 -   📧 `conf@posit.com`
 -   ☎️ 844-448-1212
 
-## Housekeeping 
+## Housekeeping
 
 -   WiFi
     -   Network: Posit Conf 2023
     -   Password: conf2023
 -   There are gender-neutral bathrooms located are among the Grand Suite Bathrooms.
--   Meditation/prayer rooms: Grand Suite 2A and Grand Suite 2B. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00  - 18:00
--   Lactation room: in Grand Suite 1. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00  - 18:00
+-   Meditation/prayer rooms: Grand Suite 2A and Grand Suite 2B. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00 - 18:00
+-   Lactation room: in Grand Suite 1. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00 - 18:00
 -   Participants who do not wish to be photographed have red lanyards; please note and respect
 
 ## 🙏 to
 
--   the Steph and Mouna
+-   the Steph, Mouna and Garrett
 
 -   colleagues, friends and learners at Schneider Electric, University of York and RForwards!
 
@@ -145,14 +140,14 @@ Reporting:
 You need a laptop with the following installed:
 
 -   R version ≥4.2 and RStudio ≥2023.03
--   The following packages: {tidyverse}, {palmerpenguins}
+-   The following packages: {tidyverse}, {palmerpenguins}, {devtools}, {here}
 
 🎬 Detailed instructions for installing these were covered in [Prerequisites](pre-reqs.html)
 
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                    |
-|:----------------|:------------------------------------------------------|
+|:-----------------|:-----------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
 | 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
@@ -878,7 +873,7 @@ Improvement: Have a default of `NULL` for the grouping variable
 my_summary <- function(df, summary_var, group_var = NULL){
   df |> 
     group_by({{ group_var }}) |> 
-  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+    summarise(median = median({{summary_var  }}, na.rm = TRUE),
             minimum = min({{summary_var  }}, na.rm = TRUE),
             maximum = max({{summary_var  }}, na.rm = TRUE),
             .groups = "drop")
@@ -906,23 +901,27 @@ my_summary(penguins, bill_length_mm, c(species, island),)
 
 ## A solution - 3
 
-Use `pick()`
+Use `pick()` which allows you to select a subset of columns inside a data masking function:
+
+. . .
 
 ```{r}
 my_summary <- function(df, summary_var, group_var = NULL){
   df |> 
     group_by(pick({{ group_var }})) |> 
-  summarise(median = median({{summary_var  }}, na.rm = TRUE),
+    summarise(median = median({{summary_var  }}, na.rm = TRUE),
             minimum = min({{summary_var  }}, na.rm = TRUE),
             maximum = max({{summary_var  }}, na.rm = TRUE),
             .groups = "drop")
 }
 ```
 
+
+##
+
 🎬 Try it out with more than one group
 
 ```{r}
-#| error: true
 my_summary(penguins, bill_length_mm, c(species, island))
 ```
 
@@ -933,14 +932,22 @@ my_summary(penguins, bill_length_mm, c(species, island))
     -   put cursor on a function call and press F2 to find its definition
     -   Ctrl+. opens section/file search
 
-## Summary
+## Summary ☕
 
--   
+::: {style="font-size: 40%;"}
 
--   
+-   Writing functions can make you more efficient and make your code more readable. This can be just for your benefit.
 
--   
+-   Vector functions take one of more vectors as input; output can be a vector (useful in `mutate()` and `filter()`) or a single value (useful in `summarise()`)
 
--   
+-   Dataframe functions take a dataframe as input and output a dataframe
+
+-   Give arguments a default where possible
+
+-   We use `{{ var }}` embracing to manage data masking
+
+-   We use `pick()` to select more than one variable
+
+:::
 
 ## References
