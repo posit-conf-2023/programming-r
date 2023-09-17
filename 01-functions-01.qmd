@@ -148,7 +148,7 @@ You need a laptop with the following installed:
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                    |
-|:------------------|:----------------------------------------------------|
+|:-------------------|:---------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
 | 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
@@ -157,13 +157,13 @@ You need a laptop with the following installed:
 | 15:00 - 15:30 | ☕ *Coffee break*                                                                           |
 | 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                      |
 
-## How we will work TOFIX
+## How we will work 
 
 -   stickies
 
-    -   🟪 I'm all good, I'm done
+    -   🟦 I'm all good, I'm done
 
-    -   🟧 I could do with some help
+    -   🟪 I could do with some help
 
 -   Discord
 
