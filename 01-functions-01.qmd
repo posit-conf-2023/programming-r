@@ -934,7 +934,7 @@ my_summary(penguins, bill_length_mm, c(species, island))
 
 ## Summary ☕
 
-::: {style="font-size: 40%;"}
+::: {style="font-size: 80%;"}
 -   Writing functions can make you more efficient and make your code more readable. This can be just for your benefit.
 
 -   Vector functions take one of more vectors as input; output can be a vector (useful in `mutate()` and `filter()`) or a single value (useful in `summarise()`)
