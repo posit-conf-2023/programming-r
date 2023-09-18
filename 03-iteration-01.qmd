@@ -84,13 +84,15 @@ and NOT
 
 We have:
 
--   the `apply()` family
 
 -   `group_by()` with `summarize()`
 
 -   `facet_wrap()`
 
 -   `across()` and `purrr()`
+
+. . .
+-   the `apply()` family
 
 . . .
 
