@@ -17,13 +17,13 @@ bibliography: references.bib
 
 ## Overview
 
-brief intro
+In this session we will cover another way to reduce code duplication: iteration. 
 
 ## Learning Objectives
 
 At the end of this section you will be able to:
 
-::: {style="font-size: 70%;"}
+::: {style="font-size: 80%;"}
 -   recognise that much iteration comes free with R
 
 -   iterate across rows using `across()`
@@ -302,6 +302,8 @@ penguins |>
 ```
 
 We get the NA because we have missing values[^1].
+
+[^1]: There is no problem when we use `sd_error()` because we accounted for NA in our function definition
 
 ## Include arguments
 
@@ -582,12 +584,13 @@ penguins |>
 
 ## Summary
 
--   
+-   you already knew some iteration: `group_by()`, `facet_wrap()`
 
--   
+-   `across()` iterates over columns`
+    -   choose coulmns with familiar `select()` spec
+    -   pass functions without their `()`
+    -   use anonymous functions to add arguments
+    -   use a list to use multiple functions
+    -   specify the names 
+-   You can use `across()` in functions!
 
--   
-
--   
-
-[^1]: There is no problem when we use `sd_error()` because we accounted for NA in our function definition
