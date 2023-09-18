@@ -5,6 +5,7 @@ author: "Emma Rand and Ian Lyttle"
 format: 
   revealjs:
     theme: [simple, styles.scss]
+    footer: <https://pos.it/programming-r-conf-2023>
     slide-number: true
     chalkboard: true
     code-link: true
