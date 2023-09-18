@@ -112,9 +112,6 @@ Reporting:
 
 ## Housekeeping
 
--   WiFi
-    -   Network: Posit Conf 2023
-    -   Password: conf2023
 -   There are gender-neutral bathrooms located are among the Grand Suite Bathrooms.
 -   Meditation/prayer rooms: Grand Suite 2A and Grand Suite 2B. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00 - 18:00
 -   Lactation room: in Grand Suite 1. Open Sunday - Tuesday 07:30 - 19:00, Wednesday 08:00 - 18:00
@@ -136,7 +133,7 @@ Reporting:
 
 -   Experience 🍱 🥗 🌮 🍴 🕐
 
-## Prerequisites TOFIX
+## Prerequisites
 
 You need a laptop with the following installed:
 
@@ -148,7 +145,7 @@ You need a laptop with the following installed:
 ## Schedule {.smaller}
 
 | Time          | Activity                                                                                    |
-|:-------------------|:---------------------------------------------------|
+|:--------------------|:--------------------------------------------------|
 | 09:00 - 10:30 | [Functions 1](01-functions-01.html) Introduction, vector and dataframe functions, embracing |
 | 10:30 - 11:00 | ☕ *Coffee break*                                                                           |
 | 11:00 - 12:30 | [Functions 2](02-functions-02.html) Plot functions, style and side effects                  |
@@ -157,7 +154,7 @@ You need a laptop with the following installed:
 | 15:00 - 15:30 | ☕ *Coffee break*                                                                           |
 | 15:30 - 17:00 | [Iteration 2](04-iteration-02.html) Reading and writing multiple files                      |
 
-## How we will work 
+## How we will work
 
 -   stickies
 
