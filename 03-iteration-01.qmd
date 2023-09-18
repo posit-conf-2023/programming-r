@@ -17,7 +17,7 @@ bibliography: references.bib
 
 ## Overview
 
-In this session we will cover another way to reduce code duplication: iteration. 
+In this session we will cover another way to reduce code duplication: iteration.
 
 ## Learning Objectives
 
@@ -84,15 +84,13 @@ and NOT
 
 We have:
 
-
 -   `group_by()` with `summarize()`
 
 -   `facet_wrap()`
 
 -   `across()` and `purrr()`
 
-. . .
--   the `apply()` family
+. . . - the `apply()` family
 
 . . .
 
@@ -588,11 +586,12 @@ penguins |>
 
 -   you already knew some iteration: `group_by()`, `facet_wrap()`
 
--   `across()` iterates over columns`
-    -   choose coulmns with familiar `select()` spec
-    -   pass functions without their `()`
+-   `across()` iterates over columns
+
+    -   choose columns with familiar `select()` spec
+    -   pass functions without their `()\`
     -   use anonymous functions to add arguments
     -   use a list to use multiple functions
-    -   specify the names 
--   You can use `across()` in functions!
+    -   specify the names
 
+-   You can use `across()` in functions!
